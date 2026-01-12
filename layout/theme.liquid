@@ -310,5 +310,28 @@
 
   <!-- And above this comment line ================================================== -->
  {% render 'footfiles' %}
+ <script>
+  function forceMenuBold() {
+    // Target the Back button text
+    const backTitles = document.querySelectorAll('.sliderow_back .sliderow_title');
+    backTitles.forEach(el => {
+      el.style.fontWeight = '800';
+      el.style.setProperty('font-weight', '800', 'important');
+    });
+
+    // Target every sub-menu title
+    const subTitles = document.querySelectorAll('.sliderule_panel .sliderow_title');
+    subTitles.forEach(el => {
+      el.style.fontWeight = '800';
+      el.style.setProperty('font-weight', '800', 'important');
+    });
+  }
+
+  // Run when the page loads and whenever the menu is clicked
+  document.addEventListener('DOMContentLoaded', forceMenuBold);
+  document.addEventListener('click', function() {
+    setTimeout(forceMenuBold, 100); // Small delay to catch menu opening
+  });
+</script>
 </body>
 </html>
