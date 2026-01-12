@@ -73,20 +73,7 @@ h2.standard__heading {
   text-underline-offset:3px;
   color: black!important;
 }
-/* Test: This targets the 'Back' link specifically to turn it Red and Bold */
-.menu-drawer__menu-item--back, 
-.menu-drawer__close-button,
-.js-menu-back,
-[data-menu-back] {
-    color: #ff0000 !important; /* Bright Red */
-    font-weight: bold !important;
-}
 
-/* Alternative: Targeting the first link in any mobile list */
-ul.menu-drawer__menu li:first-child * {
-    color: #ff0000 !important;
-    font-weight: bold !important;
-}
 .sliderow {
   border: 0;
   letter-spacing: 0;
