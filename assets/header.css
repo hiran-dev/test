@@ -73,6 +73,9 @@ h2.standard__heading {
   text-underline-offset:3px;
   color: black!important;
 }
+.sliderule_panel .sliderow_title {
+    font-weight: bold !important;
+}
 .sliderow {
   border: 0;
   letter-spacing: 0;
