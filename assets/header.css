@@ -73,7 +73,18 @@ h2.standard__heading {
   text-underline-offset:3px;
   color: black!important;
 }
+/* Bolds the back/title item at the top of submenus */
+.menu-drawer__menu-item--back,
+.menu-drawer__close-button,
+.mobile-facets__header {
+    font-weight: bold !important;
+}
 
+/* Specifically targets the text inside the back button if it's a heading */
+.menu-drawer__menu-item--back h2,
+.menu-drawer__menu-item--back span {
+    font-weight: bold !important;
+}
 .sliderow {
   border: 0;
   letter-spacing: 0;
