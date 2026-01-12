@@ -67,10 +67,11 @@ h2.standard__heading {
 .sliderow__title {
   min-height: 40px;
 }
-.sliderow:hover{
+.sliderow:hover {
   background-color: #ccc;
   text-decoration: underline;
   text-underline-offset:3px;
+  color: #000 !important;
 }
 .sliderow {
   border: 0;
