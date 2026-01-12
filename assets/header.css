@@ -73,8 +73,10 @@ h2.standard__heading {
   text-underline-offset:3px;
   color: black!important;
 }
+.sliderule_panel .sliderow_links .sliderow_title,
 .sliderule_panel .sliderow_title {
-    font-weight: bold !important;
+    font-weight: 800 !important;
+    -webkit-font-smoothing: antialiased; /* Makes bold look cleaner on mobile */
 }
 .sliderow {
   border: 0;
