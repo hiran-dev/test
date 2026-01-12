@@ -73,13 +73,7 @@ h2.standard__heading {
   text-underline-offset:3px;
   color: black!important;
 }
-.sliderule_panel .sliderule-close, 
-.sliderule_panel .drawer__button,
-.sliderule_panel .sliderow_back,
-.sliderule_panel .sliderow_back .sliderow_title {
-    font-weight: 900 !important;
-    text-transform: uppercase; /* Optional: matches the look of your headings */
-}
+
 .sliderow {
   border: 0;
   letter-spacing: 0;
