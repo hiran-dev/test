@@ -1,0 +1,153 @@
+{% comment %}
+Pipeline Theme – Recently Viewed Products
+Display only size options as buttons, Add to Cart redirects to /cart page
+{% endcomment %}
+
+<div class="recently-viewed-products">
+  <h3 class="section-title">Complete the Look</h3>
+  <div class="grid grid--4-col-desktop grid--2-col-tablet grid--1-col-mobile recently-viewed-list">
+    <!-- Products appended by JS -->
+  </div>
+</div>
+
+<style>
+
+.recently-viewed-item.grid__item {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: end;
+}
+.rcthumb {
+    width: 20%;
+    max-width: 80px;
+}
+.mdcolbox {
+    width: 80%;
+}
+.recently-viewed-products h3.section-title {
+    font-size: 18px;
+    color: #000;
+    letter-spacing: 0;
+    font-weight: 600;
+}
+.recently-viewed-products {
+    max-width: 500px;
+}
+.recently-viewed-item { margin-bottom: 10px; border: 1px solid rgb(224, 221, 221); padding: 10px; border-radius: 3px; }
+.recently-viewed-item img { display: block; }
+.recently-viewed-item h4 {
+    font-size: 14px;
+    margin: 0 0 5px;
+    letter-spacing: 0;
+}
+.recently-viewed-item .price {
+    margin: 10px 0;
+    display: block;
+}
+.recently-viewed-item .size-buttons { display: flex; gap: 5px; margin-bottom: 5px; flex-wrap: wrap; }
+.recently-viewed-item .size-buttons button {
+    padding: 5px 12px;
+    border: 0;
+    border-radius: 4px;
+    background: #f8f8f8;
+    cursor: pointer;
+    font-size: 12px;
+}
+.recently-viewed-item .size-buttons button.selected { 
+  background: #000; 
+  color: #fff; 
+}
+.recently-viewed-item .rv-add-to-cart {
+    width: 20%;
+    max-width: 60px;
+    background-color: #545454;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 21px;
+    line-height: 0;
+    min-height: 0;
+    height: 60px;
+    text-align: center;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const currentHandle = "{{ product.handle }}";
+  const limit = 2;
+  let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed')) || [];
+
+  // Add current product
+  if (!recentlyViewed.includes(currentHandle)) recentlyViewed.unshift(currentHandle);
+  if (recentlyViewed.length > 10) recentlyViewed = recentlyViewed.slice(0,10);
+  localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+
+  const displayHandles = recentlyViewed.filter(handle => handle !== currentHandle);
+  if (displayHandles.length === 0) return;
+
+  const container = document.querySelector('.recently-viewed-list');
+
+  displayHandles.slice(0, limit).forEach(handle => {
+    fetch(`/products/${handle}.js`)
+      .then(res => res.json())
+      .then(product => {
+        const price = (product.price / 100).toLocaleString('en-US', { style: 'currency', currency: '{{ shop.currency }}' });
+        const div = document.createElement('div');
+        div.classList.add('recently-viewed-item', 'grid__item');
+
+        // Get only size variants
+        // Pipeline usually uses option1 for size
+        let sizeVariants = product.variants.filter(v => v.available && v.option1 && v.option1 !== 'Default Title');
+
+        // Generate size buttons
+        let sizesHTML = '';
+        if (sizeVariants.length > 0) {
+          sizesHTML += '<div class="size-buttons">';
+          sizeVariants.forEach(variant => {
+            sizesHTML += `<button type="button" class="size-btn" data-variant-id="${variant.id}">${variant.option1}</button>`;
+          });
+          sizesHTML += '</div>';
+        }
+
+        div.innerHTML = `
+          <div class="rcthumb">
+          <a href="${product.url}">
+            <img src="${product.images[0] || 'https://via.placeholder.com/300'}" alt="${product.title}">
+          </a>
+          </div>
+          <div class="mdcolbox">
+          <h4><a href="${product.url}">${product.title}</a></h4>
+          <span class="price">${price}</span>
+          ${sizesHTML}
+          </div>
+          <button class="rv-add-to-cart"><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/Frame_1.svg?v=1767171644"></button>
+        `;
+
+        container.appendChild(div);
+
+        // Size button selection
+        const sizeButtons = div.querySelectorAll('.size-btn');
+        let selectedVariant = sizeVariants[0]?.id || product.variants[0].id; // default variant
+        sizeButtons.forEach(btn => {
+          btn.addEventListener('click', function() {
+            sizeButtons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedVariant = btn.dataset.variantId;
+          });
+        });
+        if (sizeButtons.length > 0) sizeButtons[0].classList.add('selected');
+
+        // Add to cart redirect
+        div.querySelector('.rv-add-to-cart').addEventListener('click', function() {
+          if (!selectedVariant) { alert('Please select a size'); return; }
+          window.location.href = `/cart/${selectedVariant}:1`;
+        });
+      })
+      .catch(err => console.log(err));
+  });
+});
+</script>

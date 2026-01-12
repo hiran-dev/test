@@ -1,0 +1,103 @@
+<div id="fullpage">
+  {% for block in section.blocks %}
+    <div class="section fp-auto-height imgsize">
+
+      {% if block.settings.video != blank %}
+        {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
+      {% else %}
+        <a href="{{ block.settings.link }}" class="d-block">
+          <picture class="hero-item__mask">
+            {% if block.settings.img != blank %}
+              <source media="(min-width: 768px)" srcset="{{ block.settings.img | image_url }}" />
+            {% endif %}
+            {% if block.settings.img_mobile != blank %}
+              <source media="(max-width: 767px)" srcset="{{ block.settings.img_mobile | image_url }}" />
+            {% endif %}
+            <img
+                width=""
+                height=""
+              class="fullimage lazyload"
+              src="{{ block.settings.img | image_url }}"
+              alt=""
+              loading="lazy"
+            >
+          </picture>
+        </a>
+      {% endif %}
+
+      <div class="shop-button {{ block.settings.addcustomclass }}">
+        {% if block.settings.txt != blank %}
+          <a class="shop-now-btn" href="{{ block.settings.link }}">
+            {{ block.settings.txt }}
+          </a>
+        {% endif %}
+        <span class="down-arrow" id="moveDown">
+          <img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/down-arrow.webp?v=1766736910" alt="" width="" height="">
+        </span>
+      </div>
+
+    </div>
+  {% endfor %}
+
+    <div class="section fp-auto-height">
+        <div id="add"></div>
+    </div>
+
+</div>
+{% schema %}
+{
+  "name": "Main Slide Show",
+  "blocks": [
+    {
+      "type": "main-home-slider",
+      "name": "Home Slide",
+      "settings": [
+        {
+          "id": "link",
+          "type": "url",
+          "label": "URL"
+        },
+        {
+          "id": "img",
+          "type": "image_picker",
+          "label": "Desktop Image"
+        },
+        {
+          "id": "img_mobile",
+          "type": "image_picker",
+          "label": "Mobile Image"
+        },
+        {
+          "id": "video",
+          "type": "video",
+          "label": "Upload Video (optional)"
+        },
+        {
+          "id": "txt",
+          "type": "text",
+          "label": "Button Text"
+        },
+        {
+          "type": "select",
+          "id": "addcustomclass",
+          "label": "Button Style",
+          "options": [
+            { "value": "noclass", "label": "Normal" },
+            { "value": "blackclass", "label": "Black" },
+            { "value": "hidebtn", "label": "Hide Button" },
+            { "value": "hideall", "label": "Hide All" },
+            { "value": "hidearrow", "label": "Hide Arrow" }
+          ],
+          "default": "noclass"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Slide Show"
+    }
+  ]
+}
+{% endschema %}
+

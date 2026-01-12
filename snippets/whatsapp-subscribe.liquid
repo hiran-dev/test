@@ -1,0 +1,92 @@
+<div class="whatsapp-subscribe">
+  <h2 class="footer-block__heading inline-richtext stayed">Stay Updated On WhatsApp</h2>
+
+  <form id="whatsappForm">
+    <input
+      type="tel"
+      id="waNumber"
+      placeholder="Phone Number"
+      required
+    />
+    <button type="submit">Subscribe</button>
+  </form>
+</div>
+
+<ul class="cs-desktop-icons">   
+    <li> <a href="{{ routes.account_login_url }}"> <img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/login.svg?v=1766748923" alt="" width="" height=""> </a> </li>
+    <li> <a href="/pages/contact-us"> <img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/contact.svg?v=1766748923" alt="" width="" height="">  </a> </li>
+    <li> <a href="/pages/store-locations"> <img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/stores.svg?v=1766748923" alt="" width="" height="">  </a> </li>
+</ul>
+
+<style>
+.cs-desktop-icons {
+  display: flex;
+  list-style: none;
+  padding: 20px 20px 20px;
+  background: #f8f8f8;
+  gap: 10px;
+  margin: 0;
+}
+.whatsapp-subscribe {
+    background: #f8f8f8;
+    padding: 20px 20px 0;
+}
+.footer-block__heading.inline-richtext.stayed {
+    font-size: 18px;
+    letter-spacing: 0;
+    text-transform: capitalize;
+}
+#whatsappForm input {
+    width: 100%;
+    padding: 16px 40px;
+    border: 0;
+    border-radius: 4px 0 0 4px;
+    background: #fff url(https://cdn.shopify.com/s/files/1/0178/4492/8612/files/phn.svg?v=1767263902) no-repeat 10px center;
+    margin: 0;
+}
+#whatsappForm {
+    display: flex;
+}
+#whatsappForm button {
+    padding: 8px 18px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+#whatsappForm button:hover {
+  opacity: 0.9;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("whatsappForm");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let number = document.getElementById("waNumber").value.trim();
+
+    // Clean number (remove spaces & dashes)
+    number = number.replace(/[^0-9]/g, "");
+
+    if (number.length < 10) {
+      alert("Please enter a valid phone number");
+      return;
+    }
+
+    // YOUR WHATSAPP BUSINESS NUMBER (WITH COUNTRY CODE, NO +)
+    const adminNumber = "923028141555";
+
+    const message = encodeURIComponent(
+      "Hi, I want to subscribe for WhatsApp updates."
+    );
+
+    const whatsappURL = `https://wa.me/${adminNumber}?text=${message}`;
+
+    window.open(whatsappURL, "_blank");
+  });
+});
+</script>

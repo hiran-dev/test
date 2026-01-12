@@ -1,0 +1,129 @@
+.footer-shipped {
+    background: #f8f8f8;
+    margin: 40px 0;
+    padding: 15px;
+}
+.shipment-gurranty {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    justify-content: space-evenly;
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.ftr-img {
+    display: block;
+}
+.ftr-name {
+    font-weight: 500;
+    font-size: 14px;
+    display: block;
+    text-transform: capitalize;
+    color: #000;
+}
+.ftr-name2 {
+    color: #8A8A8A;
+    font-size: 12px;
+}
+.shipment-gurranty li {
+    width: 30%;
+}
+.ftr-img img {
+    margin: auto;
+}
+.middle-border-list {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+ul.listblock {
+    list-style: none;
+    font-size: 14px;
+    color: #000;
+    letter-spacing: 0;
+    padding: 20px 0;
+    margin: 0;
+}
+ul.listblock li {
+    padding: 5px 0 5px 55px;
+    line-height: 1.6;
+}
+.i-1{
+  background: url('https://cdn.shopify.com/s/files/1/0178/4492/8612/files/pointer.svg?v=1766731241') no-repeat left center;
+}
+.i-2{
+  background: url('https://cdn.shopify.com/s/files/1/0178/4492/8612/files/phone.svg?v=1766731241') no-repeat left center;
+}
+.i-3{
+  background: url('https://cdn.shopify.com/s/files/1/0178/4492/8612/files/whatsapp.svg?v=1766731241') no-repeat left center;
+}
+.i-4{
+  background: url('https://cdn.shopify.com/s/files/1/0178/4492/8612/files/email.svg?v=1766731240') no-repeat left center;
+}
+.listblock a {
+    color: #000;
+    text-decoration: none;
+}
+
+.newsletter-block .input-group--inner-button {
+    border: none;
+    background: #fff;
+    border-radius: 4px;
+}
+.newsletter-block .input-group .input-group-field {
+    background: #fff;
+    height: 52px;
+    padding: 10px;
+}
+#subscribe-footer-newsletter {
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    font-size: 14px;
+    margin: 0 7px 0 0;
+    border-radius: 3px;
+}
+p.footer__title.footer__accordion__head {
+    font-size: 18px;
+    color: #000;
+    letter-spacing: 0;
+}
+.footer__quicklinks a {
+    color: #6B6B6B;
+}
+.footer__newsletter__body h3{
+    font-size: 18px;
+    color: #000;
+    letter-spacing: 0;
+}
+.footer__quicklinks li {
+    margin: 0 0 10px;
+}
+.footer__block--socials {
+        padding: 10px 0;
+        border-top: 0;
+     
+    }
+.footer__icon--social path {
+    fill: rgba(0, 0, 0, 1);
+}
+    
+@media only screen and (min-width: 768px) {
+    .footer__content {
+        display: inline-table;
+        padding-top: 40px;
+        position: relative;
+    }
+    .footer__block--socials {
+    padding: 10px 0;
+    border-top: 0;
+    position: absolute;
+    right: 0;
+    top: 10%;
+}
+.footer__icon {
+    display: block;
+    margin-block: 12px;
+}
+}

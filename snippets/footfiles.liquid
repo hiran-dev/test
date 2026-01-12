@@ -1,0 +1,39 @@
+{% if template == 'index' %}
+<link rel="stylesheet" href="{{ 'mainslides.css' | asset_url }}" type="text/css">
+<script src="{{ 'fullpage.js' | asset_url }}"></script>
+<script>
+  
+  var myFullpage = new fullpage('#fullpage', {
+		sectionsColor: ['#1bbc9b', '#4BBFC3', '#7BAABE', 'whitesmoke', '#ccddff']
+  });
+  //adding the action to the button
+  $(document).on('click', '#moveDown', function(){
+    fullpage_api.moveSectionDown();
+  });
+
+
+  
+  $('#add').html('');
+  $('#add').html(document.getElementById('removed'));
+  $('.down-arrow').click(function(e) {
+    e.preventDefault();
+    $.fn.fullpage.moveSectionDown();
+  });
+
+
+$(document).on('click', '.desktopmenubar', function() {
+    if($('#fullpage').hasClass('fp-destroyed')){            
+        $('#fullpage').fullpage({
+            navigation: false,
+            navigationPosition: 'left',
+            scrollOverflow: true
+        });
+     } else {
+        fullpage_api.destroy('all');
+     }
+});
+
+  
+</script>
+
+{% endif %}

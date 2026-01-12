@@ -1,0 +1,580 @@
+<style>
+  .main-content {
+    padding-bottom: 30px;
+    width: 100%;
+}
+.stores2 h1 {
+    text-align: center;
+    padding: 30px 0;
+    font-size: 2rem;
+    letter-spacing: 0;
+    margin: 0;
+}
+  .store-locations-box {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .accordion {
+    width: 30%;
+    overflow: auto;
+    height: 600px;
+  }
+  .accordion-item {
+    margin-bottom: 1px;
+  }
+  .accordion-header {
+    box-shadow: 0 1px 0px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
+    padding: 10px 10px 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    text-transform: uppercase;
+    background: url('https://cdn.shopify.com/s/files/1/0178/4492/8612/t/108/assets/plus.png') no-repeat 97% center;
+  }
+  .accordion-item.active .accordion-header{
+    background: url('https://cdn.shopify.com/s/files/1/0178/4492/8612/t/108/assets/minus.png') no-repeat 97% center;
+}
+  .accordion-content {
+    display: none;
+    padding: 10px 0;
+  }
+  .locations-list li {
+    margin-bottom: 15px;
+  }
+  .locations-list li a {
+    cursor: pointer;
+    display: block;
+    padding-top: 10px;
+  }
+  .locations-list li a strong {
+    display: block;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .locations-list li .open-map {
+    display: block;
+    margin-top: 5px;
+    color: #1967d2;
+  }
+  .map-container {
+    width: 70%;
+    padding-left: 30px;
+  }
+  .map-container iframe {
+    width: 100%;
+    height: 100%;
+  }
+  @media only screen and (max-width:767px) {
+    .accordion {
+      width: 100%;
+    }
+    .map-container {
+      width: 100%;
+      padding-left: 0px;
+    }
+    .accordion-header {
+      font-size: 16px;
+      padding: 10px 7px;
+    }
+  }
+</style>
+
+
+
+<div class="wrapper--full section-padding-custom">
+
+  <div class="stores2">
+    <h1>Store locations</h1>
+  </div>
+
+  <div class="store-locations-box">
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header" id="section1">
+          Lahore
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+			
+			
+			
+			
+			 <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.1842660042753!2d74.3496858761889!3d31.519098647204032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919058a3858872b%3A0x5cfa555b3a2f002c!2sCross%20Stitch%20MM%20Alam!5e0!3m2!1sen!2s!4v1687414121872!5m2!1sen!2s')">
+               <!--   <strong>MM ALAM</strong> 10th Avenue ,Mm Alam Road, Gulberg, Lahore, Pakistan <br> Tel: +92 42 35762227<br> Monday - Saturday: 10AM - 10PM <br> Sunday: 2PM - 10PM-->
+                  <strong>MM ALAM ROAD</strong> 10th Avenue, Cross stitch MM ALAM road Lahore. <br> Tel: +92 42 35762227<br> Monday - Saturday: 11AM - 10PM <br> Sunday: 2PM - 10PM
+                </a>
+              
+              </li>
+			
+			
+			
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.1842660042753!2d74.3496858761889!3d31.519098647204032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919058a3858872b%3A0x5cfa555b3a2f002c!2sCross%20Stitch%20MM%20Alam!5e0!3m2!1sen!2s!4v1687414121872!5m2!1sen!2s')">
+               <!--   <strong>MM ALAM</strong> 10th Avenue ,Mm Alam Road, Gulberg, Lahore, Pakistan <br> Tel: +92 42 35762227<br> Monday - Saturday: 10AM - 10PM <br> Sunday: 2PM - 10PM-->
+                  <strong>DHA Y Block phase 3</strong> 207 Commercial Area DHA Y Block Phase 3 Lahore <br> Tel: +92 42 35692549<br> Monday - Saturday: 11AM - 10PM <br> Sunday: 2PM - 10PM
+                </a>
+              
+              </li>
+              <!--   <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.8619883587235!2d74.37501127426572!3d31.472982449484192!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391906740c7a2683%3A0x2eb7b7057cdceb62!2sCross%20Stitch%20DHA%20Y%20Block!5e0!3m2!1sen!2sus!4v1687351296117!5m2!1sen!2sus')">
+               <strong>DHA</strong> 152 Y Block, Dha, Lahore, Pakistan <br> Tel: +92 42 35692549<br> Monday - Saturday: 11AM - 10PM <br> Sunday: 2PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/FiQYo9ny4wRduLsx7">Open in Google Maps</a>
+              </li>-->
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13604.733798316656!2d74.34196106681343!3d31.519121073857832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391904e4beed6267%3A0xdbb540a852d9acd7!2sCross%20stitch%20Gulberg%20Galleria!5e0!3m2!1sen!2s!4v1687414238200!5m2!1sen!2s')">
+                  <strong>GULBERG</strong> 1st Floor, Galleria Mall, Gulberg, Lahore, Pakistan <br> Tel: +92 42 35776811<br> Monday - Saturday: 11AM - 10PM <br> Sunday: 2PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/rrNFrJE7pS7qGqPw6">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13611.773807181755!2d74.25995398609223!3d31.470741689322978!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391903d4dbffffff%3A0x9d70a732704b8b1f!2sCross%20Stitch%20Emporium%20Mall!5e0!3m2!1sen!2sus!4v1687351902352!5m2!1sen!2sus')">
+                  <strong>EMPORIUM MALL</strong> First Floor, Shop No. 70, Near Expo Centre, Johar Town, Lahore, Pakistan <br> Tel: +92 42 32592658<br> Monday - Sunday: 11AM - 11PM <br> Friday &amp; Saturday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/BjG7C9hVbai3sFDD6">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3402.9149949287066!2d74.35296727426565!3d31.47152444955612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391906810208e40f%3A0xf1c7bd4a2eb40f51!2sCross%20Stitch%20Packages%20Mall!5e0!3m2!1sen!2sus!4v1687352019105!5m2!1sen!2sus')">
+                  <strong>PACKAGES MALL</strong> Cross Stitch, Shop # 1013, 1st Floor Packages Mall, Walton Road Lahore, Pakistan <br> Tel: +92 42 38914110<br> Monday - Sunday: 11AM - 11PM <br> Friday &amp; Saturday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/3ZVyJWGkmfZ4zaWh7">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13610.515640233001!2d74.38269381684887!3d31.479392787515508!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39190f12ffd8fda5%3A0x41a27ea10ad10f7f!2sCross%20Stitch%20Avenue%20Mall!5e0!3m2!1sen!2s!4v1687414503998!5m2!1sen!2s')">
+                  <strong>Avenue Mall</strong>Shop # 26-Upper Ground Avenue mall P block DHA, Main Ghazi Road, Lahore Punjab.<br> Monday - Thursday: 12PM - 11PM <br> Friday - Sunday : 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/u1rd9HBh3GZfbaj47">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3407.178658469726!2d74.24906137618419!3d31.35404875533958!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919abd09f5fa315%3A0xe6c59f7ae5f98a59!2sCross%20stitch!5e0!3m2!1sen!2s!4v1687414644862!5m2!1sen!2s')">
+                  <strong>LAKE CITY</strong> Shop# 19 to 22 Ground Floor. Lake City Mall <br> Tel: +92 42 35139613<br> Monday - Saturday: 11AM - 10PM <br> Sunday : 2PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/fjJQADGQDySBvW1z5">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section2">
+          SIALKOT
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+                <li class="locations-item">
+                <a href="javascript:void(0)" onclick="">
+                <strong>BRAND VILLAGE</strong>Brand village SkT-2 Khawaja Safdar road (Opposite shell pump)<br> Tel: +92 317 7365959<br>Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="#.">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3364.4060257768374!2d74.57263717621818!3d32.515301197313924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391eeb516910ff99%3A0x22daa12ba0fd577e!2sCross%20Stitch%20SIALKOT!5e0!3m2!1sen!2s!4v1687414784027!5m2!1sen!2s')">
+                <strong>V-Mall</strong> Shop # 01, V-Mall Sialkot Cantt <br> Tel: +92-52-4269090<br> Monday - Sunday: 12PM - 11PM <br> Friday: 3PM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/idvQ3tkG2fX2NAiq9">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section3">
+          GUJRAT
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3362.0124406195982!2d74.07787867609237!3d32.57919228220621!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f1bf8607026ed%3A0x40886c0d4434180!2sCross%20Stitch%20Gujrat!5e0!3m2!1sen!2s!4v1687415082942!5m2!1sen!2s')">
+                <strong>Katchery Road</strong> Opposite Abdullah Mall, Katchery Road Gujrat. <br> Tel: 053-3600680<br> Monday - Sunday: 10AM - 10PM <br> Friday: 3PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/BPWb16nBd7gUhciB9">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section4">
+          KARACHI
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7240.702081243921!2d67.02705829537943!3d24.85185744708336!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f01a49ac473%3A0xf1755397937ffc56!2sCross%20Stitch%20Atrium%20Mall!5e0!3m2!1sen!2sus!4v1687353780945!5m2!1sen!2sus')">
+                <strong>Atrium Mall</strong> Shop # 69,70,74 &amp; 75 Ground Floor, Atrium Mall, Karachi<br> Monday - Thursday: 11AM - 10PM <br> Friday - Sunday: 11AM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/fjiSq3oqwF5mRktM9">Open in google maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3617.996344655805!2d67.08464177601996!3d24.932194442382173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f210a498acf%3A0x2220e38eaa006da1!2sCross%20Stitch%20LuckyOne%20Mall!5e0!3m2!1sen!2s!4v1687415418515!5m2!1sen!2s')">
+                <strong>Luckyone Mall</strong> 2nd Floor, LA-2/B, Block 21، Main Rashid Minhas Rd Luckyone Mall, Karachi <br> Tel: 021-37181252<br> Tel: 0310-1150326<br> Monday - Sunday: 11AM - 11PM <br> Friday: 3PM - 12AM <br> Saturday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/3FxrZHDvsRGJv2PR7">Open in google maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.1731448329065!2d67.03313267601747!3d24.823751746724234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33da41c5dc63f%3A0xe500af8c895424fb!2sCross%20Stitch%20Ocean%20Mall!5e0!3m2!1sen!2s!4v1687415496182!5m2!1sen!2s')">
+                <strong>The Ocean Mall</strong> Shop # 304, 3rd floor, The Ocean Mall, G-3 Block 9, Clifton, Karachi<br> Tel: 021-37450456<br> Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/rWkBdQQKUWwpcLtZ9">Open in google maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.8042921460633!2d67.02741497601707!3d24.80215414758681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33d090f2e5fad%3A0x82349946a441d78b!2sCross%20Stitch%20Dolmen%20Mall!5e0!3m2!1sen!2s!4v1687415589463!5m2!1sen!2s')">
+                <strong>CLIFTON</strong> Shop# F-18 First Floor, Dolmen Mall Clifton Karachi. <br> Tel: +92 21 35293837<br> Monday - Sunday: 11AM - 11PM <br> Friday: 3PM - 12AM <br> Saturday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/6dZRksYhaxAN5N636">Open in google maps</a>
+              </li>
+
+
+            <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.600643491199!2d67.0634757!3d24.877485699999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f3217be3b03%3A0x6ae253801d8b9841!2sCross%20stitchTariq%20Road!5e0!3m2!1sen!2s!4v1688469071000!5m2!1sen!2s')">
+                <strong>Tariq Road</strong> Shop No Z-81 Near Dolmen Mall Tariq Road Karachi. <br> Tel: 021-34521817<br> 
+                </a>
+                <a class="open-map" href="https://www.google.com/maps?cid=7701810122473576513&entry=gps">Open in google maps</a>
+              </li>
+
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+
+ <div class="accordion-item">
+        <div class="accordion-header" id="section3">
+         HYDERABAD
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+            <li class="locations-item">
+                <a href="javascript:void(0)" onclick="">
+                <strong>BOULEVARD MALL</strong>Ground floor, Boulevard Mall, AUTO BHAN ROAD. Hyderabad.<br> Tel: 022-6138196<br>Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="#.">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section5">
+          FAISALABAD
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.043543904832!2d73.11124947618595!3d31.412926352441534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3922679a1ab2492d%3A0x5c88e5b3b4b4bbbb!2sCross%20Stitch%20Mediacom%20Branch!5e0!3m2!1sen!2s!4v1687409867217!5m2!1sen!2s')">
+                <strong>MEDIACOM TRADE CITY</strong> Shop#1,2,3 Ground Floor, Jaranwala Road <br> Tel: +92 41-8719680, <br> +92 41-8719681<br> Monday - Sunday: 11AM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/hf72okzjQ28TeBTg6">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3405.2609442099465!2d73.04810918765139!3d31.40693588639774!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3922695c736ce867%3A0x3966602b9944bf0c!2sCross%20Stitch%20Lyallpur%20Galleria!5e0!3m2!1sen!2s!4v1687409951463!5m2!1sen!2s')">
+                <strong>Lyallpur Galleria</strong> Shop # 3, First Floor 44/A, Lyallpur Galleria Faisalabad <br> Tel: 0415210509<br> Monday - Sunday: 11AM - 11PM <br> Friday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/WZfvPSPPzRN3fM688">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section6">
+          SARGODHA
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+
+                <li class="locations-item">
+                <a href="javascript:void(0)" onclick="">
+                <strong>MALL OF SARGODHA</strong>Shop # TU-GU 19 Ground Floor Mall Of Sargodha University Road Sargodha<br> Tel: 048-2145405<br>Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="#.">Open in Google Maps</a>
+                </li>
+              <!--   <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3381.1924361986767!2d72.6898992262048!3d32.06404352007949!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x392177e36538c663%3A0xb898c2bb888d6f3!2sCross%20Stitch%20Sargodha!5e0!3m2!1sen!2s!4v1687410090645!5m2!1sen!2s')">
+                <strong>Chenone Tower</strong> Shop#20 LG Chenone Tower University Road, Sargodha <br> Tel: +92 48 3765877<br> Monday - Sunday: 11AM - 10PM <br> Friday: 4PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/3Ps5wvvgqZjHHsc57">Open in Google Maps</a>
+              </li>-->
+            </ul>
+          </div>
+        </div>
+      </div>
+
+ <div class="accordion-item">
+        <div class="accordion-header" id="section6">
+          SWAT
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+
+            <li class="locations-item">
+                <a href="javascript:void(0)" onclick="">
+                <strong>SWAT TOWER</strong>Shop # 4, 5 Block E/2 Swat Tower, GT Road Balogram, Swat KPK<br> Tel: 0946-883809<br>Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="#.">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header" id="section7">
+          RAWALPINDI
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6653.453280524948!2d73.07984904478346!3d33.50848857465983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38df9326dfcb49df%3A0xd4806f6f2d587165!2sCross%20Stitch!5e0!3m2!1sen!2s!4v1687410454372!5m2!1sen!2s')">
+                <strong>Bahria Town</strong> AAA Business Center, Bahria Town Phase 8, Rawalpindi <br> Tel: 051-8444049<br> Monday - Sunday: 11AM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/QnhUGhQDVQRXc6sU9">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section8">
+          ISLAMABAD
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+
+                <li class="locations-item">
+                <a href="javascript:void(0)" onclick="">
+                <strong>AMAZON MALL</strong> Shop#04 Second Floor Amazon Mall Main Gt road Islamabad<br> Tel:  051-4720708<br>Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="#.">Open in Google Maps</a>
+              </li>
+
+             <li class="locations-item">
+                <a href="javascript:void(0)" onclick="">
+                <strong>EMPORIUM</strong>2nd floor F-10 Markaz Emporium Islamabad<br> Tel: 051-6125215<br>Monday - Sunday: 12PM - 10PM <br> Friday: 3PM - 12AM <br> Saturday: 12PM - 12AM
+                </a>
+                <a class="open-map" href="#.">Open in Google Maps</a>
+              </li>
+
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106325.9664515933!2d72.99443253878388!3d33.61343904103613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfbfb0f9f6683d%3A0xd35e1673cc1fc8f7!2sCross%20Stich%20Centaurus%20Mall!5e0!3m2!1sen!2s!4v1687410635231!5m2!1sen!2s')">
+                <strong>CENTAURUS MALL</strong> 3rd Floor, Centaurus Mall, Islamabad, Pakistan <br> Tel: +92 51 2701360<br> Monday - Sunday: 11AM - 11PM <br> Friday - Saturday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/6cbeTPDFX5mv3r228">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3326.2372903049636!2d73.15266798811436!3d33.52121567691058!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfed7ddfdde0cb%3A0x3912e8729c89b18a!2sCross%20Stitch%20Giga%20Mall!5e0!3m2!1sen!2s!4v1687415240014!5m2!1sen!2s')">
+                <strong>GIGA MALL</strong> Ground Floor, Shop # 20, Giga Mall, World Trade Center, Islamabad, Pakistan.<br> Tel: +92 512725677<br>Monday - Sunday: 11AM - 10PM <br> Friday - Saturday: 11AM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/TRTNkxXbHtDALQX69">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3318.5521720399074!2d73.05300717625488!3d33.72053513517169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38dfbf807937cb0d%3A0x14eced79903fbca0!2sCross%20Stitch%20Safa%20Gold%20Mall!5e0!3m2!1sen!2s!4v1687410802364!5m2!1sen!2s')">
+                <strong>SafaGold MALL</strong> Shop # S-30, 3rd Floor, SafaGold Mall, Sector F-7, Islamabad Pakistan.<br> Tel: 051-2723154<br>Monday - Sunday: 11AM - 11PM <br> Friday - Saturday: 11AM - 12AM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/CPS6JNYaB2jzbJ4Z6">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section9">
+          BAHAWALPUR
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3476.2045001497027!2d71.6872477761297!3d29.393573149114083!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b91774995d80b%3A0x54e151e337fa59c7!2sCross%20Stitch%20Bahawalpur!5e0!3m2!1sen!2s!4v1687410912908!5m2!1sen!2s')">
+                <strong>Haqi Center</strong> Shop # 03, City Center / Haqi Center, Bahawalpur <br> Tel: 062-2504206<br> Monday - Sunday: 11AM - 11PM <br> Friday: 3PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/Ud21ZH9WWvZzztMf9">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section10">
+          MULTAN
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3447.619367424484!2d71.47072627615225!3d30.219409410258685!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b330686ed7343%3A0xc3fc32ad62540e6a!2sCross%20Stitch%20Mall%20of%20Multan!5e0!3m2!1sen!2s!4v1687411033527!5m2!1sen!2s')">
+                <strong>Mall Of Multan</strong> Shop # 5, Ground floor, Mall of Multan, Bosan road Multan <br> Tel: 0616521662<br> Monday - Sunday: 12PM - 11PM<br> <br> Friday: 3PM - 11:30PM <br> Saturday: 12PM - 11:30PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/WuSTAGxH66vZXR5f8">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/place//@30.2166667,71.4728889,17z/data=!4m6!1m5!3m4!2zMzDCsDEzJzAwLjAiTiA3McKwMjgnMjIuNCJF!8m2!3d30.2166667!4d71.4728889?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoKLDEwMDc5MjA3M0gBUAM%3D')">
+                <strong>Gulgasht Colony Multan</strong>Cross stitch pizza hutt road opposite Borjan Gulgasht Multan. <br> Tel: 061-6214442<br> Monday - Sunday: 11AM - 11PM <br> Friday: 3PM - 11PM
+                </a>
+                <a class="open-map" href="https://maps.app.goo.gl/dmEeNK1XAUk6zj8Q7">Open in Google Maps</a>
+              </li>
+             <!-- <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3448.70979612949!2d71.43196279665837!3d30.188282823480826!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x393b317def0c0c7b%3A0x2ac76692e976f65d!2sBohra%20Heights!5e0!3m2!1sen!2s!4v1687412227317!5m2!1sen!2s')">
+                <strong>Sophia Square</strong>Shop# 111/112 Bohra Street near Quaid-e Azam shopping center, Multan Cantt.<br> Tel: 061-4575300<br> Monday - Sunday: 11AM - 10PM <br> Friday: 3PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/PvP7ZqurGpg73SAAA">Open in Google Maps</a>
+              </li>-->
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section11">
+          GUJRANWALA
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3379.7806458298915!2d74.18702457620603!3d32.10221361816445!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f2ba8e2c28d5d%3A0x49d62c4733e69a5b!2sCross%20Stitch%20Kings%20Mall%20Gujranwala!5e0!3m2!1sen!2s!4v1687412418603!5m2!1sen!2s')">
+                <strong>Kings Mall</strong> Shop no 15, First floor Kings Mall, Gujranwala. <br> Tel: 055 4283317<br> Monday - Sunday: 12PM - 11PM <br> Friday: 3PM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/oRFfh66Vex8cUequ8">Open in Google Maps</a>
+              </li>
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3374.5922152351495!2d74.16144577608176!3d32.24214473338243!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f2885e4da0c2b%3A0xf1720d389e11b415!2sFazal%20Centre!5e0!3m2!1sen!2s!4v1687412605218!5m2!1sen!2s')">
+                <strong>Fazal Centre</strong> Shop # ZA-02, Ground Floor, Fazal Centre Rahwali Cantt, Gujranwala. <br> Tel: 055 3864959<br> Monday - Sunday: 12PM - 11PM <br> Friday: 3PM - 11PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/kPSi7sp1niFzpudK7">Open in Google Maps</a>
+              </li>
+			  
+			  <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3361.9842689564275!2d73.47960747622012!3d32.579943594030276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f7db8109c84fd%3A0x457f4fcc23a117f3!2sCross%20Stitch%20Mandi%20Bahauddin!5e0!3m2!1sen!2s!4v1687412696921!5m2!1sen!2s')">
+                <strong>Satellite Town</strong> Main market satellite town opposite outfitters Gujranwala<br> Tel: 92 55 3730299<br> Monday - Sunday: 12AM - 11M <br> Friday: 3PM - 11PM
+                </a>
+                <a class="open-map" href="">Open in Google Maps</a>
+              </li>
+			  
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <div class="accordion-header" id="section12">
+          MANDI BAHAUDDIN
+        </div>
+        <div class="accordion-content">
+          <div class="store-locations">
+            <ul class="locations-list">
+              <li class="locations-item">
+                <a href="javascript:void(0)" onclick="changeMapUrl('https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3361.9842689564275!2d73.47960747622012!3d32.579943594030276!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391f7db8109c84fd%3A0x457f4fcc23a117f3!2sCross%20Stitch%20Mandi%20Bahauddin!5e0!3m2!1sen!2s!4v1687412696921!5m2!1sen!2s')">
+                <strong>Al – Asar Mall</strong> Shop # TU-14 Ground Floor Jail Road Al-Asar Mall of Mandi Bahauddin <br> Tel: 92 303 7752223<br> Monday - Sunday: 10AM - 10PM <br> Friday: 3PM - 10PM
+                </a>
+                <a class="open-map" href="https://goo.gl/maps/p7gvwikxiZg6uEiK7">Open in Google Maps</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+	  
+	  
+
+    </div>
+    
+    <div class="map-container">
+      <iframe id="map-iframe" width="100" height="100" frameborder="0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.1842660042753!2d74.3496858761889!3d31.519098647204032!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3919058a3858872b%3A0x5cfa555b3a2f002c!2sCross%20Stitch%20MM%20Alam!5e0!3m2!1sen!2s!4v1687414121872!5m2!1sen!2s" allowfullscreens></iframe>
+    </div>
+  </div>
+  
+</div>
+
+<script>
+  function changeMapUrl(mapUrl) {
+  const mapIframe = document.getElementById('map-iframe');
+  mapIframe.src = mapUrl;
+}
+/*
+const accordionItems = document.querySelectorAll('.accordion-item');
+
+accordionItems.forEach((item, index) => {
+  const header = item.querySelector('.accordion-header');
+  const content = item.querySelector('.accordion-content');
+
+  if (index === 0) {
+    // Open the first accordion section by default
+    content.style.display = 'block';
+  }
+
+  header.addEventListener('click', () => {
+    if (content.style.display === 'none') {
+      // Open the clicked accordion section and close others
+      accordionItems.forEach((accordionItem) => {
+        accordionItem.querySelector('.accordion-content').style.display = 'none';
+      });
+      content.style.display = 'block';
+
+      // Change the map URL in the sidebar based on the selected section
+      const mapUrl = getMapUrl(index);
+      changeMapUrl(mapUrl);
+    } else {
+      // Close the clicked accordion section
+      content.style.display = 'none';
+    }
+  });
+});
+ */ 
+</script>
+
+<script>
+  /*$(document).ready(function () {
+     $(".accordion-header").click(function () {
+         var $parent = $(this).parent();
+         if ($parent.hasClass('active')) return;
+         //slide up all the link lists
+         $(".accordion-content").not().slideUp();
+         $(this).next().slideDown(function () {
+             $parent.addClass('active').siblings().removeClass('active');
+         });
+     })
+ });*/
+
+$(function() {
+		var Accordion = function(el, multiple) {
+				this.el = el || {};
+				this.multiple = multiple || false;
+
+				var links = this.el.find('.accordion-header');
+				links.on('click', {
+						el: this.el,
+						multiple: this.multiple
+				}, this.dropdown)
+		}
+
+		Accordion.prototype.dropdown = function(e) {
+				var $el = e.data.el;
+				$this = $(this),
+						$next = $this.next();
+
+				$next.slideToggle();
+				$this.parent().toggleClass('active');
+
+				if (!e.data.multiple) {
+						$el.find('.accordion-content').not($next).slideUp().parent().removeClass('active');
+				};
+		}
+		var accordion = new Accordion($('.accordion'), false);
+});
+
+$(document).on('click', function (event) {
+  if (!$(event.target).closest('.accordion').length) {
+    $this.parent().toggleClass('active');
+  }
+});
+  
+    </script>

@@ -1,0 +1,56 @@
+<div class="wrapper--full page-width brd-max">
+  <nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
+
+    <a href="{{ routes.root_url }}">Home</a>
+
+    {% if template contains 'product' %}
+
+      {% assign breadcrumb_collection = nil %}
+
+      {% for col in product.collections %}
+        {% if col.handle != 'all' %}
+          {% assign breadcrumb_collection = col %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      {% if breadcrumb_collection %}
+        › <a href="{{ breadcrumb_collection.url }}">
+            {{ breadcrumb_collection.title }}
+          </a>
+      {% endif %}
+
+      › <span>{{ product.title }}</span>
+
+    {% elsif template contains 'collection' %}
+      › <span>{{ collection.title }}</span>
+
+    {% elsif template contains 'page' %}
+      › <span>{{ page.title }}</span>
+
+    {% elsif template contains 'blog' %}
+      › <span>{{ blog.title }}</span>
+
+    {% elsif template contains 'article' %}
+      › <a href="{{ blog.url }}">{{ blog.title }}</a>
+      › <span>{{ article.title }}</span>
+
+    {% endif %}
+
+  </nav>
+</div>
+
+<style>
+.breadcrumb {
+    font-size: 12px;
+    text-transform: capitalize;
+    letter-spacing: 0;
+}
+.breadcrumb a {
+  text-decoration: none;
+  color: #000;
+}
+.breadcrumb span {
+  color: #999;
+}
+</style>
