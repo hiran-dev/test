@@ -26302,3 +26302,7 @@ a.siblings__more-link {
     text-transform: lowercase !important;
 }
 
+.active-filter-tag first-letter {
+    text-transform: uppercase !important;
+}
+
