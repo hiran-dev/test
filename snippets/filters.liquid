@@ -458,17 +458,91 @@
         <button type="button" data-show-more>{{ 'collections.sidebar.show_more' | t }}</button>
       {% endif %}
 
-    {%- when 'price_range' -%}
+   {%- when 'price_range' -%}
       <div
         class="sidebar__navigation__list filter__price"
         id="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
         data-accordion-body
         data-range-holder
         {% if accordion_open_boolean == false %} style="display: none;" {% endif %}>
-        
-        {%- comment -%} Price Range Logic Omitted for brevity, keep your original logic here {%- endcomment -%}
+        {%- if shop.money_format contains "comma_separator" -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' -%}
+        {%- elsif shop.money_format contains "space_separator" -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
+        {%- else -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ',', '' -%}
+        {%- endif -%}
+
+        {%- assign filter_max_money_ceil = filter_max_money | ceil -%}
+        {%- assign filter_min_value = 0 -%}
+        {%- assign filter_max_value = filter_max_money_ceil -%}
+
+        {%- if filter.min_value.value -%}
+          {%- if shop.money_format contains "comma_separator" -%}
+            {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
+          {%- elsif shop.money_format contains "space_separator" -%}
+            {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
+          {%- else -%}
+            {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', '' | floor -%}
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if filter.max_value.value -%}
+          {%- if shop.money_format contains "comma_separator" -%}
+            {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
+          {%- elsif shop.money_format contains "space_separator" -%}
+            {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
+          {%- else -%}
+            {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', '' | floor -%}
+          {%- endif -%}
+        {%- endif -%}
+
+        <div class="filter__price__range collection-range-filter" data-range-slider data-range-filter-update data-se-min="0" data-se-step="1" data-se-min-value="{{ filter_min_value }}" data-se-max-value="{{ filter_max_value }}" data-se-max="{{ filter_max_money_ceil }}">
+          <div class="range__dot range__dot--left" data-range-left>
+            <span>&nbsp;</span>
+          </div>
+          <div class="range__dot range__dot--right" data-range-right>
+            <span>&nbsp;</span>
+          </div>
+          <div class="range__line">
+            <span data-range-line>&nbsp;</span>
+          </div>
+        </div>
+
         <div class="filter__price__fields">
-           {%- comment -%} Keep your existing price input code here {%- endcomment -%}
+          <div class="filter__price__field filter__price__from">
+            <span>{{ cart.currency.symbol }}</span>
+
+            <input
+              data-field-price-min
+              class="filter__price__input"
+              name="{{ filter.min_value.param_name }}"
+              id="filter-price-from-{{ filter.label }}-{{ forloop.index }}"
+              {% if filter.min_value.value %}value="{{ filter_min_value }}"{% endif %}
+              type="number"
+              placeholder="{{ filter_min_value }}"
+              min="0"
+              max="{{ filter_max_money_ceil }}">
+
+            <label for="filter-price-from-{{ filter.label }}-{{ forloop.index }}">{{ 'products.general.from' | t }}</label>
+          </div>
+          <div class="filter__price__spacer">-</div>
+          <div class="filter__price__field filter__price__to">
+            <span>{{ cart.currency.symbol }}</span>
+
+            <input
+              data-field-price-max
+              class="filter__price__input"
+              name="{{ filter.max_value.param_name }}"
+              id="filter-price-to-{{ filter.label }}-{{ forloop.index }}"
+              {% if filter.max_value.value %}value="{{ filter_max_value }}"{% endif %}
+              type="number"
+              placeholder="{{ filter_max_value }}"
+              min="0"
+              max="{{ filter_max_money_ceil }}">
+
+            <label for="filter-price-to-{{ filter.label }}-{{ forloop.index }}">To</label>
+          </div>
         </div>
       </div>
   {%- endcase -%}
