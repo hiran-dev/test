@@ -63,36 +63,36 @@
             assign min_value = filter.min_value.value | default: 0
             assign max_value = filter.max_value.value | default: filter.range_max
           -%}
-          <a class="active__filter__item" href="{{ filter.url_to_remove }}" data-filter-update-url>
-            {{ min_value | money_without_trailing_zeros }} - {{ max_value | money_without_trailing_zeros }} <span class="filter__x">✕</span>
+          <a class="active-filter-tag" href="{{ filter.url_to_remove }}" data-filter-update-url>
+            {{ min_value | money_without_trailing_zeros }} - {{ max_value | money_without_trailing_zeros }} <span class="filter-x">✕</span>
           </a>
         {%- endif -%}
       {%- endif -%}
     {%- else -%}
       {%- for filter_value in filter.active_values -%}
         {%- assign filter_count = filter_count | plus: 1 -%}
-        <a class="active__filter__item" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
-          {{ filter_value.label }} <span class="filter__x">✕</span>
+        <a class="active-filter-tag" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
+          {{ filter_value.label }} <span class="filter-x">✕</span>
         </a>
       {%- endfor -%}
     {%- endif -%}
   {%- endfor -%}
 {%- endcapture -%}
 
-<div class="collection__active__filters__wrapper{% if filter_count == 0 %} is-hidden{% endif %}">
-  <div class="active-filters-container">
+<div class="active-filters-wrapper {% if filter_count == 0 %}is-hidden{% endif %}">
+  <div class="active-filters-inner">
     
     {%- if show_products_count -%}
-      <div class="active-filters__count">
+      <div class="active-filters-count-block">
         {{ collection.products_count }} Products Found
       </div>
     {%- endif -%}
 
-    <div class="active-filters__list" data-active-filters>
+    <div class="active-filters-list-container" data-active-filters>
       {{- filter_tags -}}
 
       {%- if filter_count > 0 -%}
-        <a href="{{ collection.url }}?sort_by={{ collection_sort }}" class="active-filters__clear-btn" data-filter-update-url>
+        <a href="{{ collection.url }}?sort_by={{ collection_sort }}" class="active-filters-clear-black" data-filter-update-url>
           Clear All
         </a>
       {%- endif -%}
@@ -100,3 +100,66 @@
     
   </div>
 </div>
+<style>
+  /* Container for one-line alignment */
+.active-filters-inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap; /* Forces everything on one line */
+  gap: 12px;
+  padding: 10px 0;
+  overflow-x: auto; /* Adds horizontal scroll on mobile if filters are too many */
+}
+
+/* Product Count with vertical stroke */
+.active-filters-count-block {
+  font-size: 13px;
+  color: #555;
+  padding-right: 15px;
+  border-right: 1px solid #d1d1d1; /* The stroke on the right */
+  white-space: nowrap;
+}
+
+/* List container for tags and button */
+.active-filters-list-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Individual Filter Tags */
+.active-filter-tag {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px;
+  border: 1px solid #e5e5e5;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #000;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.filter-x {
+  margin-left: 6px;
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* THE BLACK CLEAR ALL BUTTON */
+.active-filters-clear-black {
+  background-color: #000 !important;
+  color: #fff !important;
+  padding: 6px 16px;
+  border-radius: 4px; /* Slight radius to match Sapphire look */
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: opacity 0.2s ease;
+}
+
+.active-filters-clear-black:hover {
+  opacity: 0.8;
+}
+</style>
