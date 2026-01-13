@@ -26300,7 +26300,8 @@ a.siblings__more-link {
 }
 .active-filter-tag {
     text-transform: lowercase !important;
-    display: inline-block !important;
+    /* display: inline-block !important; */
+    font-variant:normal;
 }
 
 .active-filter-tag:::first-line{
