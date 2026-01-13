@@ -26298,14 +26298,10 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-/* .active-filter-tag {
-    text-transform: lowercase !important;
-} */
 .active-filter-tag {
     text-transform: lowercase !important;
-    font-variant: small-caps !important;
-    display: inline-block !important;
 }
+
 
 
 
