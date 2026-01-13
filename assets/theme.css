@@ -26298,6 +26298,14 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
+/* This forces the container and the link to follow the rule */
+.active-filters-list-container a.active-filter-tag, 
 .active-filters-list-container .active-filter-tag {
-    text-transform: capitalize !important;
+    text-transform: lowercase !important;
+    display: inline-flex !important;
+}
+
+.active-filters-list-container a.active-filter-tag::first-letter,
+.active-filters-list-container .active-filter-tag::first-letter {
+    text-transform: uppercase !important;
 }
