@@ -1,4 +1,4 @@
-<!-- /snippets/filters-active.liquid -->
+{% comment %} <!-- /snippets/filters-active.liquid -->
 
 {%- assign filter_count = 0 -%}
 {%- assign collection_sort = collection.sort_by | default: collection.default_sort_by -%}
@@ -47,8 +47,8 @@
       {%- endif -%}
     </div>
   {%- endif -%}
-</div> 
-{% comment %} {%- liquid
+</div>  {% endcomment %}
+{%- liquid
   assign filter_count = 0
   assign collection_sort = collection.sort_by | default: collection.default_sort_by
 -%}
@@ -163,4 +163,4 @@
 .active-filters-clear-black:hover {
   opacity: 0.8;
 }
-</style> {% endcomment %}
+</style> 
