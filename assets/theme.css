@@ -19798,7 +19798,7 @@ input:checked + label > .sidebar__heading-chevron, .accordion-is-open > .sidebar
   font-style: var(--FONT-STYLE-ACCENT);
   font-weight: var(--FONT-WEIGHT-ACCENT);
   font-weight: var(--FONT-WEIGHT-ACCENT-BOLD);
-  text-transform: var(--FONT-ACCENT-TRANSFORM);
+  text-transform:none !important;
   letter-spacing: var(--FONT-ACCENT-LETTER-SPACING);
   font-size: calc(var(--font-2) * var(--FONT-ADJUST-ACCENT));
   line-height: var(--leading-relaxed);
