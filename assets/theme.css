@@ -26300,9 +26300,12 @@ a.siblings__more-link {
 }
 .active-filter-tag {
     text-transform: lowercase !important;
+    display: inline-block !important;
 }
 
-
+.active-filter-tag:::first-child{
+  text-transform:capitalize !important
+}
 
 
 
