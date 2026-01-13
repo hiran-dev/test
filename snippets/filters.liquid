@@ -105,7 +105,7 @@
                     {{ filter_value.label | escape_once }}
                   {%- endif -%}
                   {% render 'icon-stateful-box' %}
-                  {% render 'icon-core-refresh' %}
+                  {% comment %} {% render 'icon-core-refresh' %} {% endcomment %}
                 </span>
               </label>
             </li>
