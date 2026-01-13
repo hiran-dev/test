@@ -1,4 +1,4 @@
-<!-- /snippets/filters-active.liquid -->
+{% comment %} <!-- /snippets/filters-active.liquid -->
 
 {%- assign filter_count = 0 -%}
 {%- assign collection_sort = collection.sort_by | default: collection.default_sort_by -%}
@@ -47,4 +47,94 @@
       {%- endif -%}
     </div>
   {%- endif -%}
+</div> {% endcomment %}
+{%- liquid
+  assign filter_count = 0
+  assign collection_sort = collection.sort_by | default: collection.default_sort_by
+-%}
+
+{%- capture filter_clears -%}
+  {%- for filter in collection.filters -%}
+    {%- if filter.type == "price_range" -%}
+      {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+        {%- if filter.min_value.value != 0 or filter.max_value.value != filter.range_max -%}
+          {%- liquid
+            assign filter_count = filter_count | plus: 1
+            assign min_value = filter.min_value.value | default: 0
+            assign max_value = filter.max_value.value | default: filter.range_max
+          -%}
+          <a class="active__filters__remove" href="{{ filter.url_to_remove }}" data-filter-update-url>
+            {{ min_value | money_without_trailing_zeros }} - {{ max_value | money_without_trailing_zeros }} <span>X</span>
+          </a>
+        {%- endif -%}
+      {%- endif -%}
+    {%- else -%}
+      {%- for filter_value in filter.active_values -%}
+        {%- assign filter_count = filter_count | plus: 1 -%}
+        <a class="active__filters__remove" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
+          {% if filter.type == 'boolean' %}{{ filter.label }} : {% endif %}
+          {{ filter_value.label }} <span class="filter__x">X</span>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+<div class="collection__active__filters__wrapper{% if filter_count == 0 %} is-hidden{% endif %}">
+  <div class="collection__active__filters" data-active-filters style="display: flex; align-items: center; width: 100%; flex-wrap: wrap; gap: 10px;">
+    
+    {{- filter_clears -}}
+
+    {%- if filter_count > 0 -%}
+      <a href="{{ collection.url }}?sort_by={{ collection_sort }}" class="active__filters__clear_all" data-filter-update-url>
+        {{ 'collections.sidebar.all_tags' | t | default: 'Clear all' }}
+      </a>
+    {%- endif -%}
+  </div>
+
+  {%- if show_products_count -%}
+    <div class="collection__count" data-products-count>
+       {{ collection.products_count }} Products Found
+    </div>
+  {%- endif -%}
 </div>
+
+<style>
+  /* Flexbox to push Clear All to the right */
+  .collection__active__filters {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+
+  /* Styling for the individual filter tags */
+  .active__filters__remove {
+    background: #f1f1f1;
+    padding: 5px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    color: #000;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  /* THE BLACK CLEAR ALL BUTTON */
+  .active__filters__clear_all {
+    margin-left: auto; /* Pushes to the right */
+    background: #000 !important;
+    color: #fff !important;
+    padding: 8px 20px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .active__filters__clear_all:hover {
+    opacity: 0.8;
+  }
+</style>
