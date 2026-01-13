@@ -137,7 +137,8 @@
                 {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
               <label class="stateful-filter-icons" for="{{ input_id }}" aria-label="{{ filter_value.label }}">
                 {{ filter_value.label | escape }}
-                {% render 'icon-stateful-box' %}{% render 'icon-core-refresh' %}
+                {% render 'icon-stateful-box' %}
+                {% comment %} {% render 'icon-core-refresh' %} {% endcomment %}
               </label>
             </li>
           {%- endif -%}
