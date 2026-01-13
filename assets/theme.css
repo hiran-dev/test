@@ -26299,7 +26299,11 @@ a.siblings__more-link {
   display: inline-block;
 }
 .active-filter-tag {
-    text-transform: capitalize !important;
+    text-transform: lowercase !important;
+}
+
+.active-filter-tag::first-letter {
+    text-transform: uppercase !important;
 }
 
 
