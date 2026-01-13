@@ -26303,14 +26303,7 @@ a.siblings__more-link {
     display:inline-block !important;
 } */
 .active-filter-tag {
-    display: inline-flex !important;
-    align-items: center;
-    text-transform: none !important; /* Resetting */
-}
-
-/* This forces the text to lowercase first, then capitalizes it */
-.active-filter-tag {
-    font-variant: normal !important;
+    text-transform: lowercase !important;
 }
 
 .active-filter-tag::first-line {
