@@ -26298,15 +26298,26 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-.active-filter-tag {
+/* .active-filter-tag {
     text-transform: lowercase !important;
-    /* display: inline-block !important; */
-    font-variant:normal;
+} */
+
+.active-filter-tag {
+    display: inline-flex !important;
+    flex-direction: row !important; /* Ensures they stay side-by-side */
+    text-transform: lowercase !important;
 }
 
-.active-filter-tag:::first-line{
-  text-transform:capitalize !important
+/* This pushes the "X" icon to the end */
+.active-filter-tag svg, 
+.active-filter-tag i,
+.active-filter-tag span:last-child {
+    order: 2 !important;
+    margin-left: 5px !important;
 }
 
-
-
+/* This pushes the text to the start */
+.active-filter-tag::first-line {
+    order: 1 !important;
+    text-transform: capitalize !important;
+}
