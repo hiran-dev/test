@@ -26298,6 +26298,6 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-.active-filter-tag {
+.active-filters-list-container .active-filter-tag {
     text-transform: capitalize !important;
 }
