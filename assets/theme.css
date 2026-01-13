@@ -26303,7 +26303,7 @@ a.siblings__more-link {
     display: inline-block !important;
 }
 
-.active-filter-tag:::first-child{
+.active-filter-tag:::first-line{
   text-transform:capitalize !important
 }
 
