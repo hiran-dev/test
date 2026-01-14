@@ -26300,6 +26300,10 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-
+/* Hide everything in the cart drawer footer after the buttons/links you want */
+.cart-drawer__footer .login-contact-section, 
+.cart-drawer__footer .extra-links {
+    display: none !important;
+}
 
 
