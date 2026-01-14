@@ -26300,12 +26300,6 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-.cart-drawer [class*="whatsapp-subscribe"],
-.cart-drawer [class*="newsletter"],
-.cart-drawer [class*="stay"],
-.cart-drawer [class*="contact"] {
-  display: none !important;
-}
 
 
 
