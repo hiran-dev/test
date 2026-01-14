@@ -152,7 +152,7 @@
  {%- comment -%} 
   Keeping your original logic: using the sidebar "Collection List" selector.
 {%- endcomment -%}
-{% comment %} {%- assign sub_collections = section.settings.subcollections -%}
+{%- assign sub_collections = section.settings.subcollections -%}
 
 {%- if sub_collections != blank -%}
 <section class="subcollection-circles-section" 
@@ -325,109 +325,6 @@
       "unit": "px",
       "label": "Padding bottom",
       "default": 25
-    }
-  ]
-}
-{% endschema %} {% endcomment %}
- {%- liquid
-  assign current_handle = collection.handle
-  assign has_content = false
-  
-  for block in section.blocks
-    if block.settings.main_collection_handle == current_handle
-      assign has_content = true
-      break
-    endif
-  endfor
--%}
-
-{%- if has_content -%}
-<section class="subcollection-circles-section" style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
-  <div class="{{ section.settings.width }}">
-    <div class="circle-nav-container">
-      
-      {%- for block in section.blocks -%}
-        {%- if block.settings.main_collection_handle == current_handle -%}
-          
-          {%- comment -%} 
-            FIX: We must use the handle to get the full collection object 
-          {%- endcomment -%}
-          {%- assign sub_handle = block.settings.sub_collection -%}
-          {%- assign sub = collections[sub_handle] -%}
-
-          {%- if sub != blank -%}
-            <div class="circle-nav-item" {{ block.shopify_attributes }}>
-              <a href="{{ sub.url }}" class="circle-nav-link">
-                <div class="circle-image-container">
-                  
-                  {%- liquid
-                    # Try Collection Image, then Fallback to first product image
-                    assign circle_img = sub.image
-                    if circle_img == blank
-                      assign circle_img = sub.products.first.featured_media.preview_image
-                    endif
-                  -%}
-
-                  {%- if circle_img != blank -%}
-                    <img src="{{ circle_img | image_url: width: 300, height: 300, crop: 'center' }}" 
-                         alt="{{ sub.title | escape }}" 
-                         class="circle-img" 
-                         loading="lazy">
-                  {%- else -%}
-                    {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                  {%- endif -%}
-                </div>
-                <p class="circle-title">{{ sub.title }}</p>
-              </a>
-            </div>
-          {%- endif -%}
-        {%- endif -%}
-      {%- endfor -%}
-
-    </div>
-  </div>
-</section>
-
-<style>
-  .circle-nav-container { display: flex; justify-content: center; gap: 25px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; -ms-overflow-style: none; }
-  .circle-nav-container::-webkit-scrollbar { display: none; }
-  .circle-nav-item { flex: 0 0 auto; width: 140px; text-align: center; }
-  .circle-image-container { width: 130px; height: 130px; margin: 0 auto 12px; border-radius: 50%; overflow: hidden; border: 1px solid #e1e1e1; background: #f9f9f9; }
-  .circle-img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .circle-title { font-size: 13px; color: #333; font-weight: 500; margin-top: 8px; }
-  @media only screen and (max-width: 767px) {
-    .circle-nav-container { justify-content: flex-start; padding-left: 15px; gap: 15px; }
-    .circle-image-container { width: 90px; height: 90px; }
-    .circle-nav-item { width: 100px; }
-  }
-</style>
-{%- endif -%}
-
-{% schema %}
-{
-  "name": "Subcollections (Smart)",
-  "settings": [
-    { "type": "select", "id": "width", "label": "Width", "default": "wrapper", "options": [{"value": "wrapper", "label": "Page width"},{"value": "wrapper--none", "label": "Full width"}] },
-    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding top", "default": 25 },
-    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Padding bottom", "default": 25 }
-  ],
-  "blocks": [
-    {
-      "type": "collection_group",
-      "name": "Collection Link",
-      "settings": [
-        {
-          "type": "text",
-          "id": "main_collection_handle",
-          "label": "Show on this Page (Handle)",
-          "info": "Example: ready-to-wear-1"
-        },
-        {
-          "type": "collection",
-          "id": "sub_collection",
-          "label": "Sub-Collection to show"
-        }
-      ]
     }
   ]
 }
