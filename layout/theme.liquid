@@ -310,6 +310,15 @@
 
   <!-- And above this comment line ================================================== -->
  {% render 'footfiles' %}
- 
+ <style>
+  /* Only hide inside the cart drawer */
+  .drawer--cart .whatsapp-signup-wrapper,
+  .drawer--cart .social-icons,
+  .drawer--cart [data-whatsapp-wrapper],
+  .drawer--cart [class*="whatsapp"],
+  .drawer--cart [id*="whatsapp"] {
+      display: none !important;
+  }
+</style>
 </body>
 </html>
