@@ -18947,6 +18947,7 @@ body.focus-enabled .product-grid-item:focus-within {
   padding: 0;
   font-size: calc(var(--font-3) * var(--FONT-ADJUST-BODY));
   line-height: var(--leading-normal);
+  display:none;
 }
 /* = swatches on collections = */
 .grid__swatch__placeholder {
