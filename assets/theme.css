@@ -18892,8 +18892,8 @@ body.focus-enabled .product-grid-item:focus-within {
   display: flex;
   flex-direction: column;
   justify-content: center; /* Centers 1 or 2 lines vertically */
-  min-height: 4.5em;       /* Total height for 3 lines */
-  max-height: 4.5em;       /* Keeps all boxes identical */
+  min-height: 3em;       /* Total height for 3 lines */
+  max-height: 3em;       /* Keeps all boxes identical */
   overflow: hidden;
 }
 .product__grid__price {
