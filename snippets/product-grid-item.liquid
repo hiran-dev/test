@@ -545,7 +545,7 @@ assign placeholder = placeholder | default: false
     {% endfor %}
   </div>
 {% endif %}
-{% comment %} <script>
+<script>
 document.addEventListener('click', function (event) {
   const btn = event.target.closest('.js-add-size');
   if (!btn) return;
@@ -586,45 +586,8 @@ document.addEventListener('click', function (event) {
     btn.classList.remove('is-loading');
   });
 });
-</script> {% endcomment %}
-<script>
-document.addEventListener('click', function (event) {
-  const btn = event.target.closest('.js-add-size');
-  if (!btn) return;
-
-  // Change 1: Stop the theme's sidebar/drawer from triggering
-  event.preventDefault();
-  event.stopImmediatePropagation(); 
-
-  if (btn.classList.contains('is-loading')) return;
-
-  const variantId = btn.getAttribute('data-variant-id');
-  if (!variantId) return;
-
-  btn.classList.add('is-loading');
-
-  // Change 2: Use the standard Shopify route and add a small delay before redirect
-  fetch(window.Shopify.routes.root + 'cart/add.js', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      id: Number(variantId),
-      quantity: 1
-    })
-  })
-  .then(response => {
-    if (!response.ok) throw new Error('Failed');
-    // Change 3: Direct redirect to cart
-    window.location.href = window.Shopify.routes.root + 'cart';
-  })
-  .catch(() => {
-    // Fallback: if Ajax fails, try a manual redirect to the cart
-    window.location.href = window.Shopify.routes.root + 'cart';
-  });
-}, true); // The "true" ensures our script runs BEFORE the theme's drawer script
 </script>
+
 
 
 </product-grid-item>
