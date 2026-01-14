@@ -26300,11 +26300,15 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-/* Specifically target the account and bottom links in Pipeline Cart Drawer */
-.drawer--cart .drawer__bottom, 
-.drawer--cart .drawer__footer__links,
-.drawer--cart .drawer__account-links {
+/* This targets the specific footer area where extra links live in Pipeline */
+.drawer__footer__links, 
+.drawer__footer .grid--full, 
+[data-drawer-history],
+.cart__foot-inner .grid--full {
     display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
 }
 
 
