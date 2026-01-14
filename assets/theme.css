@@ -26300,10 +26300,6 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-/* PIPELINE: Hide content below Continue Shopping in CART DRAWER ONLY */
-.cart-drawer .cart-drawer__footer {
-  display: none !important;
-}
 
 
 
