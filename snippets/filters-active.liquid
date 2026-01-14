@@ -165,39 +165,39 @@
 .active-filters-clear-black:hover {
   opacity: 0.8;
 }
-/* --- Add this at the very bottom of your style tag --- */
-
 @media screen and (max-width: 767px) {
-  /* Fixes the container to allow swiping/scrolling if filters overflow */
+  /* Allows filters to wrap to the next line instead of scrolling */
   .active-filters-inner {
-    gap: 8px;
-    padding: 8px 0;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap; 
+    gap: 10px;
+    overflow-x: visible; /* Disables horizontal scroll */
   }
 
-  /* Shrinks "Products Found" text */
+  /* Ensures the list of tags also wraps */
+  .active-filters-list-container {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Smaller font for mobile */
   .active-filters-count-block {
     font-size: 11px;
-    padding-right: 8px;
+    padding-right: 10px;
+    border-right: 1px solid #d1d1d1;
+    margin-bottom: 5px; /* Adds space if it wraps */
   }
 
-  /* Shrinks the filter tags */
+  /* Smaller filter tags */
   .active-filter-tag {
     font-size: 11px;
     padding: 3px 8px;
-    flex-shrink: 0; /* Prevents the tag from squishing */
   }
 
-  /* Fixes the Clear All button size and prevents it from cutting off */
+  /* Clear All button stays on the same line as tags or moves down naturally */
   .active-filters-clear-black {
     font-size: 11px;
-    padding: 4px 10px;
-    flex-shrink: 0; /* This ensures the button stays full width */
-  }
-  
-  .filter-x {
-    font-size: 8px;
+    padding: 5px 12px;
+    border-radius: 2px;
   }
 }
 </style> 
