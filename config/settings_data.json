@@ -328,8 +328,6 @@
     }
   },
   "platform_customizations": {
-    "custom_css": [
-      "/* Hide WhatsApp and social icons in the cart drawer */.drawer__bottom .whatsapp-signup-wrapper, .drawer__bottom .social-icons,.drawer__bottom [data-whatsapp-wrapper] {display: none !important;}"
-    ]
+    "custom_css": []
   }
 }
