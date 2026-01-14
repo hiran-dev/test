@@ -1,4 +1,4 @@
-{% comment %} <!-- /snippets/product-grid-item-variant.liquid -->
+<!-- /snippets/product-grid-item-variant.liquid -->
 
 {% comment %}
   Inner content for a grid item
@@ -374,14 +374,48 @@
     {% endcapture %}
 
     {%- if instant_add_button %}
-      {% comment %} Allow for shorter default text on longer translations {% endcomment %}
+      {% comment %} Allow for shorter default text on longer translations
       {% liquid
         if product.metafields.theme.preorder.value == true
           assign button_text = 'products.general.instant_add_pre_order' | t
         else
           assign button_text = 'products.general.instant_add' | t
         endif
-      %}
+      %} {% endcomment %}
+        {%- if instant_add_button %}
+  <div class="{{ quick_action_toolbar_classes }}">
+    {%- capture button_content -%}
+      <span class="btn-state-ready text-button-contrast">
+        {% render 'icon-set-classic-cart' %}
+      </span>
+      <span class="btn-state-loading">
+        <svg height="18" width="18" class="svg-loader">
+          <circle r="7" cx="9" cy="9" />
+          <circle stroke-dasharray="87.96" r="7" cx="9" cy="9" />
+        </svg>
+      </span>
+    {%- endcapture -%}
+
+    {% comment %}
+      This form uses the theme's standard AJAX 'add-to-cart' logic 
+      which is designed to trigger the drawer automatically.
+    {% endcomment %}
+    <product-form>
+      {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+        <input type="hidden" name="id" value="{{ variant.id }}">
+        <button
+          type="submit"
+          name="add"
+          class="{{ quick_action_button_classes }}"
+          aria-haspopup="dialog"
+          data-add-to-cart
+        >
+          {{ button_content }}
+        </button>
+      {%- endform -%}
+    </product-form>
+  </div>
+{%- endif -%}
       {% capture button %}
         <button
           data-add-to-cart
@@ -568,191 +602,4 @@
 <!-- End of the block inserted by Back in Stock -->
 
 </product-grid-item-variant>
-  {% endcomment %}
-   {% comment %}
-  Inner content for a grid item
-{% endcomment %}
-
-{%- liquid
-  assign on_sale = false
-  if product.compare_at_price > product.price
-    assign on_sale = true
-  endif
-
-  assign sold_out = true
-  if product.available
-    assign sold_out = false
-  endif
-
-  assign sellout_badge = false
-  if sold_out and settings.badge_sellout
-    assign sellout_badge = true
-  endif
-
-  assign sale_badge = false
-  if on_sale and settings.badge_sale
-    assign sale_badge = true
-    assign sale_badge_content = 'products.product.sale' | t
-    if settings.badge_sale_discount
-      if settings.badge_sale_type == 'dollar'
-        if settings.currency_code_enable
-          assign sale_badge_content = product.compare_at_price | minus: product.price | money_with_currency
-        else
-          assign sale_badge_content = product.compare_at_price | minus: product.price | money_without_trailing_zeros
-        endif
-      else
-        assign difference = product.compare_at_price | minus: product.price
-        assign percent_off = difference | times: 1.0 | divided_by: product.compare_at_price | times: 100.0
-        assign sale_badge_content = percent_off | floor | append: '%'
-      endif
-      assign save_word = 'products.product.save' | t | append: ' '
-      assign sale_badge_content = sale_badge_content | prepend: save_word
-    endif
-  endif
-
-  assign custom_badge = false
-  if settings.badge_custom
-    if product.metafields.theme.badge != blank and product.metafields.theme.badge.type == 'single_line_text_field'
-      assign custom_badge = true
-      assign custom_badge_content = product.metafields.theme.badge.value
-    endif
-    for tag in product.tags
-      if tag contains "_badge_"
-        assign tag_content = tag | remove: '_badge_' | replace: '_', ' '
-         if tag_content != ''
-          assign custom_badge = true
-          assign custom_badge_content = tag_content
-         endif
-        break
-      endif
-    endfor
-  endif
-
-  if badge_string and badge_string != ''
-    assign custom_badge = true
-    assign custom_badge_content = badge_string
-  endif
-
-  assign tagged = false
-  if sellout_badge or sale_badge or custom_badge
-    assign tagged = true
-  endif
-
-  comment
-    Disqualify options that have more than 15 variants
-  endcomment
-  if inline_variant_buttons.values.size > 15
-    assign inline_variant_buttons = nil
-  endif
-
-  assign columns_desktop = columns_desktop | default: section.settings.grid_large | default: 3
-  assign columns_tablet = columns_tablet | default: section.settings.grid_medium | default: columns_desktop | default: 3
-  assign columns_mobile = columns_mobile | default: section.settings.grid_mobile | default: 1
-  assign section_width = section_width | default: section.settings.width | default: null
--%}
-
-{%- capture badge -%}
-  {%- if tagged %}
-    {%- if custom_badge -%}
-      <div class="product__badge product__badge--custom product__badge--{{ custom_badge_content | strip_html | handle }}">{{ custom_badge_content }}</div>
-    {%- elsif sellout_badge -%}
-      <div class="product__badge product__badge--sold">{{ 'products.product.sold_out' | t }}</div>
-    {%- elsif sale_badge -%}
-      <div class="product__badge product__badge--sale">
-      {% if product.compare_at_price_max > product.price %}
-        {% assign discount = product.compare_at_price_max | minus: product.price %}
-        {% assign discount_percentage = discount | times: 100 | divided_by: product.compare_at_price_max | round %}
-        <div class="sale-ribbon">-{{ discount_percentage }}%</div>
-      {% endif %}
-      </div>
-    {%- endif -%}
-  {%- endif -%}
-{%- endcapture -%}
-
-{%- liquid
-  assign container_wh_ratio = settings.product_card_wh_ratio
-  assign image_cover = true
--%}
-
-<product-grid-item-variant
-  class="product-grid-item__content{% if on_sale %} on-sale{% endif %}{% if sold_out %} sold-out{% endif %}{% if tagged %} tagged{% endif %}"
-  data-grid-item="{{ product.id }}"
-  data-grid-item-variant="{{ variant.id }}"
-  {% if visible != true %} hidden {% endif %}
->
-  <div class="product-grid-item__container">
-    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}">
-      <div class="product-grid-item__images aspect-[--wh-ratio]" style="--wh-ratio: {{ container_wh_ratio }};">
-        {%- if product.media.size > 0 -%}
-          <div class="product-grid-item__image-wrapper is-active">
-            {% render 'image', img_object: product.featured_media.preview_image, cover: image_cover, wh_ratio: container_wh_ratio %}
-          </div>
-        {%- endif -%}
-      </div>
-      {{ badge }}
-    </a>
-  </div>
-
-  {% liquid
-    assign size_option_index = nil
-    for option in product.options
-      assign downcased_opt = option | downcase
-      if downcased_opt == 'size'
-        assign size_option_index = forloop.index0
-        break
-      endif
-    endfor
-  %}
-
-  {% if size_option_index != nil %}
-    <div class="product-card-sizes" style="margin-top: 15px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;">
-      {% assign printed_sizes = '|' %}
-      {% for variant in product.variants %}
-        {% assign size_value = variant.options[size_option_index] %}
-        {% assign size_key = '|' | append: size_value | append: '|' %}
-
-        {% unless printed_sizes contains size_key %}
-          {% assign size_available = false %}
-          {% assign size_variant_id = nil %}
-          {% for v in product.variants %}
-            {% if v.options[size_option_index] == size_value %}
-              {% assign size_variant_id = v.id %}
-              {% if v.available %}{% assign size_available = true %}{% break %}{% endif %}
-            {% endif %}
-          {% endfor %}
-
-          {% comment %}
-            The onclick logic below forces the redirect to /cart 
-            even if the theme tries to open a drawer.
-          {% endcomment %}
-          <form action="/cart/add" method="post" enctype="multipart/form-data" style="display:inline;">
-            <input type="hidden" name="id" value="{{ size_variant_id }}">
-            <button
-              type="submit"
-              class="product-card-size-btn"
-              onclick="setTimeout(function(){ window.location.href='/cart'; }, 500);"
-              {% unless size_available %}disabled{% endunless %}
-              style="
-                padding: 6px 12px;
-                border: 1px solid #000;
-                background: #fff;
-                cursor: pointer;
-                font-size: 12px;
-                {% unless size_available %}opacity: 0.4; cursor: not-allowed;{% endunless %}
-              "
-            >
-              {{ size_value }}
-            </button>
-          </form>
-          {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
-        {% endunless %}
-      {% endfor %}
-    </div>
-  {% endif %}
-  {% unless product.available %}
-    <a href="#" class="BIS_trigger bis-collection-button" data-product-data="{{ product | json | escape }}" style="display: block; text-align: center; margin-top: 10px;">
-      Notify me
-    </a>
-  {% endunless %}
-
-</product-grid-item-variant>
+ 
