@@ -40,13 +40,6 @@
         "padding_bottom_text": 0
       }
     },
-    "collection_categories_ExDHc7": {
-      "type": "collection-categories",
-      "name": "Collection Categories (Metafields)",
-      "settings": {
-        "heading": ""
-      }
-    },
     "subcollections": {
       "type": "collection-sub",
       "settings": {
@@ -59,7 +52,7 @@
         ],
         "limit": 6,
         "select_image": "collection",
-        "width": "wrapper--full",
+        "width": "wrapper",
         "padding_top": 20,
         "padding_bottom": 0
       }
@@ -109,7 +102,6 @@
   "order": [
     "section_liquid_ngJt9L",
     "hero",
-    "collection_categories_ExDHc7",
     "subcollections",
     "main",
     "section_liquid_WGqNLt"
