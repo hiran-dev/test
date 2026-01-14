@@ -1,4 +1,4 @@
-{% comment %} <!-- /snippets/product-grid-item-variant.liquid -->
+<!-- /snippets/product-grid-item-variant.liquid -->
 
 {% comment %}
   A grid item for products used in collection grid view
@@ -591,65 +591,4 @@ document.addEventListener('click', function (event) {
 
 
 </product-grid-item>
- {% endcomment %}
-{% liquid
-  assign size_option_index = nil
-  for option in product.options
-    if option == 'Size' or option == 'size'
-      assign size_option_index = forloop.index0
-      break
-    endif
-  endfor
-%}
 
-{% if size_option_index != nil %}
-  <div class="product-card-sizes">
-    {% assign printed_sizes = '|' %}
-
-    {% for variant in product.variants %}
-      {% assign size_value = variant.options[size_option_index] %}
-      {% assign size_key = '|' | append: size_value | append: '|' %}
-
-      {% unless printed_sizes contains size_key %}
-        {% assign size_available = false %}
-        {% assign size_variant_id = nil %}
-
-        {% for v in product.variants %}
-          {% if v.options[size_option_index] == size_value %}
-            {% assign size_variant_id = v.id %}
-            {% if v.available %}
-              {% assign size_available = true %}
-              {% break %}
-            {% endif %}
-          {% endif %}
-        {% endfor %}
-
-        {% comment %} 
-          This FORM forces the browser to go to /cart. 
-          The "return_to" input tells Shopify exactly where to go after adding.
-        {% endcomment %}
-        <form action="/cart/add" method="post" enctype="multipart/form-data" style="display:inline;">
-          <input type="hidden" name="id" value="{{ size_variant_id }}">
-          <input type="hidden" name="return_to" value="/cart">
-          
-          <button
-            type="submit"
-            class="product-card-size"
-            {% unless size_available %}disabled{% endunless %}
-          >
-            {{ size_value }}
-          </button>
-        </form>
-
-        {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
-      {% endunless %}
-    {% endfor %}
-  </div>
-{% endif %}
-
-{% comment %} 
-  NO SCRIPT TAG NEEDED HERE. 
-  By removing the script and using a form, we bypass the theme's sidebar logic. 
-{% endcomment %}
-
-</product-grid-item>
