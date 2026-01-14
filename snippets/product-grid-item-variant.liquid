@@ -374,48 +374,14 @@
     {% endcapture %}
 
     {%- if instant_add_button %}
-      {% comment %} Allow for shorter default text on longer translations
+      {% comment %} Allow for shorter default text on longer translations {% endcomment %}
       {% liquid
         if product.metafields.theme.preorder.value == true
           assign button_text = 'products.general.instant_add_pre_order' | t
         else
           assign button_text = 'products.general.instant_add' | t
         endif
-      %} {% endcomment %}
-        {%- if instant_add_button %}
-  <div class="{{ quick_action_toolbar_classes }}">
-    {%- capture button_content -%}
-      <span class="btn-state-ready text-button-contrast">
-        {% render 'icon-set-classic-cart' %}
-      </span>
-      <span class="btn-state-loading">
-        <svg height="18" width="18" class="svg-loader">
-          <circle r="7" cx="9" cy="9" />
-          <circle stroke-dasharray="87.96" r="7" cx="9" cy="9" />
-        </svg>
-      </span>
-    {%- endcapture -%}
-
-    {% comment %}
-      This form uses the theme's standard AJAX 'add-to-cart' logic 
-      which is designed to trigger the drawer automatically.
-    {% endcomment %}
-    <product-form>
-      {%- form 'product', product, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
-        <input type="hidden" name="id" value="{{ variant.id }}">
-        <button
-          type="submit"
-          name="add"
-          class="{{ quick_action_button_classes }}"
-          aria-haspopup="dialog"
-          data-add-to-cart
-        >
-          {{ button_content }}
-        </button>
-      {%- endform -%}
-    </product-form>
-  </div>
-{%- endif -%}
+      %}
       {% capture button %}
         <button
           data-add-to-cart
