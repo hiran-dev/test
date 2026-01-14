@@ -171,7 +171,7 @@
               {%- endif -%}
 
               {%- if image != blank -%}
-                <img src="{{ image | image_url: width: 300, height: 300, crop: 'center' }}" 
+                <img src="{{ image | image_url: width: 400 }}" 
                      alt="{{ sub.title }}" 
                      class="circle-img"
                      loading="lazy">
@@ -216,14 +216,15 @@
 
   /* Creating the Circle shape */
   .circle-image-container {
-    width: 130px;
-    height: 130px;
+    width: 110px;
+    height: 110px;
     margin: 0 auto 12px;
     border-radius: 50%;
     overflow: hidden;
     border: 1px solid #e1e1e1;
     transition: all 0.3s ease;
     background: #f9f9f9;
+	display: flex;
   }
 
   .circle-nav-item:hover .circle-image-container {
