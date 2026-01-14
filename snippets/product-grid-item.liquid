@@ -592,3 +592,157 @@ document.addEventListener('click', function (event) {
 
 </product-grid-item>
  {% endcomment %}
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  # We target the first variant for the "Quick Add" button
+  assign first_variant = product.selected_or_first_available_variant
+-%}
+
+<product-grid-item
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  style="position: relative; display: block;"
+>
+  
+  {% comment %} --- 1. IMAGE AREA --- {% endcomment %}
+  <div class="product-grid-item__image-container" style="position: relative; overflow: hidden;">
+    
+    {% comment %} Renders the main product image {% endcomment %}
+    {% render 'product-grid-item-variant',
+      product: product,
+      variant: first_variant,
+      visible: true
+    %}
+
+    {% comment %} 
+      ADD TO CART OVERLAY (Shopping Bag Icon)
+      We use a custom class to bypass the theme's Quick View side-drawer.
+    {% endcomment %}
+    {% if first_variant.available %}
+      <div class="custom-cart-icon-overlay">
+        <button 
+          type="button" 
+          class="js-top-bar-add" 
+          data-variant-id="{{ first_variant.id }}"
+          aria-label="Add to cart"
+        >
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag" viewBox="0 0 64 64" style="width:22px; height:22px; fill:none; stroke:#000; stroke-width:2px;"><path d="M49.33 18.29H14.67a1 1 0 0 0-1 1.09l2 25.12a4.45 4.45 0 0 0 4.43 4.1h27.8a4.45 4.45 0 0 0 4.43-4.1l2-25.12a1 1 0 0 0-1-1.09Zm-30.83 2h27l-1.76 22.12a2.45 2.45 0 0 1-2.43 2.27H22.7a2.45 2.45 0 0 1-2.43-2.27Zm13.5-9.31a8 8 0 0 0-8 8h2a6 6 0 1 1 12 0h2a8 8 0 0 0-8-8Z"/></svg>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+
+  {% comment %} --- 2. PRODUCT INFO --- {% endcomment %}
+  <div class="product__grid__info text-center" style="margin-top: 12px;">
+    <a href="{{ product.url }}" style="text-decoration: none; color: inherit;">
+      <p class="product__grid__title" style="margin: 0; font-size: 13px; text-transform: uppercase;">{{ product.title }}</p>
+      <div class="product__grid__price" style="margin-top: 5px; font-weight: bold;">
+        <span>{{ product.price | money }}</span>
+      </div>
+    </a>
+  </div>
+
+  {% comment %} --- 3. SIZE BUTTONS (READY TO WEAR) --- {% endcomment %}
+  {% liquid
+    assign size_option_index = nil
+    for option in product.options
+      if option == 'Size' or option == 'size'
+        assign size_option_index = forloop.index0
+        break
+      endif
+    endfor
+  %}
+
+  {% if size_option_index != nil %}
+    <div class="product-card-sizes" style="display: flex; justify-content: center; gap: 6px; margin-top: 10px;">
+      {% assign printed_sizes = '|' %}
+      {% for variant in product.variants %}
+        {% assign size_val = variant.options[size_option_index] %}
+        {% assign size_key = '|' | append: size_val | append: '|' %}
+        {% unless printed_sizes contains size_key %}
+          <button 
+            type="button" 
+            class="product-card-size js-top-bar-add" 
+            data-variant-id="{{ variant.id }}" 
+            {% unless variant.available %}disabled style="opacity:0.4;"{% endunless %}
+          >
+            {{ size_val }}
+          </button>
+          {% assign printed_sizes = printed_sizes | append: size_val | append: '|' %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <style>
+    /* Positions the bag icon on the image */
+    .custom-cart-icon-overlay {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 100;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+    .product-grid-item:hover .custom-cart-icon-overlay {
+      opacity: 1;
+    }
+    .js-top-bar-add {
+      background: #fff;
+      border: 1px solid #eee;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .product-card-size {
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      padding: 5px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      min-width: 35px;
+    }
+    .js-top-bar-add.is-loading { opacity: 0.5; cursor: wait; }
+  </style>
+
+  <script>
+    (function() {
+      // Logic for adding to cart and showing the TOP BAR notification
+      document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.js-top-bar-add');
+        if (!btn || btn.classList.contains('is-loading')) return;
+
+        e.preventDefault();
+        e.stopPropagation(); // CRITICAL: This stops the theme side-drawer from opening
+        
+        btn.classList.add('is-loading');
+        const variantId = btn.getAttribute('data-variant-id');
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+        })
+        .then(res => res.json())
+        .then(item => {
+          // This event tells the theme to show the TOP "Added to Cart" bar
+          document.dispatchEvent(new CustomEvent('cart:build', {
+            detail: { item: item }
+          }));
+          
+          // Refresh other cart components without opening the drawer
+          document.dispatchEvent(new CustomEvent('ajax-cart:refresh'));
+        })
+        .catch(err => console.error('Cart Error:', err))
+        .finally(() => btn.classList.remove('is-loading'));
+      });
+    })();
+  </script>
+</product-grid-item>
