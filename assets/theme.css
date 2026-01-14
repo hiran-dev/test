@@ -18889,6 +18889,7 @@ body.focus-enabled .product-grid-item:focus-within {
   word-break: break-word;
   text-transform: none;
   letter-spacing: 0;
+  min-height:2.5em;
 }
 .product__grid__price {
   overflow: hidden;
