@@ -165,4 +165,39 @@
 .active-filters-clear-black:hover {
   opacity: 0.8;
 }
+/* --- Add this at the very bottom of your style tag --- */
+
+@media screen and (max-width: 767px) {
+  /* Fixes the container to allow swiping/scrolling if filters overflow */
+  .active-filters-inner {
+    gap: 8px;
+    padding: 8px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Shrinks "Products Found" text */
+  .active-filters-count-block {
+    font-size: 11px;
+    padding-right: 8px;
+  }
+
+  /* Shrinks the filter tags */
+  .active-filter-tag {
+    font-size: 11px;
+    padding: 3px 8px;
+    flex-shrink: 0; /* Prevents the tag from squishing */
+  }
+
+  /* Fixes the Clear All button size and prevents it from cutting off */
+  .active-filters-clear-black {
+    font-size: 11px;
+    padding: 4px 10px;
+    flex-shrink: 0; /* This ensures the button stays full width */
+  }
+  
+  .filter-x {
+    font-size: 8px;
+  }
+}
 </style> 
