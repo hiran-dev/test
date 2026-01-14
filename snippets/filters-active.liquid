@@ -165,39 +165,52 @@
 .active-filters-clear-black:hover {
   opacity: 0.8;
 }
+/* --- Add this to the bottom of your style block --- */
+
 @media screen and (max-width: 767px) {
-  /* Allows filters to wrap to the next line instead of scrolling */
+  /* 1. Remove the forced one-line restriction */
   .active-filters-inner {
-    flex-wrap: wrap; 
+    display: flex;
+    flex-wrap: wrap; /* Allows items to jump to the next line */
+    overflow-x: visible; /* Disables horizontal scrolling */
     gap: 10px;
-    overflow-x: visible; /* Disables horizontal scroll */
+    padding: 10px 0;
   }
 
-  /* Ensures the list of tags also wraps */
-  .active-filters-list-container {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  /* Smaller font for mobile */
+  /* 2. Stack the product count and filters if needed */
   .active-filters-count-block {
     font-size: 11px;
     padding-right: 10px;
     border-right: 1px solid #d1d1d1;
-    margin-bottom: 5px; /* Adds space if it wraps */
+    margin-bottom: 4px; 
+    flex-shrink: 0;
   }
 
-  /* Smaller filter tags */
+  /* 3. Allow the list of tags to wrap naturally */
+  .active-filters-list-container {
+    display: flex;
+    flex-wrap: wrap; /* Allows tags + Clear All to move to next line */
+    gap: 6px;
+    width: 100%; /* Ensures it uses the full width for wrapping */
+  }
+
+  /* 4. Shrink the text for a cleaner look on mobile */
   .active-filter-tag {
     font-size: 11px;
     padding: 3px 8px;
+    margin-bottom: 2px; /* Adds vertical spacing between rows */
   }
 
-  /* Clear All button stays on the same line as tags or moves down naturally */
+  /* 5. Adjust the Clear All button */
   .active-filters-clear-black {
     font-size: 11px;
-    padding: 5px 12px;
+    padding: 4px 12px;
     border-radius: 2px;
+    display: inline-block;
+  }
+
+  .filter-x {
+    font-size: 8px;
   }
 }
 </style> 
