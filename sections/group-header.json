@@ -136,7 +136,7 @@
         "header-block-image-3"
       ],
       "settings": {
-        "header_style": "logo_center",
+        "header_style": "drawer",
         "logo": "shopify://shop_images/cross-stitch-logo-black.png",
         "logo_max_limit": 230,
         "logo_padding": 24,
