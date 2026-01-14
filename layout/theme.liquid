@@ -311,12 +311,12 @@
   <!-- And above this comment line ================================================== -->
  {% render 'footfiles' %}
  <style>
-  /* Targeted removal of footer clutter */
-  [class*="whatsapp"], 
-  [id*="whatsapp"],
-  .drawer__footer .social-icons,
-  .cart-drawer__footer-content,
-  .cart__footer-notes + div {
+  /* Only target elements inside the Cart Drawer */
+  #CartDrawer .whatsapp-signup-wrapper, 
+  #CartDrawer .social-icons,
+  #CartDrawer [data-whatsapp-wrapper],
+  #CartDrawer [class*="whatsapp"],
+  #CartDrawer [id*="whatsapp"] {
       display: none !important;
   }
 </style>
