@@ -1,4 +1,4 @@
-<!-- /snippets/product-grid-item-quick-add-menu.liquid -->
+{% comment %} <!-- /snippets/product-grid-item-quick-add-menu.liquid -->
 
 {% comment %}
   Quick add menu for a product
@@ -76,4 +76,40 @@
     {% endcapture %}
     {% render 'product-add-button-form', variant: quick_variant, selling_plan: simple_selling_plan, button: option_button %}
   {%- endfor -%}
+</div> {% endcomment %}
+{% comment %}
+  DIRECT QUICK ADD: 
+  Bypasses the sidebar menu and adds the first available variant directly to the cart drawer.
+{% endcomment %}
+
+<div class="flex flex-row items-center justify-center py-r4 min-h-[48px]">
+  {%- assign first_available_variant = product.selected_or_first_available_variant -%}
+  
+  {%- if first_available_variant.available -%}
+    {%- form 'product', product, id: "direct-add-form", class: "direct-add-form" -%}
+      {% comment %} Force the first available size ID {% endcomment %}
+      <input type="hidden" name="id" value="{{ first_available_variant.id }}">
+      <input type="hidden" name="quantity" value="1">
+
+      <button
+        type="submit"
+        name="add"
+        class="inline-block whitespace-nowrap rounded-[calc(min(2px, var(--radius)))] px-r8 py-r4 bg-black text-white hover:bg-opacity-90"
+        aria-label="Quick Add {{ first_available_variant.title }}"
+      >
+        <span class="type-accent text-r2">Quick Add</span>
+      </button>
+    {%- endform -%}
+  {%- else -%}
+    <button class="opacity-50 line-through type-accent text-r2" disabled>Sold Out</button>
+  {%- endif -%}
 </div>
+
+<style>
+  /* Ensure the form doesn't add extra layout spacing */
+  .direct-add-form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+</style>
