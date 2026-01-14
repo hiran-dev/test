@@ -45,12 +45,12 @@
       "settings": {
         "subcollections": [
           "ss-25-rtw-exclusive-co-ords-edit-4",
-          "accessories",
           "ss-25-rtw-eml-basic-edit-5",
           "aw-25-rtw-emb-cambric-edit-1",
           "azadi-special",
           "azadisale",
-          "azal-satin-21"
+          "daily-jacquard-collection",
+          "daily-khaddar-linen-edit-1"
         ],
         "limit": 12,
         "select_image": "collection",
