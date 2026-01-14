@@ -49,19 +49,16 @@
     },
     "subcollections": {
       "type": "collection-sub",
-      "blocks": {
-        "collection_group_LRzJby": {
-          "type": "collection_group",
-          "settings": {
-            "main_collection_handle": "afdxgf",
-            "sub_collection": "aangan-unstitched-cotton-satin-19"
-          }
-        }
-      },
-      "block_order": [
-        "collection_group_LRzJby"
-      ],
       "settings": {
+        "subcollections": [
+          "accessories",
+          "ss-25-rtw-exclusive-co-ords-edit-4",
+          "ss-25-rtw-eml-basic-edit-5",
+          "azadi-special",
+          "basic-pret"
+        ],
+        "limit": 6,
+        "select_image": "collection",
         "width": "wrapper--full",
         "padding_top": 20,
         "padding_bottom": 0
