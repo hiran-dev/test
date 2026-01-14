@@ -26300,9 +26300,6 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-/* Hide everything in cart footer EXCEPT the buttons */
-.drawer__bottom > *:not(.flex-buttons-wrapper):not(.cart__foot-inner) {
-    display: none !important;
-}
+
 
 
