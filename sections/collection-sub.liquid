@@ -171,8 +171,7 @@
               {%- endif -%}
 
               {%- if image != blank -%}
-                {%- comment -%} Removed 'crop: center' to prevent aggressive cropping at the source {%- endcomment -%}
-                <img src="{{ image | image_url: width: 250, height: 250 }}" 
+                <img src="{{ image | image_url: width: 300, height: 300, crop: 'center' }}" 
                      alt="{{ sub.title }}" 
                      class="circle-img"
                      loading="lazy">
@@ -191,21 +190,22 @@
 </section>
 
 <style>
+  /* Flexbox container to center and space the circles */
   .circle-nav-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 25px;
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     padding: 10px 0;
-    scrollbar-width: none; 
+    scrollbar-width: none; /* Hide scrollbar Firefox */
   }
-  .circle-nav-container::-webkit-scrollbar { display: none; }
+  .circle-nav-container::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
 
   .circle-nav-item {
     flex: 0 0 auto;
-    width: 110px; /* Reduced width */
+    width: 140px;
     text-align: center;
   }
 
@@ -214,58 +214,54 @@
     display: block;
   }
 
+  /* Creating the Circle shape */
   .circle-image-container {
-    width: 95px; /* Smaller circles */
-    height: 95px;
-    margin: 0 auto 10px;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 12px;
     border-radius: 50%;
     overflow: hidden;
-    border: 1px solid #f0f0f0;
-    transition: transform 0.3s ease;
-    background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid #e1e1e1;
+    transition: all 0.3s ease;
+    background: #f9f9f9;
   }
 
   .circle-nav-item:hover .circle-image-container {
-    transform: scale(1.05);
-    border-color: #d1d1d1;
+    border-color: #000;
+    transform: translateY(-3px);
   }
 
   .circle-img {
-    width: 100%;
-    height: 100%;
-    /* 'cover' fills the circle, 'contain' shows the whole photo with white space. 
-       We use cover here but with smaller dimensions to avoid the 'zoomed' look. */
-    object-fit: contain; 
- 
+  
+    object-fit: contain;
+    display: block;
   }
 
   .circle-title {
     margin: 0;
-    font-size: 12px; 
-    color: #1a1a1a;
+    font-size: 13px;
+    color: #333;
     font-weight: 500;
-    text-transform: uppercase; 
-    letter-spacing: 0.05em;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
   }
 
+  /* Responsive Adjustments for Mobile */
   @media only screen and (max-width: 767px) {
     .circle-nav-container {
       justify-content: flex-start;
       padding-left: 15px;
-      gap: 12px;
+      gap: 15px;
     }
     .circle-nav-item {
-      width: 85px;
+      width: 100px;
     }
     .circle-image-container {
-      width: 75px;
-      height: 75px;
+      width: 90px;
+      height: 90px;
     }
     .circle-title {
-      font-size: 10px;
+      font-size: 11px;
     }
   }
 </style>
