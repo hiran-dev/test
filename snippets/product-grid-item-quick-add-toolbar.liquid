@@ -1,4 +1,4 @@
-{% comment %} <!-- /snippets/product-grid-item-quick-add-menu.liquid -->
+<!-- /snippets/product-grid-item-quick-add-menu.liquid -->
 
 {% comment %}
   Quick add menu for a product
@@ -76,49 +76,4 @@
     {% endcapture %}
     {% render 'product-add-button-form', variant: quick_variant, selling_plan: simple_selling_plan, button: option_button %}
   {%- endfor -%}
-</div> {% endcomment %}
-{% comment %}
-  Direct Quick Add: Picks the first available size and triggers the Cart Drawer.
-{% endcomment %}
-
-<div class="flex flex-row items-center justify-center py-r4 min-h-[48px]">
-  {%- assign first_available_variant = product.selected_or_first_available_variant -%}
-  
-  {%- if first_available_variant.available -%}
-    {% capture direct_button %}
-      <button
-        data-add-to-cart
-        name="add"
-        class="block group/option-button whitespace-nowrap type-accent text-r2"
-        :class="{
-          'has-success': isSuccess,
-          'loading': isLoading
-        }"
-        :disabled="isDisabled"
-        :aria-busy="isLoading"
-        title="Quick Add"
-        aria-label="Quick Add"
-      >
-        <span class="btn-state-ready inline-block whitespace-nowrap rounded-[calc(min(2px, var(--radius)))] text-button-contrast px-r8 py-r4 bg-black text-white hover:bg-opacity-90">
-          Quick Add
-        </span>
-        <span class="btn-state-loading">
-          <svg height="18" width="18" class="svg-loader" style="--border: rgb(var(--rgb-button-contrast) / 50%); --text: rgb(var(--rgb-button-contrast));">
-            <circle r="7" cx="9" cy="9" />
-            <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
-          </svg>
-        </span>
-        <span class="btn-state-complete" style="--primary: rgb(var(--rgb-button-contrast));">&nbsp;</span>
-      </button>
-    {% endcapture %}
-
-    {% comment %} This renders the form that triggers the Cart Drawer automatically {% endcomment %}
-    {% render 'product-add-button-form', 
-       variant: first_available_variant, 
-       selling_plan: simple_selling_plan, 
-       button: direct_button 
-    %}
-  {%- else -%}
-    <button class="opacity-50 line-through type-accent text-r2" disabled>Sold Out</button>
-  {%- endif -%}
 </div>
