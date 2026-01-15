@@ -26306,11 +26306,16 @@ a.siblings__more-link {
       display: none !important;
   }
 
-  /* Target the specific variant button for Unstitch */
-.product__block__variants [data-value="UNSTITCH"],
-.product__block__variants [data-value="Unstitch"],
-.variant-input[data-value="UNSTITCH"],
-.variant-input[data-value="Unstitch"] {
+  /* Target by the text value inside the variant label */
+.product__block__variants label[data-value="UNSTITCH"],
+.product__block__variants label[data-value="Unstitch"],
+.variant-wrapper [data-value="UNSTITCH"],
+.variant-wrapper [data-value="Unstitch"] {
     display: none !important;
 }
 
+/* Hide the radio input associated with it so it can't be clicked */
+.product__block__variants input[value="UNSTITCH"],
+.product__block__variants input[value="Unstitch"] {
+    display: none !important;
+}
