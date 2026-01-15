@@ -26305,21 +26305,18 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* 1. Global: Instantly hide any button containing the word UNSTITCH */
-[data-value*="NSTITCH"], 
-input[value*="NSTITCH"] + label {
+/* 1. Safety Hide: Only targets the EXACT variant name "UNSTITCH" */
+/* The "i" makes it case-insensitive so it catches UNSTITCH or Unstitch */
+[data-value="UNSTITCH" i], 
+input[value="UNSTITCH" i] + label {
     display: none !important;
 }
 
-/* 2. Logic: Hide the entire SIZE section if standard sizes are missing */
-/* This specifically looks for XS, S, M, L, and XL */
-.selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
-    display: none !important;
-}
-
-/* 3. Spacing: Force the variant block to collapse to 0px if no sizes exist */
+/* 2. Efficient Logic: Combined spacing and heading removal */
+/* This only hides the section if NO sizes (XS to XL) are present */
+.selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])),
 .product__block__variants:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
+    display: none !important;
     margin: 0 !important;
     padding: 0 !important;
 }
-  
