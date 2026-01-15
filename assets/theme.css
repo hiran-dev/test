@@ -26305,20 +26305,20 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* Efficiently hide UNSTITCH and the SIZE heading for non-Ready-To-Wear products */
-.product__block__variants:not(.is-ready-to-wear) .radio__legend,
-.product__block__variants:not(.is-ready-to-wear) .radio__button:has([value*="NSTITCH"]),
-.product__block__variants:not(.is-ready-to-wear) [data-value*="NSTITCH"] {
+/* 1. Hide the UNSTITCH button everywhere except where sizes exist */
+.radio__button:has([value*="NSTITCH"]), 
+[data-value*="NSTITCH"] {
     display: none !important;
 }
 
-/* Reset layout spacing to prevent the scroll/overlap glitch */
-.product__block__variants:not(.is-ready-to-wear) {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
+/* 2. Hide the SIZE heading ONLY if it is immediately followed by the hidden unstitch button */
+.radio__fieldset:not(:has(input[value*="S"], input[value*="M"], input[value*="L"])) .radio__legend {
+    display: none !important;
 }
 
-.product__block__variants:not(.is-ready-to-wear) .radio__inputs {
-    min-height: 0 !important;
+/* 3. Collapse extra spacing for unstitched products */
+.product__block__variants:not(:has(input[value*="S"])) {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
   
