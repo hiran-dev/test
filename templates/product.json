@@ -315,7 +315,7 @@
         "grid_large": 4,
         "grid_medium": 3,
         "grid_small": 1.2,
-        "related_products_enable": true,
+        "related_products_enable": false,
         "limit": 6,
         "product_recommendations_heading": "Related products",
         "show_recently_viewed": true,
