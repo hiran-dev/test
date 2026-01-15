@@ -26329,8 +26329,8 @@ button[aria-label*="sold out"] {
 a.BIS_trigger.bis-collection-button.product-card__name {
     height: 30px !important;
     line-height: 30px !important;
-    font-size: 13px !important;
-    padding: 0 5px !important;
+    font-size: 14px !important;
+    padding: 2 5px !important;
     left: 8px !important;
     right: 8px !important;
     white-space: nowrap !important;
