@@ -73,10 +73,37 @@
         >
           {%- if variant_style == 'button' or is_swatch_option -%}
             <fieldset class="radio__fieldset">
-              <legend class="radio__legend" aria-label="{{ option.name | escape_once }}">
+              {% comment %} <legend class="radio__legend" aria-label="{{ option.name | escape_once }}">
                 <span class="radio__legend__label">{{ option.name | escape_once }}</span>
                 <span data-option-value data-swapper-target>{{ option.selected_value.name }}</span>
-              </legend>
+              </legend> {% endcomment %}
+              <legend class="radio__legend" aria-label="{{ option.name | escape_once }}" style="width: 100%;">
+  <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+    {% comment %} Left side: Label and current value {% endcomment %}
+    <div style="display: flex; align-items: center; gap: 15px;">
+      <span class="radio__legend__label">{{ option.name | escape_once }}</span>
+      <span data-option-value data-swapper-target>{{ option.selected_value.name }}</span>
+    </div>
+
+    {% comment %} Right side: Size Guide link for specific options {% endcomment %}
+    {%- liquid 
+      assign option_name = option.name | downcase 
+      if option_name contains 'size' or option_name contains 'stitched'
+        assign show_guide = true
+      endif
+    -%}
+
+    {%- if show_guide -%}
+      <div class="best-fit-size-chart">
+        <a href="javascript:void(0);" 
+           class="size-chart-trigger" 
+           onclick="document.getElementById('size-chart-modal').style.display='block'">
+          Size Guide
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</legend>
               {%- if is_swatch_option -%}
                 {%- assign lock_width_class = 'radio__inputs--swatch' -%}
               {%- endif -%}
