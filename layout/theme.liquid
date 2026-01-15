@@ -310,7 +310,9 @@
 
   <!-- And above this comment line ================================================== -->
  {% render 'footfiles' %}
- <script>
+ 
+ {% comment %} to hide quantity, get it sticted and size guide in case of out od stock {% endcomment %}
+  <script>
   // Function to hide elements when Sold Out / Notify Me is active
   const handleSoldOutState = () => {
     // Check for the Notify Me button (ID used by your app)
