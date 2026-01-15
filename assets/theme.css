@@ -26324,3 +26324,30 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
+/* 1. Target the main container that holds both the Size section and the Guide */
+.form__selectors {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* 2. Move the Size Guide box up and to the right */
+.best-fit-size-chart {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    z-index: 9 !important;
+}
+
+/* 3. Style the button to look like a clean text link */
+.scr-open-size-chart {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+    text-decoration: underline !important;
+    cursor: pointer !important;
+    color: inherit !important;
+}
