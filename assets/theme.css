@@ -26306,17 +26306,16 @@ a.siblings__more-link {
       display: none !important;
   }
 
-  /* 1. Hide the container for the Unstitch variant */
-.product__block__variants .variant-input[data-value="UNSTITCH"], 
-.product__block__variants .variant-input[data-value="Unstitch"] {
-    display: none !important;
-    visibility: hidden !important;
-    width: 0 !important;
-    margin: 0 !important;
+  /* TEST: Target the Unstitch label specifically */
+.product__block__variants .variant-input[data-value="UNSTITCH"] label,
+.product__block__variants .variant-input[data-value="Unstitch"] label {
+    background-color: red !important;
+    color: white !important;
+    border: 5px solid yellow !important;
 }
 
-/* 2. Specifically hide the label inside that container */
-.product__block__variants label[for*="UNSTITCH"],
-.product__block__variants label[for*="Unstitch"] {
-    display: none !important;
+/* TEST: Target the container as well */
+.product__block__variants .variant-input[data-value="UNSTITCH"],
+.product__block__variants .variant-input[data-value="Unstitch"] {
+    outline: 5px solid red !important;
 }
