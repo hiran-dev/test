@@ -26307,8 +26307,8 @@ a.siblings__more-link {
   }
 /* Efficiently hide UNSTITCH and the SIZE heading for non-Ready-To-Wear products */
 .product__block__variants:not(.is-ready-to-wear) .radio__legend,
-.product__block__variants:not(.is-ready-to-wear) .radio__button:has([value*="UNSTITCH"]),
-.product__block__variants:not(.is-ready-to-wear) [data-value*="UNSTITCH"] {
+.product__block__variants:not(.is-ready-to-wear) .radio__button:has([value*="NSTITCH"]),
+.product__block__variants:not(.is-ready-to-wear) [data-value*="NSTITCH"] {
     display: none !important;
 }
 
