@@ -26347,8 +26347,3 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 5px !important;
     }
 }
-/* Hide quantity selector when the add-to-cart button is disabled/notify state */
-.product-info:has([name="add"][disabled]) .product__block__quantity,
-.product-info:has(.BIS_trigger) .product__block__quantity {
-    display: none !important;
-}
