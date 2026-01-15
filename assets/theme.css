@@ -26306,20 +26306,18 @@ a.siblings__more-link {
       display: none !important;
   }
 
-  /* Hide the UNSTITCH button without collapsing the layout spacing */
-.product__block__variants:not(.is-ready-to-wear) .radio__button:has(input[value="UNSTITCH"]),
-.product__block__variants:not(.is-ready-to-wear) .radio__button:has(input[value="Unstitch"]) {
-    visibility: hidden !important;
-    position: absolute !important;
-    pointer-events: none !important;
-    opacity: 0 !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
+  /* 1. Hide the "SIZE" heading for unstitched products */
+.product__block__variants:not(.is-ready-to-wear) .radio__legend {
+    display: none !important;
 }
 
-/* Ensure the container maintains its minimum height to prevent scroll glitches */
-.product__block__variants {
-    min-height: 50px; /* Adjust this value if your buttons are taller */
-    contain: layout;
+/* 2. Fix the layout spacing so elements don't overlap on scroll */
+.product__block__variants:not(.is-ready-to-wear) .form__selectors {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* 3. Clean up the container height to stop the jumping effect */
+.product__block__variants:not(.is-ready-to-wear) {
+    padding-bottom: 10px !important;
 }
