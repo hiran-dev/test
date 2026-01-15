@@ -26334,6 +26334,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
     right: 8px !important;
     height: 44px !important;
     font-size: 13px !important;
+    font-style:regular;
 }
 
 /* 2. RECENTLY VIEWED: Small text, slim box (Desktop) */
