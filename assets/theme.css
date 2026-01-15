@@ -26324,7 +26324,7 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* Efficient Notify Me Button Fix */
+/* Notify Me Button Fix */
 a.BIS_trigger.bis-collection-button.product-card__name {
     height: 30px !important;
     line-height: 30px !important;
@@ -26339,7 +26339,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
     text-align: center;
 }
 
-/* Mobile Tweak */
+/* Mobile Notify Me Button Fix */
 @media (max-width: 768px) {
     a.BIS_trigger.bis-collection-button.product-card__name {
         font-size: 9px !important;
