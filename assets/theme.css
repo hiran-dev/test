@@ -26306,4 +26306,20 @@ a.siblings__more-link {
       display: none !important;
   }
 
-  
+  /* Hide the UNSTITCH button without collapsing the layout spacing */
+.product__block__variants:not(.is-ready-to-wear) .radio__button:has(input[value="UNSTITCH"]),
+.product__block__variants:not(.is-ready-to-wear) .radio__button:has(input[value="Unstitch"]) {
+    visibility: hidden !important;
+    position: absolute !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+}
+
+/* Ensure the container maintains its minimum height to prevent scroll glitches */
+.product__block__variants {
+    min-height: 50px; /* Adjust this value if your buttons are taller */
+    contain: layout;
+}
