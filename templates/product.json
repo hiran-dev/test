@@ -53,7 +53,6 @@
         },
         "variants": {
           "type": "variant-selectors",
-          "disabled": true,
           "settings": {
             "option_size_swatch": 34,
             "option_size_radio": 50,
