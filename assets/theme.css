@@ -26324,3 +26324,15 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
+/* 1. Make the container the reference point */
+.variant-wrapper {
+    position: relative !important;
+}
+
+/* 2. Pin the Size Guide to the top right */
+.size-chart__standalone {
+    position: absolute !important;
+    top: 0;
+    right: 0;
+    margin: 0 !important;
+}
