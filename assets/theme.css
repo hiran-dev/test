@@ -26324,3 +26324,37 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
+/* Fix Notify Me button: small text, single line, centered */
+a.BIS_trigger.bis-collection-button.product-card__name {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* Text size and wrapping */
+    font-size: 10px !important;       /* Smaller font to ensure it fits */
+    white-space: nowrap !important;  /* Forces text to stay on one line */
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+
+    /* Button shape and spacing */
+    height: 32px !important;         /* Makes the button height slim */
+    line-height: 1 !important;
+    padding: 0 8px !important;       /* Small internal padding */
+    
+    /* Edge spacing */
+    left: 8px !important;            /* Small gap from the left edge */
+    right: 8px !important;           /* Small gap from the right edge */
+    bottom: 8px !important;
+    
+    width: auto !important;
+}
+
+/* Ensure it stays neat on mobile */
+@media screen and (max-width: 768px) {
+    a.BIS_trigger.bis-collection-button.product-card__name {
+        font-size: 9px !important;
+        height: 28px !important;
+        left: 5px !important;
+        right: 5px !important;
+    }
+}
