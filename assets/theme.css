@@ -26348,30 +26348,3 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 5px !important;
     }
 }
-<script>
-  const hideSoldOutElements = () => {
-    // 1. Check if the "Notify Me" button exists
-    const notifyButton = document.querySelector('#BIS_trigger, .BIS_trigger');
-    
-    // 2. Define the elements you want to hide
-    const elementsToHide = [
-      '.product__block__quantity',    // Quantity Selector
-      '.tpo_radio-button-wrapper',    // Get It Stitched App
-      '.best-fit-size-chart'          // Size Guide Link
-    ];
-
-    if (notifyButton) {
-      elementsToHide.forEach(selector => {
-        const el = document.querySelector(selector);
-        if (el) el.style.setProperty('display', 'none', 'important');
-      });
-    }
-  };
-
-  // Run when page first loads
-  window.addEventListener('load', hideSoldOutElements);
-
-  // Watch for changes (if a user clicks a different color/size that is sold out)
-  const observer = new MutationObserver(hideSoldOutElements);
-  observer.observe(document.body, { childList: true, subtree: true });
-</script>
