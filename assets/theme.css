@@ -26347,8 +26347,3 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 5px !important;
     }
 }
-/* Hide quantity selector when the product is sold out */
-.product--sold-out .product__block__quantity,
-.product--unavailable .product__block__quantity {
-    display: none !important;
-}
