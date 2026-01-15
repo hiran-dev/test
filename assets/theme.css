@@ -26348,3 +26348,9 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 5px !important;
     }
 }
+/* Efficiently hide Quantity, Stitching App, and Size Guide on Sold Out */
+.product-info:has([name="add"][disabled], .BIS_trigger) .product__block__quantity,
+.product-info:has([name="add"][disabled], .BIS_trigger) .tpo_radio-button-wrapper,
+.product-info:has([name="add"][disabled], .BIS_trigger) .best-fit-size-chart {
+    display: none !important;
+}
