@@ -26324,24 +26324,25 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* 1. Sets the section container as the reference point */
-fieldset.radio__fieldset {
+/* 1. Set the section to allow side-by-side positioning */
+.radio__fieldset {
     position: relative !important;
     padding-top: 5px !important;
 }
 
-/* 2. Moves the Size Guide up next to the "Size" label */
+/* 2. Move the Size Guide button to the top right of the section */
 .best-fit-size-chart {
     position: absolute !important;
     top: 0 !important;
     right: 0 !important;
-    width: auto !important;
     margin: 0 !important;
+    width: auto !important;
 }
 
-/* 3. Adjusts the link appearance to fit the line */
-.best-fit-size-chart a, .size-chart__standalone {
-    font-size: 12px !important;
-    text-transform: uppercase;
-    text-decoration: underline;
+/* 3. Ensure the button itself stays compact */
+.scr-open-size-chart {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 13px !important;
+    text-decoration: underline !important;
 }
