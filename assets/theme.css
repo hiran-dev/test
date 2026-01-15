@@ -26306,9 +26306,11 @@ a.siblings__more-link {
       display: none !important;
   }
 
-  /* Hide the 'Unstitch' option button specifically */
-[data-value="UNSTITCH"], 
-[data-value="Unstitch"] {
+  /* Target the specific variant button for Unstitch */
+.product__block__variants [data-value="UNSTITCH"],
+.product__block__variants [data-value="Unstitch"],
+.variant-input[data-value="UNSTITCH"],
+.variant-input[data-value="Unstitch"] {
     display: none !important;
 }
 
