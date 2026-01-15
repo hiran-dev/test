@@ -26317,3 +26317,9 @@ input[value="UNSTITCH" i] + label {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* Hides the button only when it is in a 'Sold Out' state */
+button.btn--add-to-cart[disabled], 
+button.btn--add-to-cart.disabled {
+    display: none !important;
+}
