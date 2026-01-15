@@ -26324,3 +26324,29 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
+/* 1. Target the specific container for the Size section */
+.selector-wrapper[data-select-label="Size"] {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column;
+}
+
+/* 2. Move the Size Guide into that section's top right corner */
+.best-fit-size-chart {
+    position: absolute !important;
+    /* This forces it to stay within the selector-wrapper */
+    top: 0 !important;
+    right: 0 !important;
+    transform: translateY(0) !important; 
+    margin: 0 !important;
+    width: auto !important;
+}
+
+/* 3. Style the text to be level with the SIZE label */
+.scr-open-size-chart {
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border-bottom: 1px solid #000 !important;
+}
