@@ -1,1 +1,357 @@
-{"sections":{"section_liquid_QGAeVV":{"type":"section-liquid","custom_css":[],"name":"Custom Liquid","settings":{"custom_liquid":"{% render 'breadcrumbs' %}"}},"section_liquid_EeiRP3":{"type":"section-liquid","disabled":true,"name":"Custom Liquid","settings":{"custom_liquid":"{% assign complete_products = product.metafields.custom.frequently_bought.value %}\n\n{% if complete_products != blank %}\n  <div class=\"complete-the-look\" style=\"margin-top:20px;\">\n    <h3 class=\"complete-the-look__title\">Complete the Look<\/h3>\n\n    <div class=\"complete-the-look__grid\" style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:20px;\">\n      {% for item in complete_products %}\n        {% assign variant = item.selected_or_first_available_variant %}\n\n        {%- assign image = nil -%}\n        {% if item.featured_media %}\n          {% assign image = item.featured_media.preview_image %}\n        {% elsif item.media.size > 0 %}\n          {% assign image = item.media.first.preview_image %}\n        {% elsif item.featured_image %}\n          {% assign image = item.featured_image %}\n        {% endif %}\n\n        {% if item %}\n          <div class=\"complete-the-look__item\" style=\"border:1px solid #eee;padding:10px;border-radius:6px;text-align:center;\">\n            <a href=\"{{ item.url }}\">\n              {% if image %}\n                <img src=\"{{ image | image_url: width: 300 }}\" alt=\"{{ item.title }}\" loading=\"lazy\" style=\"width:100%;height:260px;object-fit:cover;\">\n              {% else %}\n                {{ 'product-1' | placeholder_svg_tag }}\n              {% endif %}\n\n              <p class=\"complete-the-look__product-title\" style=\"font-weight:600;margin:8px 0 4px;\">{{ item.title }}<\/p>\n\n              <p class=\"complete-the-look__price\" style=\"margin:0;color:#555;\">\n                {% if variant %}\n                  {{ variant.price | money }}\n                {% else %}\n                  {{ item.price | money }}\n                {% endif %}\n              <\/p>\n            <\/a>\n          <\/div>\n        {% endif %}\n      {% endfor %}\n    <\/div>\n  <\/div>\n{% endif %}"}},"main":{"type":"product","blocks":{"title":{"type":"title","settings":{"text_size":9,"product_show_cutline":true,"show_rating":true,"show_rating_count":false,"padding_bottom":20}},"price":{"type":"price","settings":{"price_size":7,"padding_bottom":12}},"liquid_6gA8t8":{"type":"liquid","settings":{"custom_liquid":"<div class=\"sku-wraps\"> {% assign current_variant = product.selected_or_first_available_variant %} <span class=\"skus\">SKU: <span class=\"variant-sku apni\"> {{ current_variant.sku }}<\/span><\/span> <span class=\"skus\">Design Code: <span class=\"design-code apni\">{{ product.tags[0] }}<\/span><\/span> {% for tag in product.tags %}\n  {% if tag contains 'Pieces:' %}\n  {% assign pieces = tag | split: ':' %}\n  {% assign pieces = pieces[1] | strip %}\n  {% elsif tag contains 'Type:' %}\n  {% assign type = tag | split: ':' %}\n  {% assign type = type[1] | strip %}\n  {% elsif tag contains 'Fabric:' %}\n  {% assign fabric = tag | split: ':' %}\n  {% assign fabric = fabric[1] | strip %}\n  {% endif %}\n  {% endfor %}\t\n  \n  {% if pieces %} <span class=\"skus\">Pieces:<span class=\"apni\"> {{pieces }}<\/span><\/span> {% endif %}\n  \n  {% if type %} <span class=\"skus\">Type:<span class=\"apni\"> {{ type }}<\/span><\/span> {% endif %}\n  \n  \n  {% if fabric %} <span class=\"skus\">Fabric:<span class=\"apni\"> {{ fabric }}<\/span><\/span> {% endif %}\n  \n  \n  {% assign option_found = false %}\n  \n  {% for option in product.options %}\n  {% if option  == \"Fabric\" %}\n  {% assign option_index = forloop.index0 %}\n  {% assign option_found = true %}\n  {% endif %}\n  {% endfor %}\n  \n  {% if option_found %}\n  {% assign values = '' %}\n  {% for variant in product.variants %}\n  {% assign value = variant.options[option_index] %}\n  {% unless values contains value %}\n  {% assign values = values | append: value | append: ',' %} \n  {% endunless %}\n  {% endfor %}\n  \n  {% assign color_options_array = values | split: \",\" %}\n  \n  {% if color_options_array.size > 0 %} <span class=\"skus\">Fabric:<span class=\"apni\"> {{ color_options_array | join: ',' }} <\/span><\/span> {% endif %}\n  \n  \n  {% endif%}\n  \n  {% assign option_found = false %}\n  \n  {% for option in product.options %}\n  {% if option  == \"Color\" %}\n  {% assign option_index = forloop.index0 %}\n  {% assign option_found = true %}\n  {% endif %}\n  {% endfor %}\n  \n  {% if option_found %}\n  {% assign values = '' %}\n  {% for variant in product.variants %}\n  {% assign value = variant.options[option_index] %}\n  {% unless values contains value %}\n  {% assign values = values | append: value | append: ',' %} \n  {% endunless %}\n  {% endfor %}\n  \n  {% assign color_options_array = values | split: \",\" %}\n  \n  {% if color_options_array.size > 0 %} <span class=\"skus\">Color:<span class=\"apni\"> {{ color_options_array | join: ',' }} <\/span><\/span> {% endif %}\n  \n  \n  {% endif%}\n  \n  \n  \n  {% assign found_tag_pt = false %} \n  {% assign found_tag_st = false %} \n  {% for tag in product.tags %}\n  {% comment %}\n  {% if tag contains \"PRO TYP:\" %}\n  {% assign reptag = tag | replace: 'PRO TYP:',\"\" %}\n  {% unless reptag contains ':' %}\n  {% assign found_tag_pt = true %} \n  {% assign tag_pt = tag | replace: 'PRO TYP:',\"\" %}\n  {% endunless %}\n  {% endif %}\n  {% endcomment %}  \n  {% if tag contains \"SF TRT:\" %}\n  {% assign found_tag_st = true %} \n  {% assign tag_st =  tag | replace: 'SF TRT:',\"\" %}\t\n  {% endif %}\n  \n  {% endfor %}\n  {% if found_tag_pt or found_tag_st %} <span class=\"skus\">Work Details: <span class=\"apni\"> {% if found_tag_pt %}\n  {{ tag_pt }}\n  {% endif %}\n  {% if found_tag_st %}\n  {{ tag_st }}\n  {% endif %} <\/span> <\/span> {% endif %} <\/div>"}},"variants":{"type":"variant-selectors","settings":{"option_size_swatch":34,"option_size_radio":50,"option_space":30,"padding_bottom":30}},"subscriptions":{"type":"subscription","settings":{"subscriptions_enable_selectors":true,"padding_bottom":20}},"sizes-remaining":{"type":"size-remaining","disabled":true,"settings":{"info_page":"","title":"","show_remaining":true,"show_remaining_style":"low","countdown":10,"padding_bottom":0}},"quantity":{"type":"quantity","settings":{"show_quantity":true,"padding_bottom":10}},"buttons":{"type":"add-buttons","settings":{"enable_payment_button":false,"enable_gift_card_recipient":true,"padding_bottom":20}},"description":{"type":"description","settings":{"style":"tabs","enable_description":true,"read_more":false,"icon_description":"","description_expanded":true,"title_1":"","icon_name_1":"","raw_content_1":"<p>This content type will accept <strong>rich text<\/strong> to help with adding styles and links to additional pages or content. Use this to add supplementary information to help your buyers.<\/p>","title_2":"","icon_name_2":"","raw_content_2":"<p>You can use product metafields to assign content to this tab that is unique to an individual product.  Use tabs to highlight unique features, sizing information, or other sales information.<\/p>","title_3":"","icon_name_3":"","raw_content_3":"","title_4":"","icon_name_4":"","raw_content_4":"","title_5":"","icon_name_5":"","raw_content_5":"","padding_bottom":20}},"liquid_3KFa8a":{"type":"liquid","settings":{"custom_liquid":"{% assign complete_products = product.metafields.custom.frequently_bought.value %}\n\n{% if complete_products and complete_products.size > 0 %}\n<section class=\"complete-the-look\">\n  <div class=\"page-width-auto\">\n\n    <h3 class=\"complete-the-look-title\">Complete the Look<\/h3>\n\n    <div class=\"complete-the-look-grid\">\n\n      {% for item in complete_products %}\n        {% assign image = nil %}\n        {% if item.featured_media %}\n          {% assign image = item.featured_media.preview_image %}\n        {% elsif item.media.size > 0 %}\n          {% assign image = item.media.first.preview_image %}\n        {% endif %}\n\n        <div class=\"complete-look-item\">\n\t\t  <div class=\"complete-look-img\">\t\n          <!-- Product Image -->\n          {% if image %}\n            <a href=\"{{ item.url }}\">\n              <img src=\"{{ image | image_url: width:300 }}\" alt=\"{{ item.title }}\">\n            <\/a>\n          {% endif %}\n\t\t  <\/div>\n          <div class=\"inline-info-flex\">\n\t\t  <div class=\"inline-info inlbox\">\n          <!-- Product Title -->\n          <p class=\"complete-look-product-title\">{{ item.title }}<\/p>\n          \n          <!-- Product Price (first variant) -->\n          {% assign first_variant = item.selected_or_first_available_variant %}\n          {% if first_variant %}\n            <p class=\"complete-look-product-price\">{{ first_variant.price | money }}<\/p>\n          {% endif %}\n\t\t  \n\t\t  <\/div>\n\t\t  <div class=\"inline-info-buttons inlbox\">\n          <!-- Variant Buttons (Sizes Only) -->\n          {% assign size_variants = item.variants | where: \"available\", true %}\n          {% if size_variants.size > 0 %}\n            <form action=\"\/cart\/add\" method=\"post\" class=\"complete-look-form\">\n              \n              <!-- Hidden input for selected variant -->\n              <input type=\"hidden\" name=\"id\" value=\"{{ first_variant.id }}\" class=\"complete-look-selected-variant\">\n\t\t\t  <div class=\"complete-look-size-btn-item\">\n              {% for variant in size_variants %}\n                {% assign size_value = variant.options[0] %}\n                <button type=\"button\" class=\"complete-look-size-btn\" data-variant-id=\"{{ variant.id }}\">\n                  {{ size_value }}\n                <\/button>\n              {% endfor %}\n              <\/div>\n              <!-- Add to Cart Button -->\n              <button type=\"submit\" class=\"complete-look-add-cart-btn\">\n                <img src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0178\/4492\/8612\/files\/Frame_1.svg?v=1767171644\">\n              <\/button>\n            <\/form>\n          {% endif %}\n\t\t  <\/div>\n\t\t  <\/div>\n\t\t  \n        <\/div>\n      {% endfor %}\n\n    <\/div>\n\n  <\/div>\n<\/section>\n\n<!-- JavaScript to handle size selection -->\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\n  const sizeButtons = document.querySelectorAll('.complete-look-size-btn');\n\n  sizeButtons.forEach(button => {\n    button.addEventListener('click', function() {\n      const form = button.closest('form');\n      const hiddenInput = form.querySelector('.complete-look-selected-variant');\n      hiddenInput.value = button.dataset.variantId;\n\n      \/\/ Optional: highlight selected size\n      form.querySelectorAll('.complete-look-size-btn').forEach(b => b.classList.remove('selected'));\n      button.classList.add('selected');\n    });\n  });\n});\n<\/script>\n{% endif %}"}},"liquid_Fy6C3P":{"type":"liquid","disabled":true,"settings":{"custom_liquid":"{% render 'related-products', section: section, product: product %}"}},"upsell":{"type":"upsell","disabled":true,"settings":{"title":"Complete the Look","upsell_type":"product_grouping","product":"","upsell_product_list":["rtw-abbey-stone","aarzoo-3pc-shirt-dupatta-trouser"],"upsell_list_limit":2,"padding_bottom":20}},"pickup":{"type":"pickup","disabled":true,"settings":{"padding_bottom":20}},"sharing":{"type":"sharing","disabled":true,"settings":{"share_label":"Share","target_device":"","padding_bottom":20}}},"block_order":["title","price","liquid_6gA8t8","variants","subscriptions","sizes-remaining","quantity","buttons","description","liquid_3KFa8a","liquid_Fy6C3P","upsell","pickup","sharing"],"settings":{"layout":"thumbnails-below@slides","image_width":"half","image_spacing":10,"align":"left","bg":"palette--light bg--neutral","mobile_layout":"slideshow","enable_video_looping":true,"zoom_enable":true,"alt_text_enable":true,"alt_text_icon":"icon-ruler","product_breadcrumbs_enable":false,"product_breadcrumbs_list":[],"width":"wrapper","padding_top":14,"padding_bottom":36}},"image-with-text":{"type":"section-double","blocks":{"image":{"type":"image","settings":{"overlay_opacity":15,"overlay_color":"#000000","enable_overlay_text":false,"kicker":"","title":"","richtext":"","text_align":"align--middle-center","text_color":"text--white","link_text":"","link":"","button_color":"btn--white","button_style":"btn"}},"text":{"type":"text","settings":{"kicker":"Image with text","title":"","text":"<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>","font_size":5,"text_columns":1,"align_text":"text-left","button_text":"","button_url":"","button_color":"btn--neutral","button_style":"btn-text-thick-line","text_color":"text--neutral","bg_color":""}}},"block_order":["image","text"],"disabled":true,"settings":{"height":"use_screen_one_half","brick_gutter":0,"borders":false,"bg_color":"","preload_image":false,"width":"wrapper","padding_top":36,"padding_bottom":0}},"image-with-text-2":{"type":"section-double","blocks":{"text":{"type":"text","settings":{"kicker":"Image with text","title":"","text":"<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>","font_size":5,"text_columns":1,"align_text":"text-left","button_text":"","button_url":"","button_color":"btn--neutral","button_style":"btn-text-thick-line","text_color":"text--neutral","bg_color":""}},"image":{"type":"image","settings":{"overlay_opacity":15,"overlay_color":"#000000","enable_overlay_text":false,"kicker":"","title":"","richtext":"","text_align":"align--middle-center","text_color":"text--white","link_text":"","link":"","button_color":"btn--white","button_style":"btn"}}},"block_order":["text","image"],"disabled":true,"settings":{"height":"use_screen_one_half","brick_gutter":0,"borders":false,"bg_color":"","preload_image":false,"width":"wrapper","padding_top":0,"padding_bottom":36}},"related":{"type":"related","settings":{"heading":"You might also like","bg":"palette--light bg--neutral","grid_large":4,"grid_medium":3,"grid_small":1.2,"related_products_enable":true,"limit":6,"product_recommendations_heading":"Related products","show_recently_viewed":false,"product_recently_limit":6,"product_recently_minimum":4,"product_recently_heading":"Recently viewed","width":"wrapper--full","padding_top":36,"padding_bottom":36}},"section_recent_products_dFKqLe":{"type":"section-recent-products","name":"Recently viewed products","settings":{"bg":"palette--light bg--neutral","product_recently_heading":"Recently viewed","product_recently_limit":6,"product_recently_minimum":3,"grid_large":6,"grid_medium":3,"grid_small":2,"width":"wrapper--full","padding_top":36,"padding_bottom":24}}},"order":["section_liquid_QGAeVV","section_liquid_EeiRP3","main","image-with-text","image-with-text-2","related","section_recent_products_dFKqLe"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "section_liquid_QGAeVV": {
+      "type": "section-liquid",
+      "custom_css": [],
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": "{% render 'breadcrumbs' %}"
+      }
+    },
+    "section_liquid_EeiRP3": {
+      "type": "section-liquid",
+      "disabled": true,
+      "name": "Custom Liquid",
+      "settings": {
+        "custom_liquid": "{% assign complete_products = product.metafields.custom.frequently_bought.value %}\n\n{% if complete_products != blank %}\n  <div class=\"complete-the-look\" style=\"margin-top:20px;\">\n    <h3 class=\"complete-the-look__title\">Complete the Look</h3>\n\n    <div class=\"complete-the-look__grid\" style=\"display:grid;grid-template-columns:repeat(4,1fr);gap:20px;\">\n      {% for item in complete_products %}\n        {% assign variant = item.selected_or_first_available_variant %}\n\n        {%- assign image = nil -%}\n        {% if item.featured_media %}\n          {% assign image = item.featured_media.preview_image %}\n        {% elsif item.media.size > 0 %}\n          {% assign image = item.media.first.preview_image %}\n        {% elsif item.featured_image %}\n          {% assign image = item.featured_image %}\n        {% endif %}\n\n        {% if item %}\n          <div class=\"complete-the-look__item\" style=\"border:1px solid #eee;padding:10px;border-radius:6px;text-align:center;\">\n            <a href=\"{{ item.url }}\">\n              {% if image %}\n                <img src=\"{{ image | image_url: width: 300 }}\" alt=\"{{ item.title }}\" loading=\"lazy\" style=\"width:100%;height:260px;object-fit:cover;\">\n              {% else %}\n                {{ 'product-1' | placeholder_svg_tag }}\n              {% endif %}\n\n              <p class=\"complete-the-look__product-title\" style=\"font-weight:600;margin:8px 0 4px;\">{{ item.title }}</p>\n\n              <p class=\"complete-the-look__price\" style=\"margin:0;color:#555;\">\n                {% if variant %}\n                  {{ variant.price | money }}\n                {% else %}\n                  {{ item.price | money }}\n                {% endif %}\n              </p>\n            </a>\n          </div>\n        {% endif %}\n      {% endfor %}\n    </div>\n  </div>\n{% endif %}"
+      }
+    },
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "text_size": 9,
+            "product_show_cutline": true,
+            "show_rating": true,
+            "show_rating_count": false,
+            "padding_bottom": 20
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "price_size": 7,
+            "padding_bottom": 12
+          }
+        },
+        "liquid_6gA8t8": {
+          "type": "liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"sku-wraps\"> {% assign current_variant = product.selected_or_first_available_variant %} <span class=\"skus\">SKU: <span class=\"variant-sku apni\"> {{ current_variant.sku }}</span></span> <span class=\"skus\">Design Code: <span class=\"design-code apni\">{{ product.tags[0] }}</span></span> {% for tag in product.tags %}\n  {% if tag contains 'Pieces:' %}\n  {% assign pieces = tag | split: ':' %}\n  {% assign pieces = pieces[1] | strip %}\n  {% elsif tag contains 'Type:' %}\n  {% assign type = tag | split: ':' %}\n  {% assign type = type[1] | strip %}\n  {% elsif tag contains 'Fabric:' %}\n  {% assign fabric = tag | split: ':' %}\n  {% assign fabric = fabric[1] | strip %}\n  {% endif %}\n  {% endfor %}\t\n  \n  {% if pieces %} <span class=\"skus\">Pieces:<span class=\"apni\"> {{pieces }}</span></span> {% endif %}\n  \n  {% if type %} <span class=\"skus\">Type:<span class=\"apni\"> {{ type }}</span></span> {% endif %}\n  \n  \n  {% if fabric %} <span class=\"skus\">Fabric:<span class=\"apni\"> {{ fabric }}</span></span> {% endif %}\n  \n  \n  {% assign option_found = false %}\n  \n  {% for option in product.options %}\n  {% if option  == \"Fabric\" %}\n  {% assign option_index = forloop.index0 %}\n  {% assign option_found = true %}\n  {% endif %}\n  {% endfor %}\n  \n  {% if option_found %}\n  {% assign values = '' %}\n  {% for variant in product.variants %}\n  {% assign value = variant.options[option_index] %}\n  {% unless values contains value %}\n  {% assign values = values | append: value | append: ',' %} \n  {% endunless %}\n  {% endfor %}\n  \n  {% assign color_options_array = values | split: \",\" %}\n  \n  {% if color_options_array.size > 0 %} <span class=\"skus\">Fabric:<span class=\"apni\"> {{ color_options_array | join: ',' }} </span></span> {% endif %}\n  \n  \n  {% endif%}\n  \n  {% assign option_found = false %}\n  \n  {% for option in product.options %}\n  {% if option  == \"Color\" %}\n  {% assign option_index = forloop.index0 %}\n  {% assign option_found = true %}\n  {% endif %}\n  {% endfor %}\n  \n  {% if option_found %}\n  {% assign values = '' %}\n  {% for variant in product.variants %}\n  {% assign value = variant.options[option_index] %}\n  {% unless values contains value %}\n  {% assign values = values | append: value | append: ',' %} \n  {% endunless %}\n  {% endfor %}\n  \n  {% assign color_options_array = values | split: \",\" %}\n  \n  {% if color_options_array.size > 0 %} <span class=\"skus\">Color:<span class=\"apni\"> {{ color_options_array | join: ',' }} </span></span> {% endif %}\n  \n  \n  {% endif%}\n  \n  \n  \n  {% assign found_tag_pt = false %} \n  {% assign found_tag_st = false %} \n  {% for tag in product.tags %}\n  {% comment %}\n  {% if tag contains \"PRO TYP:\" %}\n  {% assign reptag = tag | replace: 'PRO TYP:',\"\" %}\n  {% unless reptag contains ':' %}\n  {% assign found_tag_pt = true %} \n  {% assign tag_pt = tag | replace: 'PRO TYP:',\"\" %}\n  {% endunless %}\n  {% endif %}\n  {% endcomment %}  \n  {% if tag contains \"SF TRT:\" %}\n  {% assign found_tag_st = true %} \n  {% assign tag_st =  tag | replace: 'SF TRT:',\"\" %}\t\n  {% endif %}\n  \n  {% endfor %}\n  {% if found_tag_pt or found_tag_st %} <span class=\"skus\">Work Details: <span class=\"apni\"> {% if found_tag_pt %}\n  {{ tag_pt }}\n  {% endif %}\n  {% if found_tag_st %}\n  {{ tag_st }}\n  {% endif %} </span> </span> {% endif %} </div>"
+          }
+        },
+        "variants": {
+          "type": "variant-selectors",
+          "disabled": true,
+          "settings": {
+            "option_size_swatch": 34,
+            "option_size_radio": 50,
+            "option_space": 30,
+            "padding_bottom": 30
+          }
+        },
+        "subscriptions": {
+          "type": "subscription",
+          "settings": {
+            "subscriptions_enable_selectors": true,
+            "padding_bottom": 20
+          }
+        },
+        "sizes-remaining": {
+          "type": "size-remaining",
+          "disabled": true,
+          "settings": {
+            "info_page": "",
+            "title": "",
+            "show_remaining": true,
+            "show_remaining_style": "low",
+            "countdown": 10,
+            "padding_bottom": 0
+          }
+        },
+        "quantity": {
+          "type": "quantity",
+          "settings": {
+            "show_quantity": true,
+            "padding_bottom": 10
+          }
+        },
+        "buttons": {
+          "type": "add-buttons",
+          "settings": {
+            "enable_payment_button": false,
+            "enable_gift_card_recipient": true,
+            "padding_bottom": 20
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "style": "tabs",
+            "enable_description": true,
+            "read_more": false,
+            "icon_description": "",
+            "description_expanded": true,
+            "title_1": "",
+            "icon_name_1": "",
+            "raw_content_1": "<p>This content type will accept <strong>rich text</strong> to help with adding styles and links to additional pages or content. Use this to add supplementary information to help your buyers.</p>",
+            "title_2": "",
+            "icon_name_2": "",
+            "raw_content_2": "<p>You can use product metafields to assign content to this tab that is unique to an individual product.  Use tabs to highlight unique features, sizing information, or other sales information.</p>",
+            "title_3": "",
+            "icon_name_3": "",
+            "raw_content_3": "",
+            "title_4": "",
+            "icon_name_4": "",
+            "raw_content_4": "",
+            "title_5": "",
+            "icon_name_5": "",
+            "raw_content_5": "",
+            "padding_bottom": 20
+          }
+        },
+        "liquid_3KFa8a": {
+          "type": "liquid",
+          "settings": {
+            "custom_liquid": "{% assign complete_products = product.metafields.custom.frequently_bought.value %}\n\n{% if complete_products and complete_products.size > 0 %}\n<section class=\"complete-the-look\">\n  <div class=\"page-width-auto\">\n\n    <h3 class=\"complete-the-look-title\">Complete the Look</h3>\n\n    <div class=\"complete-the-look-grid\">\n\n      {% for item in complete_products %}\n        {% assign image = nil %}\n        {% if item.featured_media %}\n          {% assign image = item.featured_media.preview_image %}\n        {% elsif item.media.size > 0 %}\n          {% assign image = item.media.first.preview_image %}\n        {% endif %}\n\n        <div class=\"complete-look-item\">\n\t\t  <div class=\"complete-look-img\">\t\n          <!-- Product Image -->\n          {% if image %}\n            <a href=\"{{ item.url }}\">\n              <img src=\"{{ image | image_url: width:300 }}\" alt=\"{{ item.title }}\">\n            </a>\n          {% endif %}\n\t\t  </div>\n          <div class=\"inline-info-flex\">\n\t\t  <div class=\"inline-info inlbox\">\n          <!-- Product Title -->\n          <p class=\"complete-look-product-title\">{{ item.title }}</p>\n          \n          <!-- Product Price (first variant) -->\n          {% assign first_variant = item.selected_or_first_available_variant %}\n          {% if first_variant %}\n            <p class=\"complete-look-product-price\">{{ first_variant.price | money }}</p>\n          {% endif %}\n\t\t  \n\t\t  </div>\n\t\t  <div class=\"inline-info-buttons inlbox\">\n          <!-- Variant Buttons (Sizes Only) -->\n          {% assign size_variants = item.variants | where: \"available\", true %}\n          {% if size_variants.size > 0 %}\n            <form action=\"/cart/add\" method=\"post\" class=\"complete-look-form\">\n              \n              <!-- Hidden input for selected variant -->\n              <input type=\"hidden\" name=\"id\" value=\"{{ first_variant.id }}\" class=\"complete-look-selected-variant\">\n\t\t\t  <div class=\"complete-look-size-btn-item\">\n              {% for variant in size_variants %}\n                {% assign size_value = variant.options[0] %}\n                <button type=\"button\" class=\"complete-look-size-btn\" data-variant-id=\"{{ variant.id }}\">\n                  {{ size_value }}\n                </button>\n              {% endfor %}\n              </div>\n              <!-- Add to Cart Button -->\n              <button type=\"submit\" class=\"complete-look-add-cart-btn\">\n                <img src=\"https://cdn.shopify.com/s/files/1/0178/4492/8612/files/Frame_1.svg?v=1767171644\">\n              </button>\n            </form>\n          {% endif %}\n\t\t  </div>\n\t\t  </div>\n\t\t  \n        </div>\n      {% endfor %}\n\n    </div>\n\n  </div>\n</section>\n\n<!-- JavaScript to handle size selection -->\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\n  const sizeButtons = document.querySelectorAll('.complete-look-size-btn');\n\n  sizeButtons.forEach(button => {\n    button.addEventListener('click', function() {\n      const form = button.closest('form');\n      const hiddenInput = form.querySelector('.complete-look-selected-variant');\n      hiddenInput.value = button.dataset.variantId;\n\n      // Optional: highlight selected size\n      form.querySelectorAll('.complete-look-size-btn').forEach(b => b.classList.remove('selected'));\n      button.classList.add('selected');\n    });\n  });\n});\n</script>\n{% endif %}"
+          }
+        },
+        "liquid_Fy6C3P": {
+          "type": "liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{% render 'related-products', section: section, product: product %}"
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "disabled": true,
+          "settings": {
+            "title": "Complete the Look",
+            "upsell_type": "product_grouping",
+            "product": "",
+            "upsell_product_list": [
+              "rtw-abbey-stone",
+              "aarzoo-3pc-shirt-dupatta-trouser"
+            ],
+            "upsell_list_limit": 2,
+            "padding_bottom": 20
+          }
+        },
+        "pickup": {
+          "type": "pickup",
+          "disabled": true,
+          "settings": {
+            "padding_bottom": 20
+          }
+        },
+        "sharing": {
+          "type": "sharing",
+          "disabled": true,
+          "settings": {
+            "share_label": "Share",
+            "target_device": "",
+            "padding_bottom": 20
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "liquid_6gA8t8",
+        "variants",
+        "subscriptions",
+        "sizes-remaining",
+        "quantity",
+        "buttons",
+        "description",
+        "liquid_3KFa8a",
+        "liquid_Fy6C3P",
+        "upsell",
+        "pickup",
+        "sharing"
+      ],
+      "settings": {
+        "layout": "thumbnails-below@slides",
+        "image_width": "half",
+        "image_spacing": 10,
+        "align": "left",
+        "bg": "palette--light bg--neutral",
+        "mobile_layout": "slideshow",
+        "enable_video_looping": true,
+        "zoom_enable": true,
+        "alt_text_enable": true,
+        "alt_text_icon": "icon-ruler",
+        "product_breadcrumbs_enable": false,
+        "product_breadcrumbs_list": [],
+        "width": "wrapper",
+        "padding_top": 14,
+        "padding_bottom": 36
+      }
+    },
+    "image-with-text": {
+      "type": "section-double",
+      "blocks": {
+        "image": {
+          "type": "image",
+          "settings": {
+            "overlay_opacity": 15,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "kicker": "Image with text",
+            "title": "",
+            "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>",
+            "font_size": 5,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn-text-thick-line",
+            "text_color": "text--neutral",
+            "bg_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "image",
+        "text"
+      ],
+      "disabled": true,
+      "settings": {
+        "height": "use_screen_one_half",
+        "brick_gutter": 0,
+        "borders": false,
+        "bg_color": "",
+        "preload_image": false,
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "image-with-text-2": {
+      "type": "section-double",
+      "blocks": {
+        "text": {
+          "type": "text",
+          "settings": {
+            "kicker": "Image with text",
+            "title": "",
+            "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>",
+            "font_size": 5,
+            "text_columns": 1,
+            "align_text": "text-left",
+            "button_text": "",
+            "button_url": "",
+            "button_color": "btn--neutral",
+            "button_style": "btn-text-thick-line",
+            "text_color": "text--neutral",
+            "bg_color": ""
+          }
+        },
+        "image": {
+          "type": "image",
+          "settings": {
+            "overlay_opacity": 15,
+            "overlay_color": "#000000",
+            "enable_overlay_text": false,
+            "kicker": "",
+            "title": "",
+            "richtext": "",
+            "text_align": "align--middle-center",
+            "text_color": "text--white",
+            "link_text": "",
+            "link": "",
+            "button_color": "btn--white",
+            "button_style": "btn"
+          }
+        }
+      },
+      "block_order": [
+        "text",
+        "image"
+      ],
+      "disabled": true,
+      "settings": {
+        "height": "use_screen_one_half",
+        "brick_gutter": 0,
+        "borders": false,
+        "bg_color": "",
+        "preload_image": false,
+        "width": "wrapper",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "related": {
+      "type": "related",
+      "settings": {
+        "heading": "You might also like",
+        "bg": "palette--light bg--neutral",
+        "grid_large": 4,
+        "grid_medium": 3,
+        "grid_small": 1.2,
+        "related_products_enable": true,
+        "limit": 6,
+        "product_recommendations_heading": "Related products",
+        "show_recently_viewed": false,
+        "product_recently_limit": 6,
+        "product_recently_minimum": 4,
+        "product_recently_heading": "Recently viewed",
+        "width": "wrapper--full",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "section_recent_products_dFKqLe": {
+      "type": "section-recent-products",
+      "name": "Recently viewed products",
+      "settings": {
+        "bg": "palette--light bg--neutral",
+        "product_recently_heading": "Recently viewed",
+        "product_recently_limit": 6,
+        "product_recently_minimum": 3,
+        "grid_large": 6,
+        "grid_medium": 3,
+        "grid_small": 2,
+        "width": "wrapper--full",
+        "padding_top": 36,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "section_liquid_QGAeVV",
+    "section_liquid_EeiRP3",
+    "main",
+    "image-with-text",
+    "image-with-text-2",
+    "related",
+    "section_recent_products_dFKqLe"
+  ]
+}
