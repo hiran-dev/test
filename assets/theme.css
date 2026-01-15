@@ -26305,19 +26305,20 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* 1. Hide the "SIZE" heading for unstitched products */
-.product__block__variants:not(.is-ready-to-wear) .radio__legend {
+/* Efficiently hide UNSTITCH and the SIZE heading for non-Ready-To-Wear products */
+.product__block__variants:not(.is-ready-to-wear) .radio__legend,
+.product__block__variants:not(.is-ready-to-wear) .radio__button:has([value*="NSTITCH"]),
+.product__block__variants:not(.is-ready-to-wear) [data-value*="NSTITCH"] {
     display: none !important;
 }
 
-/* 2. Fix the layout spacing so elements don't overlap on scroll */
-.product__block__variants:not(.is-ready-to-wear) .form__selectors {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+/* Reset layout spacing to prevent the scroll/overlap glitch */
+.product__block__variants:not(.is-ready-to-wear) {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
-/* 3. Clean up the container height to stop the jumping effect */
-.product__block__variants:not(.is-ready-to-wear) {
-    padding-bottom: 10px !important;
+.product__block__variants:not(.is-ready-to-wear) .radio__inputs {
+    min-height: 0 !important;
 }
   
