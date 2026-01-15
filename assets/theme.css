@@ -26324,25 +26324,29 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* 1. Set the section to allow side-by-side positioning */
-.radio__fieldset {
+/* 1. Create a boundary around the Size section so the guide doesn't float away */
+.selector-wrapper {
     position: relative !important;
-    padding-top: 5px !important;
+    display: block;
+    width: 100%;
 }
 
-/* 2. Move the Size Guide button to the top right of the section */
+/* 2. Position the Size Guide specifically within that section */
 .best-fit-size-chart {
     position: absolute !important;
-    top: 0 !important;
+    top: 5px !important; /* Adjust this to move it up/down slightly */
     right: 0 !important;
     margin: 0 !important;
     width: auto !important;
+    z-index: 10;
 }
 
-/* 3. Ensure the button itself stays compact */
+/* 3. Style the button to be clean text */
 .scr-open-size-chart {
-    margin: 0 !important;
+    background: none !important;
+    border: none !important;
     padding: 0 !important;
-    font-size: 13px !important;
     text-decoration: underline !important;
+    font-size: 13px !important;
+    cursor: pointer;
 }
