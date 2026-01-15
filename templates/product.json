@@ -318,7 +318,7 @@
         "related_products_enable": true,
         "limit": 6,
         "product_recommendations_heading": "Related products",
-        "show_recently_viewed": false,
+        "show_recently_viewed": true,
         "product_recently_limit": 6,
         "product_recently_minimum": 4,
         "product_recently_heading": "Recently viewed",
