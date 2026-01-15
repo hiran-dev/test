@@ -26306,14 +26306,4 @@ a.siblings__more-link {
       display: none !important;
   }
 
-  /* Hide the UNSTITCH button by default */
-.product__block__variants:not(.is-ready-to-wear) .radio__button:has(input[value="UNSTITCH"]),
-.product__block__variants:not(.is-ready-to-wear) .radio__button:has(input[value="Unstitch"]) {
-    display: none !important;
-}
-
-/* Fallback for older browsers: targets the label directly if 'has' fails */
-.product__block__variants:not(.is-ready-to-wear) input[value="UNSTITCH"] + label,
-.product__block__variants:not(.is-ready-to-wear) input[value="Unstitch"] + label {
-    display: none !important;
-}
+  

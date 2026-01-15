@@ -2,7 +2,7 @@
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
-{% comment %} <div class="product__block__variants"
+<div class="product__block__variants"
   style="
     --PB: {{ block.settings.padding_bottom }}px;
     --OPTION-SPACE: {{ block.settings.option_space | default: 30 }}px;
@@ -10,10 +10,7 @@
     --OPTION-SIZE-SWATCH: {{ block.settings.option_size_swatch | default: 34 }}px;
     "
   {{ block.shopify_attributes }}
-> {% endcomment %}
-  <div class="product__block__variants {% if product.tags contains 'ready-to-wear' %}is-ready-to-wear{% endif %}"
-  style="
-    --PB: {{ block.settings.padding_bottom }}px;
+>
   {%- unless product.has_only_default_variant -%}
     <div
       class="form__selectors"
