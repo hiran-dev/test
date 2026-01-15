@@ -26324,3 +26324,24 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
+/* 1. Sets the section container as the reference point */
+fieldset.radio__fieldset {
+    position: relative !important;
+    padding-top: 5px !important;
+}
+
+/* 2. Moves the Size Guide up next to the "Size" label */
+.best-fit-size-chart {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    width: auto !important;
+    margin: 0 !important;
+}
+
+/* 3. Adjusts the link appearance to fit the line */
+.best-fit-size-chart a, .size-chart__standalone {
+    font-size: 12px !important;
+    text-transform: uppercase;
+    text-decoration: underline;
+}
