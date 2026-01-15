@@ -281,7 +281,6 @@
       class="form__selectors"
     >
       {%- for option in product.options_with_values -%}
-        {% comment %} Use select over radio for long inputs and mismatched lengths {% endcomment %}
         {%- liquid
           assign longest_value = 0
           assign shortest_value = 100
@@ -311,19 +310,15 @@
         -%}
         {%- if settings.swatches_enable -%}
           {% assign is_swatch_option = false %}
-
           {% if option.values.first.swatch != null %}
-            {% comment %} New swatch {% endcomment %}
             {% assign is_swatch_option = true %}
           {% else %}
-            {%- comment -%} Determine if current option matches swatch handle translations {%- endcomment -%}
             {%- capture swatch_translation -%}{{ 'general.swatches.color' | t }} {%- endcapture -%}
             {%- assign translation_array = swatch_translation | append: ',' | split: "," | uniq -%}
             {%- assign option_handle = option.name | downcase | lstrip | rstrip | escape_once -%}
             {%- for translation in translation_array -%}
               {%- assign translation_handle = translation | downcase | lstrip | rstrip | escape_once -%}
               {%- if translation_handle == option_handle -%}
-                {% comment %} Old swatch {% endcomment %}
                 {%- assign is_swatch_option = true -%}
                 {%- break -%}
               {%- endif -%}
@@ -338,17 +333,19 @@
         >
           {%- if variant_style == 'button' or is_swatch_option -%}
             <fieldset class="radio__fieldset">
-              <legend class="radio__legend" aria-label="{{ option.name | escape_once }}" style="width: 100%; margin-bottom: 10px;">
+              <legend class="radio__legend" aria-label="{{ option.name | escape_once }}" style="width: 100%; margin-bottom: 12px; display: block;">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                  <div style="display: flex; gap: 8px; align-items: center;">
-                    <span class="radio__legend__label" style="margin: 0;">{{ option.name | escape_once }}</span>
-                    <span data-option-value data-swapper-target>{{ option.selected_value.name }}</span>
+                  <div style="display: flex; gap: 10px; align-items: center;">
+                    <span class="radio__legend__label" style="margin: 0; text-transform: uppercase;">{{ option.name | escape_once }}</span>
+                    <span data-option-value data-swapper-target style="font-weight: bold; color: #000;">{{ option.selected_value.name }}</span>
                   </div>
 
                   {%- assign option_name_dc = option.name | downcase -%}
                   {%- if option_name_dc contains 'size' -%}
-                    <div class="best-fit-size-chart" style="margin: 0; line-height: 1;">
-                       <a href="javascript:void(0);" class="size-guide-link" style="font-size: 11px; text-decoration: underline; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; color: #333;">Size Guide</a>
+                    <div class="best-fit-size-chart" style="margin: 0;">
+                       <a href="javascript:void(0);" class="size-guide-link" style="font-size: 12px; text-decoration: underline; text-transform: uppercase; font-weight: 600; color: #333; display: flex; align-items: center; gap: 4px;">
+                         Size Guide
+                       </a>
                     </div>
                   {%- endif -%}
                 </div>
@@ -371,91 +368,25 @@
 
                   {%- if is_swatch_option -%}
                     <radio-swatch class="swatch__button{% if settings.swatches_squares %} swatch__button--square{% endif %}">
-                      <input type="radio"
-                        class="
-                          {% if value.variant.available == false %}
-                            sold-out
-                          {% endif %}
-                          {% if value.variant == null %}
-                            unavailable
-                          {% endif %}
-                        "
-                        name="options[{{ option.name | escape_once }}]"
-                        value="{{ value | escape_once }}"
-                        id="{{ input_id }}"
-                        form="{{ uniq_id }}"
-                        @change="
-                          {% if value.product_url %}
-                            window.location.href = '{{- value.product_url -}}';
-                          {% elsif has_alt_text_filtered_images %}
-                            window.location.href = '{{- request.origin | append: variant_url -}}';
-                          {% else %}
-                            changeVariant('{{- request.origin | append: variant_url -}}', {{- value.variant.id | json -}}, {{- value.variant.featured_media.id | json -}});
-                          {% endif %}
-                        "
-                        {% if value.selected %}
-                          checked
-                        {% endif %}
+                      <input type="radio" class="{% if value.variant.available == false %} sold-out{% endif %}{% if value.variant == null %} unavailable{% endif %}"
+                        name="options[{{ option.name | escape_once }}]" value="{{ value | escape_once }}" id="{{ input_id }}" form="{{ uniq_id }}"
+                        @change="{% if value.product_url %}window.location.href = '{{- value.product_url -}}';{% else %}changeVariant('{{- request.origin | append: variant_url -}}', {{- value.variant.id | json -}}, {{- value.variant.featured_media.id | json -}});{% endif %}"
+                        {% if value.selected %}checked{% endif %}
                       >
-                      <label
-                        for="{{ input_id }}"
-                        data-swapper-hover="{{ value | escape_once }}"
-                        data-morph-skip
-                        {% unless has_alt_text_filtered_images %}
-                          x-intersect.once="preloadVariant('{{- variant_url -}}')"
-                        {% endunless %}
-                        {% if value.swatch != null %}
-                          data-swatch
-                          style="--swatch: {{ value.swatch.color }}"
-                        {% else %}
-                          data-swatch="{{ value | escape_once }}"
-                        {% endif %}
-                      >
-                        {% if value.swatch.image %}
-                          {% render 'image', img_object: value.swatch.image, width: 34, wh_ratio: 1 %}
-                        {% endif %}
+                      <label for="{{ input_id }}" data-swapper-hover="{{ value | escape_once }}" data-morph-skip style="{% if value.swatch != null %}--swatch: {{ value.swatch.color }}{% endif %}">
+                        {% if value.swatch.image %}{% render 'image', img_object: value.swatch.image, width: 34, wh_ratio: 1 %}{% endif %}
                         <span class="visually-hidden value">{{ value | escape_once }}</span>
-                        <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
                       </label>
                     </radio-swatch>
-
                   {%- else -%}
                     <span class="radio__button">
-                      <input
-                        type="radio"
-                        name="options[{{ option.name | escape_once }}]"
-                        value="{{ value | escape_once }}"
-                        id="{{ input_id }}"
-                        form="{{ uniq_id }}"
-                        class="
-                          {% if value.variant.available == false %}
-                            sold-out
-                          {% endif %}
-                          {% if value.variant == null %}
-                            unavailable
-                          {% endif %}
-                        "
-                        @change="
-                          {% if value.product_url %}
-                            window.location.href = '{{- value.product_url -}}';
-                          {% elsif has_alt_text_filtered_images %}
-                            window.location.href = '{{- request.origin | append: variant_url -}}';
-                          {% else %}
-                            changeVariant('{{- request.origin | append: variant_url -}}', {{- value.variant.id | json -}}, {{- value.variant.featured_media.id | json -}});
-                          {% endif %}
-                        "
-                        {% if value.selected %}
-                          checked
-                        {% endif %}
+                      <input type="radio" name="options[{{ option.name | escape_once }}]" value="{{ value | escape_once }}" id="{{ input_id }}" form="{{ uniq_id }}"
+                        class="{% if value.variant.available == false %} sold-out{% endif %}{% if value.variant == null %} unavailable{% endif %}"
+                        @change="changeVariant('{{- request.origin | append: variant_url -}}', {{- value.variant.id | json -}}, {{- value.variant.featured_media.id | json -}});"
+                        {% if value.selected %}checked{% endif %}
                       >
-                      <label
-                        for="{{ input_id }}"
-                        {% unless has_alt_text_filtered_images %}
-                          x-intersect.once="preloadVariant('{{- variant_url -}}')"
-                        {% endunless %}
-                      >
+                      <label for="{{ input_id }}">
                         <span>{{ value | escape_once }}</span>
-                        <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
                       </label>
                     </span>
                   {%- endif -%}
@@ -470,64 +401,22 @@
                   {{ option.name | escape_once }}
                 </span>
               </legend>
-
               <popout-select>
                 <div class="select-popout" data-popout data-popout-prevent="true">
-                  <button type="button" class="select-popout__toggle" aria-expanded="false" aria-controls="{{ uniq_id }}-select-{{ option.name | handle }}-{{ forloop.index }}" aria-labelledby="{{ uniq_id }}-select-{{ option.name | handle }}-label-{{ forloop.index }}" data-popout-toggle>
+                  <button type="button" class="select-popout__toggle" aria-expanded="false" data-popout-toggle>
                     {{ option.selected_value }}
                     {%- render 'icon-core-chevron-down' -%}
                   </button>
-
-                  <ul id="{{ uniq_id }}-select-{{ option.name | handle }}-{{ forloop.index }}" class="select-popout__list" data-popout-list data-scroll-lock-scrollable>
+                  <ul class="select-popout__list" data-popout-list data-scroll-lock-scrollable>
                     {%- for value in option.values -%}
-                      {%- capture variant_url -%}
-                        {%- render 'product-form-variant-url',
-                          product: product,
-                          variant: value.variant,
-                          option_position: option.position,
-                          value_id: value.id
-                        -%}
-                      {%- endcapture -%}
-                      <li class="select-popout__item {% if option.selected_value == value %}select-popout__item--current{% endif %}">
-                        <a
-                          class="
-                            select-popout__option
-                            {% if value.variant.available == false %}
-                              sold-out
-                            {% endif %}
-                            {% if value.variant == null %}
-                              unavailable
-                            {% endif %}
-                          "
-                          {% if value.product_url %}
-                            href="{{ value.product_url }}"
-                          {% else %}
-                            href="{{ variant_url }}"
-                            {% unless has_alt_text_filtered_images %}
-                              @click.prevent="changeVariant('{{- request.origin | append: variant_url -}}', {{- value.variant.id | json -}}, {{- value.variant.featured_media.id | json -}});"
-                              x-intersect.once="preloadVariant('{{- variant_url -}}')"
-                            {% endunless %}
-                          {% endif %}
-                          {% if option.selected_value == value -%}aria-current="true"{%- endif -%}
-                          data-value="{{ value | escape_once }}" data-popout-option
-                        >
-                          <span>
-                            {{ value | escape_once }}
-                          </span>
+                      <li class="select-popout__item">
+                        <a class="select-popout__option" href="#" @click.prevent="changeVariant('{{- request.origin | append: variant_url -}}', {{- value.variant.id | json -}}, {{- value.variant.featured_media.id | json -}});">
+                          <span>{{ value | escape_once }}</span>
                         </a>
                       </li>
                     {%- endfor -%}
                   </ul>
-
-                  <input
-                    type="hidden"
-                    name="options[{{ option.name | escape_once }}]"
-                    id="{{ input_id }}"
-                    value="{{ option.selected_value | escape_once }}"
-                    form="{{ uniq_id }}"
-                    data-popout-input
-                    data-single-option-selector
-                    data-index="option{{ option.position }}"/>
+                  <input type="hidden" name="options[{{ option.name | escape_once }}]" id="{{ input_id }}" value="{{ option.selected_value | escape_once }}" form="{{ uniq_id }}" data-popout-input/>
                 </div>
               </popout-select>
             </fieldset>
