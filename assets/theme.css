@@ -26305,20 +26305,21 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* 1. Hide the UNSTITCH button everywhere except where sizes exist */
-.radio__button:has([value*="NSTITCH"]), 
-[data-value*="NSTITCH"] {
+/* 1. Hide the UNSTITCH button globally - very fast selector */
+[data-value*="NSTITCH"], 
+input[value*="NSTITCH"] + label {
     display: none !important;
 }
 
-/* 2. Hide the SIZE heading ONLY if it is immediately followed by the hidden unstitch button */
-.radio__fieldset:not(:has(input[value*="S"], input[value*="M"], input[value*="L"])) .radio__legend {
+/* 2. SMART HIDE: Hide the entire SIZE row ONLY if it doesn't contain real sizes */
+/* This prevents the "SIZE" text and empty gaps from showing on Unstitched items */
+.selector-wrapper:not(:has(input[value="S"], input[value="M"], input[value="L"], input[value="XS"])) {
     display: none !important;
 }
 
-/* 3. Collapse extra spacing for unstitched products */
-.product__block__variants:not(:has(input[value*="S"])) {
-    margin-bottom: 0 !important;
+/* 3. OPTIONAL: Extra safety to collapse any leftover padding on Unstitched items */
+.product__block__variants:not(:has(input[value="S"])) {
     padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
 }
   
