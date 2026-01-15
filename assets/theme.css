@@ -26324,29 +26324,34 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* 1. Create a boundary around the Size section so the guide doesn't float away */
-.selector-wrapper {
+/* 1. Force the container to handle items side-by-side */
+.selector-wrapper.js {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
     position: relative !important;
-    display: block;
-    width: 100%;
 }
 
-/* 2. Position the Size Guide specifically within that section */
+/* 2. Fix the Label width so the guide can sit next to it */
+.radio__fieldset {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+}
+
+/* 3. Target the Size Guide wrapper specifically */
 .best-fit-size-chart {
-    position: absolute !important;
-    top: 5px !important; /* Adjust this to move it up/down slightly */
-    right: 0 !important;
     margin: 0 !important;
-    width: auto !important;
-    z-index: 10;
+    padding: 0 !important;
+    order: 2 !important; /* Forces it to the right */
 }
 
-/* 3. Style the button to be clean text */
-.scr-open-size-chart {
-    background: none !important;
-    border: none !important;
-    padding: 0 !important;
-    text-decoration: underline !important;
-    font-size: 13px !important;
-    cursor: pointer;
+/* 4. Ensure the XS, S, M, L buttons stay on their own row below */
+.radio__inputs {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
 }
