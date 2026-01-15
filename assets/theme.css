@@ -26325,25 +26325,26 @@ button[aria-label*="sold out"] {
 }
 
 
-/* Compact Notify Me Fix */
+/* 1. Global Notify Me Button Style */
 a.BIS_trigger.bis-collection-button.product-card__name {
     display: flex !important;
     align-items: center;
     justify-content: center;
     white-space: nowrap !important;
     text-transform: uppercase;
-    height: 44px !important; /* Large height for simple cards */
-    font-size: 13px !important;
     left: 8px !important;
     right: 8px !important;
+    height: 44px !important; /* Makes the main box taller */
+    font-size: 13px !important;
 }
 
-/* Specific Smaller Text for Recently Viewed & Mobile */
+/* 2. Smaller adjustments for Recently Viewed & Mobile */
 .recently-viewed a.BIS_trigger, 
+[id*="recently-viewed"] a.BIS_trigger,
 @media (max-width: 768px) {
     a.BIS_trigger.bis-collection-button.product-card__name {
-        font-size: 9px !important;
-        height: 32px !important; /* Smaller box for mobile/recently viewed */
+        font-size: 9px !important;  /* Shrinks heading text */
+        height: 30px !important;    /* Slimmer box for small cards */
         left: 5px !important;
         right: 5px !important;
     }
