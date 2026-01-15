@@ -189,7 +189,8 @@
       {%- for filter_value in filter.active_values -%}
         {%- assign filter_count = filter_count | plus: 1 -%}
         <a class="active-filter-tag" href="{{ filter_value.url_to_remove }}" data-filter-update-url>
-          {{ filter_value.label | downcase | capitalize }} <span class="filter-x">✕</span>
+          {% comment %} {{ filter_value.label | downcase | capitalize }} <span class="filter-x">✕</span> {% endcomment %}
+        {% if filter_value.label.size <= 2 %}{{ filter_value.label | upcase }}{% else %}{{ filter_value.label | downcase | capitalize }}{% endif %}
         </a>
       {%- endfor -%}
     {%- endif -%}
