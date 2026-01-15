@@ -26305,7 +26305,7 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* only hides the section if NO sizes (XS to XL) are present */
+/* only hides unstitch from product detail page */
 [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
@@ -26318,12 +26318,13 @@ input[value="UNSTITCH" i] + label {
     padding: 0 !important;
 }
 
+/* hides sold out from product detail page */
 button[aria-label*="Sold Out"], 
 button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* Moves Size Guide to the same line as the Size Label */
+/* moves Size Guide to the same line as the Size Label */
 .variant-wrapper {
     display: flex !important;
     justify-content: space-between;
@@ -26331,7 +26332,7 @@ button[aria-label*="sold out"] {
     flex-wrap: wrap;
 }
 
-/* Ensures the size guide link doesn't add extra spacing */
+/* ensures the size guide link doesn't add extra spacing */
 .size-chart__standalone {
     margin: 0 !important;
 }
