@@ -1,4 +1,4 @@
-<!-- /snippets/product-variant-options.liquid -->
+{% comment %} <!-- /snippets/product-variant-options.liquid -->
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
 
@@ -264,8 +264,8 @@
       {%- endfor -%}
     </div>
   {%- endunless -%}
-</div> 
-{% comment %} {%- assign current_variant = product.selected_or_first_available_variant -%}
+</div> {% endcomment %}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
 
 <div class="product__block__variants"
   style="
@@ -432,4 +432,4 @@
       {%- endfor -%}
     </div>
   {%- endunless -%}
-</div> {% endcomment %}
+</div>
