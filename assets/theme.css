@@ -26323,6 +26323,11 @@ button[aria-label*="Sold Out"],
 button[aria-label*="sold out"] {
     display: none !important;
 }
+.product-info:has(button[disabled], .BIS_trigger, [aria-label*="Sold Out" i]) .product__block__quantity,
+button[aria-label*="Sold Out" i], 
+.BIS_trigger.bis-collection-button {
+    display: none !important;
+}
 
 /* Notify Me Button Fix */
 a.BIS_trigger.bis-collection-button.product-card__name {
