@@ -26324,34 +26324,3 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* 1. Force the container to handle items side-by-side */
-.selector-wrapper.js {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    position: relative !important;
-}
-
-/* 2. Fix the Label width so the guide can sit next to it */
-.radio__fieldset {
-    width: 100% !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    margin-bottom: 10px !important;
-}
-
-/* 3. Target the Size Guide wrapper specifically */
-.best-fit-size-chart {
-    margin: 0 !important;
-    padding: 0 !important;
-    order: 2 !important; /* Forces it to the right */
-}
-
-/* 4. Ensure the XS, S, M, L buttons stay on their own row below */
-.radio__inputs {
-    width: 100% !important;
-    display: flex !important;
-    flex-wrap: wrap !important;
-}
