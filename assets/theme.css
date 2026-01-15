@@ -26305,21 +26305,21 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* 1. Hide the UNSTITCH button globally - very fast selector */
+/* 1. Global: Instantly hide any button containing the word UNSTITCH */
 [data-value*="NSTITCH"], 
 input[value*="NSTITCH"] + label {
     display: none !important;
 }
 
-/* 2. SMART HIDE: Hide the entire SIZE row ONLY if it doesn't contain real sizes */
-/* This prevents the "SIZE" text and empty gaps from showing on Unstitched items */
-.selector-wrapper:not(:has(input[value="S"], input[value="M"], input[value="L"], input[value="XS"])) {
+/* 2. Logic: Hide the entire SIZE section if standard sizes are missing */
+/* This specifically looks for XS, S, M, L, and XL */
+.selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
     display: none !important;
 }
 
-/* 3. OPTIONAL: Extra safety to collapse any leftover padding on Unstitched items */
-.product__block__variants:not(:has(input[value="S"])) {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
+/* 3. Spacing: Force the variant block to collapse to 0px if no sizes exist */
+.product__block__variants:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
+    margin: 0 !important;
+    padding: 0 !important;
 }
   
