@@ -26323,9 +26323,7 @@ button[aria-label*="Sold Out"],
 button[aria-label*="sold out"] {
     display: none !important;
 }
-
-
-/* 1. Global Notify Me Button Style */
+/* 1. MAIN COLLECTION: Tall box, bigger text */
 a.BIS_trigger.bis-collection-button.product-card__name {
     display: flex !important;
     align-items: center;
@@ -26334,17 +26332,24 @@ a.BIS_trigger.bis-collection-button.product-card__name {
     text-transform: uppercase;
     left: 8px !important;
     right: 8px !important;
-    height: 44px !important; /* Makes the main box taller */
+    height: 44px !important;
     font-size: 13px !important;
 }
 
-/* 2. Smaller adjustments for Recently Viewed & Mobile */
-.recently-viewed a.BIS_trigger, 
-[id*="recently-viewed"] a.BIS_trigger,
+/* 2. RECENTLY VIEWED: Small text, slim box (Desktop) */
+.recently-viewed a.BIS_trigger.bis-collection-button.product-card__name,
+[id*="recently-viewed"] a.BIS_trigger.bis-collection-button.product-card__name {
+    font-size: 9px !important;
+    height: 30px !important;
+    left: 4px !important;
+    right: 4px !important;
+}
+
+/* 3. MOBILE: Your preferred small settings */
 @media (max-width: 768px) {
     a.BIS_trigger.bis-collection-button.product-card__name {
-        font-size: 8px !important;  /* Shrinks heading text */
-        height: 30px !important;    /* Slimmer box for small cards */
+        font-size: 8px !important;
+        height: 30px !important;
         left: 2px !important;
         right: 2px !important;
     }
