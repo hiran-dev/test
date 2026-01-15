@@ -196,20 +196,19 @@
   {%- endfor -%}
 {%- endcapture -%}
 
-{%- comment -%} 
-  REMOVED the "is-hidden" Liquid class so the container is always present in the HTML 
-  for the AJAX script to find and update.
-{%- endcomment -%}
 <div class="active-filters-wrapper">
-  <div class="active-filters-inner">
-    
+  <div class="active-filters-inner" data-active-filters>
+    {%- comment -%} 
+      Moving the count INSIDE the data-active-filters container 
+      forces the AJAX script to update the number of products found.
+    {%- endcomment -%}
     {%- if show_products_count -%}
       <div class="active-filters-count-block">
-        {{ collection.products_count }} Products Found
+        {{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }} Found
       </div>
     {%- endif -%}
 
-    <div class="active-filters-list-container" data-active-filters>
+    <div class="active-filters-list-container">
       {{- filter_tags -}}
 
       {%- if filter_count > 0 -%}
@@ -218,18 +217,15 @@
         </a>
       {%- endif -%}
     </div>
-    
   </div>
 </div>
 
 <style>
-/* 1. SMART VISIBILITY LOGIC */
-/* If there are no active filter tags, hide the entire bar automatically */
+/* --- Keep your existing CSS below --- */
 .active-filters-wrapper:not(:has(.active-filter-tag)) {
   display: none !important;
 }
 
-/* 2. LAYOUT & STYLING */
 .active-filters-inner {
   display: flex;
   align-items: center;
@@ -282,32 +278,18 @@
   transition: opacity 0.2s ease;
 }
 
-.active-filters-clear-black:hover {
-  opacity: 0.8;
-}
-
-/* 3. MOBILE RESPONSIVENESS */
 @media screen and (max-width: 767px) {
   .active-filters-inner {
     flex-wrap: wrap;
     overflow-x: visible;
-    gap: 10px;
   }
-
   .active-filters-count-block {
     font-size: 11px;
     padding-right: 10px;
-    margin-bottom: 4px;
+    border-right: 1px solid #d1d1d1;
   }
-
   .active-filters-list-container {
     flex-wrap: wrap;
-    width: 100%;
-  }
-
-  .active-filter-tag {
-    font-size: 11px;
-    padding: 3px 8px;
   }
 }
 </style>
