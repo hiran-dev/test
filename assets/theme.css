@@ -26333,7 +26333,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
     white-space: nowrap !important;
     text-transform: uppercase;
     height: 44px !important; /* Large height for simple cards */
-    font-size: 14px !important;
+    font-size: 13px !important;
     left: 8px !important;
     right: 8px !important;
 }
