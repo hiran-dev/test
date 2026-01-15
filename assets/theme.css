@@ -26329,7 +26329,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
     height: auto !important; /* Removes the fixed 44px height */
     line-height: normal !important; /* Fixes the text vertical alignment */
     padding: 6px 10px !important; /* Makes the button compact */
-    font-size: 10px !important; /* Smaller text to match your site style */
+    font-size: 12px !important; /* Smaller text to match your site style */
     left: 15% !important; /* Narrows the button so it's not full-width */
     right: 15% !important;
     bottom: 8px !important; /* Keeps it slightly off the bottom edge */
