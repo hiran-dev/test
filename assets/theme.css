@@ -26324,29 +26324,3 @@ button[aria-label*="sold out"] {
     display: none !important;
 }
 
-/* Shrink the Notify Me button on Collection/Recently Viewed cards */
-a.BIS_trigger.bis-collection-button.product-card__name {
-    height: auto !important; /* Removes the fixed 44px height */
-    line-height: normal !important; /* Fixes the text vertical alignment */
-    padding: 6px 10px !important; /* Makes the button compact */
-    font-size: 10px !important; /* Smaller text to match your site style */
-    left: 15% !important; /* Narrows the button so it's not full-width */
-    right: 15% !important;
-    bottom: 8px !important; /* Keeps it slightly off the bottom edge */
-    min-height: unset !important;
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    line-height:20px;
-    text-align: center;
-}
-
-/* Adjust for mobile screens so it stays legible */
-@media screen and (max-width: 768px) {
-    a.BIS_trigger.bis-collection-button.product-card__name {
-        left: 5% !important;
-        right: 5% !important;
-        font-size: 9px !important;
-        padding: 4px 6px !important;
-    }
-}
