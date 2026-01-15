@@ -26300,10 +26300,15 @@ a.siblings__more-link {
 .\[\&\>svg\]\:inline-block>svg{
   display: inline-block;
 }
-/* hiding from cart drawer */
+/* hiding whatsapp and desktop icons from cart drawer */
 .drawer--right .whatsapp-subscribe,
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
 
+  /* Hide the 'Unstitch' option button specifically */
+[data-value="UNSTITCH"], 
+[data-value="Unstitch"] {
+    display: none !important;
+}
 
