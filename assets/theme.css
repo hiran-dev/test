@@ -22540,7 +22540,7 @@ a.product__form__link:after {
   justify-content: flex-end;
 }
 /* ================ Cart page mobile ================ */
-/* @media only screen and (max-width: 767px) {
+@media only screen and (max-width: 767px) {
   .template__cart__footer {
     display: grid;
     grid-template-areas: "product" "total" "checkout" "shipping" "update" "notes" "additional";
@@ -22548,34 +22548,7 @@ a.product__form__link:after {
     grid-template-rows: auto;
     grid-column-gap: 0;
     grid-row-gap: 10px;
-  } */
-   @media only screen and (min-width: 768px) {
-  .template__cart__footer {
-    display: grid;
-    /* We consolidate the right side into the 'total' and 'checkout' areas */
-    grid-template-areas: 
-      "product product total total" 
-      "notes notes checkout checkout" 
-      "shipping shipping . .";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    align-items: start;
   }
-
-  /* Force the checkout button and total text to align to the right edge */
-  .cart__footer__total, 
-  .cart__footer__checkout {
-    text-align: end;
-    justify-self: end;
-    width: 100%;
-  }
-
-  /* Ensure the button doesn't stretch to the full grid width unless desired */
-  .cart__footer__checkout .checkout__button {
-    width: auto;
-    min-width: 200px;
-    margin-top: 10px; /* Space between the text and button */
-  }
-}
   .template__cart__footer .drawer__bottom__shipping {
     margin-top: 15px;
   }
