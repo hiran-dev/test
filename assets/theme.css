@@ -22564,8 +22564,7 @@ a.product__form__link:after {
     grid-template-rows: auto;
     grid-column-gap: 0;
     grid-row-gap: 10px;
-    position: relative; /* Change from fixed to relative */
-    padding: 15px;
+    
   }
   .template__cart__footer .drawer__bottom__shipping {
     margin-top: 15px;
