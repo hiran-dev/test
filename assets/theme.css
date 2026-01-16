@@ -22422,7 +22422,7 @@ a.product__form__link:after {
   grid-column-end: title;
 }
 /* ================ Cart page footer ================ */
-.template__cart__footer {
+/* .template__cart__footer {
   margin-top: 2em;
   display: grid;
   grid-template-areas: "product product total total" "notes notes update checkout" "shipping shipping empty empty";
@@ -22431,17 +22431,51 @@ a.product__form__link:after {
   grid-column-gap: var(--gutter);
   grid-row-gap: 10px;
   margin-bottom: -10px;
-  /* Add these lines to fix it to the bottom */
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #f8f8f8; /* Ensures the cart items don't show through the footer */
-  padding: 20px;            /* Adds breathing room inside the fixed bar */
-  margin-bottom: 0;         /* Overrides your -10px margin */
-  box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
+  background-color: #f8f8f8; 
+  padding: 20px;           
+  margin-bottom: 0;         
+  box-sizing: border-box;  
+} */
+ .template__cart__footer {
+  margin-top: 2em;
+  display: grid;
+  /* UPDATED AREAS: This puts total and checkout in the same right-hand columns */
+  grid-template-areas: 
+    "notes notes total total" 
+    "notes notes checkout checkout" 
+    "shipping shipping . .";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-column-gap: var(--gutter);
+  grid-row-gap: 5px; /* Reduced gap to keep button close to text */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #f8f8f8;
+  padding: 20px;
+  margin-bottom: 0;
+  box-sizing: border-box;
+}
+
+/* ADD THIS BELOW THE FOOTER BLOCK TO FIX THE ALIGNMENT */
+.cart__footer__checkout {
+  grid-area: checkout;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cart__footer__checkout .checkout__button {
+  width: 280px; /* Set a specific size so it's not "big and bad" */
 }
 
 .template__cart__footer .upsell__holder {
