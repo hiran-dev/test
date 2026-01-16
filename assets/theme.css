@@ -22540,7 +22540,7 @@ a.product__form__link:after {
   justify-content: flex-end;
 }
 /* ================ Cart page mobile ================ */
-/* @media only screen and (max-width: 767px) {
+@media only screen and (max-width: 767px) {
   .template__cart__footer {
     display: grid;
     grid-template-areas: "product" "total" "checkout" "shipping" "update" "notes" "additional";
@@ -22548,41 +22548,7 @@ a.product__form__link:after {
     grid-template-rows: auto;
     grid-column-gap: 0;
     grid-row-gap: 10px;
-  } */
-   @media only screen and (min-width: 768px) {
-  .template__cart__footer {
-    display: grid;
-    /* Consolidate the right side so 'total' and 'checkout' are in the same vertical track */
-    grid-template-areas: 
-      "notes notes total total"
-      "shipping shipping checkout checkout"
-      "additional additional . .";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-row-gap: 15px; /* Adjust spacing between text and button */
-    align-items: end;
   }
-
-  /* Target the right-aligned sections */
-  .cart__footer__total, 
-  .cart__footer__checkout {
-    grid-column: 3 / 5; /* Forces them into the same right-hand columns */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; /* Aligns content to the right edge */
-    text-align: right;
-    width: 100%;
-  }
-
-  /* Style the button specifically to sit right under the text */
-  .template__cart__footer .cart__footer__checkout {
-    margin-top: 5px; /* Tightens the gap between the text and the button */
-  }
-
-  .cart__template .checkout__button {
-    width: 100%; /* Makes button fill the allocated area */
-    max-width: 400px; /* Limits size so it doesn't look too stretched */
-  }
-}
   .template__cart__footer .drawer__bottom__shipping {
     margin-top: 15px;
   }
