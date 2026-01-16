@@ -22438,7 +22438,7 @@ a.product__form__link:after {
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #ffffff; /* Ensures the cart items don't show through the footer */
+  background-color: #f8f8f8; /* Ensures the cart items don't show through the footer */
   padding: 20px;            /* Adds breathing room inside the fixed bar */
   box-shadow: 0 -5px 15px rgba(0,0,0,0.05); /* Optional: adds a soft shadow above the bar */
   margin-bottom: 0;         /* Overrides your -10px margin */
