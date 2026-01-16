@@ -22422,97 +22422,27 @@ a.product__form__link:after {
   grid-column-end: title;
 }
 /* ================ Cart page footer ================ */
-/* ================ Compact Fixed Cart Footer ================ */
 .template__cart__footer {
-  /* Positioning & Fixation */
+  margin-top: 2em;
+  display: grid;
+  grid-template-areas: "product product total total" "notes notes update checkout" "shipping shipping empty empty";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-column-gap: var(--gutter);
+  grid-row-gap: 10px;
+  margin-bottom: -10px;
+  /* Add these lines to fix it to the bottom */
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #ffffff;
-  box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
-  box-sizing: border-box;
-  
-  /* Compact Spacing */
-  padding: 10px 40px; 
-  margin: 0 !important;
-
-  /* Flatten Grid to a Single Row */
-  display: grid;
-  align-items: center;
-  grid-template-areas: "notes total checkout";
-  grid-template-columns: 1.5fr 1fr 1fr;
-  grid-column-gap: 30px;
-}
-
-/* Slimming the Instructions Box */
-.template__cart__footer .cart__footer__notes {
-  grid-area: notes;
-}
-
-.template__cart__footer .cart__footer__notes textarea {
-  min-height: 40px !important; /* Forces a slim height */
-  height: 40px;
-  margin: 0;
-  padding: 8px;
-  font-size: 13px;
-}
-
-/* Hide labels/extra info to save vertical space */
-.template__cart__footer .cart__footer__shipping,
-.template__cart__footer .upsell__holder,
-.template__cart__footer .cart_notes_label,
-.template__cart__footer .cart__footer__small {
-  display: none !important;
-}
-
-/* Aligning Total and Checkout */
-.template__cart__footer .cart__footer__total {
-  grid-area: total;
-  text-align: right;
-}
-
-.template__cart__footer .cart__footer__checkout {
-  grid-area: checkout;
-  text-align: right;
-}
-
-.template__cart__footer .cart__footer__label {
-  font-size: 11px;
-  text-transform: uppercase;
-  display: block;
-}
-
-.template__cart__footer .cart__footer__value {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-/* ================ Mobile Optimization ================ */
-@media only screen and (max-width: 767px) {
-  .template__cart__footer {
-    grid-template-areas: "total checkout";
-    grid-template-columns: 1fr 1fr;
-    padding: 10px 15px;
-  }
-
-  /* Hide notes on mobile to keep the screen clear */
-  .template__cart__footer .cart__footer__notes {
-    display: none;
-  }
-
-  .template__cart__footer .cart__footer__total {
-    text-align: left;
-  }
-}
-
-/* ================ Page Buffer ================ */
-/* Ensures the last item in the cart isn't hidden by the bar */
-.cart__template, 
-#MainContent {
-  padding-bottom: 100px !important;
+  background-color: #ffffff; /* Ensures the cart items don't show through the footer */
+  padding: 20px;            /* Adds breathing room inside the fixed bar */
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.05); /* Optional: adds a soft shadow above the bar */
+  margin-bottom: 0;         /* Overrides your -10px margin */
+  box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
 }
 
 .template__cart__footer .upsell__holder {
