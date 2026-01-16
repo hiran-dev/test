@@ -22431,7 +22431,21 @@ a.product__form__link:after {
   grid-column-gap: var(--gutter);
   grid-row-gap: 10px;
   margin-bottom: -10px;
+  /* Add these lines to fix it to the bottom */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff; /* Ensures the cart items don't show through the footer */
+  padding: 20px;            /* Adds breathing room inside the fixed bar */
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.05); /* Optional: adds a soft shadow above the bar */
+  margin-bottom: 0;         /* Overrides your -10px margin */
+  box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
 }
+}
+
 .template__cart__footer .upsell__holder {
   grid-area: product;
   align-self: flex-start;
