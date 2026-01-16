@@ -22444,8 +22444,6 @@ a.product__form__link:after {
   box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
 }
 
-
-
 .template__cart__footer .upsell__holder {
   grid-area: product;
   align-self: flex-start;
@@ -22609,7 +22607,6 @@ a.product__form__link:after {
     display: block;
   }
 }
-
 /* ================ No Ajax update animation ================ */
 .cart__update {
   display: none;
