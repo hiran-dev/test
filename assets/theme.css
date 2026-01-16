@@ -22422,7 +22422,7 @@ a.product__form__link:after {
   grid-column-end: title;
 }
 /* ================ Cart page footer ================ */
-/* .template__cart__footer {
+.template__cart__footer {
   margin-top: 2em;
   display: grid;
   grid-template-areas: "product product total total" "notes notes update checkout" "shipping shipping empty empty";
@@ -22431,34 +22431,20 @@ a.product__form__link:after {
   grid-column-gap: var(--gutter);
   grid-row-gap: 10px;
   margin-bottom: -10px;
+  /* Add these lines to fix it to the bottom */
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #f8f8f8;
-  padding: 20px;          
-  margin-bottom: 0;        
-  box-sizing: border-box;   
-} */
- .template__cart__footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #ffffff; /* Use pure white or your site background */
-  padding: 20px;
-  box-sizing: border-box;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.1); /* Optional: adds a nice shadow to separate it */
-  margin-top: 0; /* Margin top doesn't work on fixed elements */
+  background-color: #f8f8f8; /* Ensures the cart items don't show through the footer */
+  padding: 20px;            /* Adds breathing room inside the fixed bar */
+  margin-bottom: 0;         /* Overrides your -10px margin */
+  box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
 }
 
-.cart__template { 
-    padding-bottom: 300px; /* Adjust this value based on the footer height */
-}
+
 
 .template__cart__footer .upsell__holder {
   grid-area: product;
@@ -22564,7 +22550,6 @@ a.product__form__link:after {
     grid-template-rows: auto;
     grid-column-gap: 0;
     grid-row-gap: 10px;
-    
   }
   .template__cart__footer .drawer__bottom__shipping {
     margin-top: 15px;
