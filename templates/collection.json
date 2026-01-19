@@ -44,12 +44,12 @@
       "type": "collection-sub",
       "settings": {
         "subcollections": [
+          "new-in-unstitched",
+          "ready-to-wear",
+          "luxury-pret",
           "ss-25-rtw-exclusive-co-ords-edit-4",
-          "ss-25-rtw-eml-basic-edit-5",
-          "aw-25-rtw-emb-cambric-edit-1",
-          "azadi-special",
-          "azadisale",
-          "daily-jacquard-collection"
+          "foot-wear",
+          "accessories"
         ],
         "limit": 12,
         "select_image": "collection",
