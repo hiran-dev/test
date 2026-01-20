@@ -26443,3 +26443,14 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   transition: background-color 0.2s ease; 
   text-decoration: none !important;
 }
+/* Safety fix: Ensure the header is always the top layer */
+.site-header, #shopify-section-header {
+  z-index: 2000 !important;
+  position: sticky !important;
+  top: 0;
+}
+
+/* Ensure the sidebar starts below the header area */
+.drawer, .filter-drawer {
+  z-index: 1900 !important;
+}
