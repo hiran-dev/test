@@ -22442,43 +22442,7 @@ a.product__form__link:after {
   margin-bottom: 0;        
   box-sizing: border-box;   
 } */
- .template__cart__footer {
-  margin-top: 2em;
-  display: grid !important;
-  /* We redefine the areas to stack total, checkout, and shipping in the same right-hand column */
-  grid-template-areas: 
-    "notes notes total total" 
-    "notes notes checkout checkout" 
-    "notes notes shipping shipping";
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-row-gap: 5px !important; /* This is the "magic" number that pulls them together */
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #f8f8f8;
-  padding: 15px 40px;
-  box-sizing: border-box;
-}
-
-/* Ensure these three always stay aligned to the right edge */
-.template__cart__footer .cart__footer__total,
-.template__cart__footer .cart__footer__checkout,
-.template__cart__footer .cart__footer__shipping {
-  text-align: right !important;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-/* Fixes the width of the checkout button so it doesn't stretch too wide */
-.template__cart__footer .cart__footer__checkout .button {
-  width: auto !important;
-  min-width: 200px;
-}
+ 
 
 .template__cart__footer .upsell__holder {
   grid-area: product;
