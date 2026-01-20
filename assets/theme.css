@@ -26366,22 +26366,27 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 2px !important;
     }
 }
-/* Add cross icon to active filters */
-.active-facets__button-inner::after, 
-.facets__active_filter-control::after,
-.filter-tag--active::after {
-  content: ' \00d7'; /* The Unicode for the multiplied cross symbol */
+/* Specifically for Pipeline Theme Active Filter Cross Icons */
+.active-filter::after, 
+.active-facets__button::after,
+.facet-tag__remove::after,
+[data-facet-remove]::after {
+  content: '\00d7'; /* Unicode for Multiplication Sign (Cross) */
   margin-left: 8px;
   font-weight: bold;
-  font-size: 14px;
-  line-height: 1;
-  vertical-align: middle;
+  font-size: 1.1em;
   display: inline-block;
+  line-height: 1;
 }
 
-/* Ensure the button looks clickable */
-.active-facets__button, .active-facets__button-wrapper a {
-  text-decoration: none !important;
+/* Optional: Styling the button to look better with the icon */
+.active-filter, .active-facets__button {
   display: inline-flex;
   align-items: center;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: 1px solid #e8e8e8;
+  border-radius: 2px;
+  text-decoration: none !important;
+  color: inherit;
 }
