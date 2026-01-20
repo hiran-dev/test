@@ -321,7 +321,7 @@
         "show_recently_viewed": true,
         "product_recently_limit": 6,
         "product_recently_minimum": 4,
-        "product_recently_heading": "Recently viewed",
+        "product_recently_heading": "",
         "width": "wrapper--full",
         "padding_top": 36,
         "padding_bottom": 36
