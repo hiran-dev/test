@@ -22431,7 +22431,7 @@ a.product__form__link:after {
   grid-column-gap: var(--gutter);
   grid-row-gap: 10px;
   margin-bottom: -10px;
-  position: fixed;
+  position: Relative;
   bottom: 0;
   left: 0;
   right: 0;
