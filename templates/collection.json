@@ -43,16 +43,8 @@
     "subcollections": {
       "type": "collection-sub",
       "settings": {
-        "subcollections": [
-          "new-in-unstitched",
-          "ready-to-wear",
-          "luxury-pret",
-          "ss-25-rtw-exclusive-co-ords-edit-4",
-          "foot-wear",
-          "accessories"
-        ],
         "limit": 12,
-        "select_image": "collection",
+        "select_image": "product",
         "width": "wrapper",
         "padding_top": 20,
         "padding_bottom": 0
