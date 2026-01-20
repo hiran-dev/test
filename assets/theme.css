@@ -26366,11 +26366,10 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 2px !important;
     }
 }
-/* Add the cross icon to active filter tags in Pipeline theme */
+/* Add the cross icon to active filter tags  */
 .active-filter-tag::after {
   content: '\00d7'; /* Unicode for the × symbol */
   margin-left: 10px;
-  font-weight: bold;
   font-size: 16px;
   line-height: 1;
   display: inline-block;
