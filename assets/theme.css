@@ -22479,10 +22479,8 @@ a.product__form__link:after {
   align-self: start;
 }
 
-/* Add a tiny bit of breathing room above the button itself */
-.template__cart__footer .cart__footer__checkout {
-  padding-top: 4px !important;
-}
+
+
 /* Mobile-specific fix for the cart footer */
 @media screen and (max-width: 767px) {
   .template__cart__footer {
@@ -22514,6 +22512,9 @@ a.product__form__link:after {
     margin-top: 10px !important;
   }
 }
+
+
+
 
 .template__cart__footer .upsell__holder {
   grid-area: product;
