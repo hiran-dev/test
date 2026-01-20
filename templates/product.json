@@ -310,7 +310,7 @@
     "related": {
       "type": "related",
       "settings": {
-        "heading": "You Might Also Like",
+        "heading": "",
         "bg": "palette--light bg--neutral",
         "grid_large": 4,
         "grid_medium": 3,
