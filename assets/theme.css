@@ -26366,27 +26366,26 @@ a.BIS_trigger.bis-collection-button.product-card__name {
         right: 2px !important;
     }
 }
-/* Specifically for Pipeline Theme Active Filter Cross Icons */
-.active-filter::after, 
-.active-facets__button::after,
-.facet-tag__remove::after,
-[data-facet-remove]::after {
-  content: '\00d7'; /* Unicode for Multiplication Sign (Cross) */
-  margin-left: 8px;
+/* Add the cross icon to active filter tags in Pipeline theme */
+.active-filter-tag::after {
+  content: '\00d7'; /* Unicode for the × symbol */
+  margin-left: 10px;
   font-weight: bold;
-  font-size: 1.1em;
-  display: inline-block;
+  font-size: 16px;
   line-height: 1;
+  display: inline-block;
+  color: #555; /* Matches your current text color */
 }
 
-/* Optional: Styling the button to look better with the icon */
-.active-filter, .active-facets__button {
-  display: inline-flex;
+/* Ensure the tag stays centered and looks like a button */
+.active-filter-tag {
+  display: inline-flex !important;
   align-items: center;
-  padding: 5px 10px;
-  margin-right: 5px;
-  border: 1px solid #e8e8e8;
-  border-radius: 2px;
+  justify-content: center;
   text-decoration: none !important;
-  color: inherit;
+}
+
+/* Change color on hover to show it is clickable */
+.active-filter-tag:hover::after {
+  color: #000;
 }
