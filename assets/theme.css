@@ -22422,7 +22422,7 @@ a.product__form__link:after {
   grid-column-end: title;
 }
 /* ================ Cart page footer ================ */
-/* .template__cart__footer {
+ .template__cart__footer {
   margin-top: 2em;
   display: grid;
   grid-template-areas: "product product total total" "notes notes update checkout" "shipping shipping empty empty";
@@ -22441,48 +22441,8 @@ a.product__form__link:after {
   padding: 20px;            
   margin-bottom: 0;        
   box-sizing: border-box;   
-} */
- .template__cart__footer {
-  margin-top: 2em;
-  display: grid !important;
-  /* This creates two clear columns: one for notes, one for everything else */
-  grid-template-areas: 
-    "notes notes total total" 
-    "notes notes checkout checkout" 
-    "notes notes shipping shipping" !important;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-row-gap: 0px !important; /* This is the key to removing the vertical gap */
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #f8f8f8;
-  padding: 10px 40px !important;
-  box-sizing: border-box;
 }
-
-/* Force the price, button, and shipping text to stay right-aligned and tight */
-.template__cart__footer .cart__footer__total, 
-.template__cart__footer .cart__footer__checkout, 
-.template__cart__footer .cart__footer__shipping {
-  text-align: right !important;
-  justify-self: end !important;
-  margin: 0 !important;
-  padding: 2px 0 !important;
-}
-
-/* Ensure the Special Instructions box stays on the left and looks correct */
-.template__cart__footer .cart__footer__notes {
-  grid-area: notes !important;
-  align-self: start;
-}
-
-/* Add a tiny bit of breathing room above the button itself */
-.template__cart__footer .cart__footer__checkout {
-  padding-top: 8px !important;
-}
+ 
 
 .template__cart__footer .upsell__holder {
   grid-area: product;
