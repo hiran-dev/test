@@ -22444,13 +22444,14 @@ a.product__form__link:after {
 } */
  .template__cart__footer {
   margin-top: 2em;
-  display: grid;
-  /* CHANGE: We put everything into one single row group on the right */
-  grid-template-areas: "notes notes total total" "notes notes checkout checkout" "notes notes shipping shipping";
+  display: grid !important;
+  /* We redefine the areas to stack total, checkout, and shipping in the same right-hand column */
+  grid-template-areas: 
+    "notes notes total total" 
+    "notes notes checkout checkout" 
+    "notes notes shipping shipping";
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto auto auto;
-  grid-column-gap: var(--gutter);
-  grid-row-gap: 2px !important; /* This closes the vertical gap between lines */
+  grid-row-gap: 5px !important; /* This is the "magic" number that pulls them together */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -22458,22 +22459,25 @@ a.product__form__link:after {
   width: 100%;
   z-index: 1000;
   background-color: #f8f8f8;
-  padding: 10px 20px !important;
+  padding: 15px 40px;
   box-sizing: border-box;
 }
 
-/* Force the right-side elements to align strictly to the right */
+/* Ensure these three always stay aligned to the right edge */
 .template__cart__footer .cart__footer__total,
 .template__cart__footer .cart__footer__checkout,
 .template__cart__footer .cart__footer__shipping {
   text-align: right !important;
-  justify-self: end !important;
-  margin: 0 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
 }
 
-/* Bring the button up even more */
-.template__cart__footer .cart__footer__checkout {
-  margin-top: 5px !important;
+/* Fixes the width of the checkout button so it doesn't stretch too wide */
+.template__cart__footer .cart__footer__checkout .button {
+  width: auto !important;
+  min-width: 200px;
 }
 
 .template__cart__footer .upsell__holder {
