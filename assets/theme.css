@@ -22422,7 +22422,7 @@ a.product__form__link:after {
   grid-column-end: title;
 }
 /* ================ Cart page footer ================ */
-.template__cart__footer {
+/* .template__cart__footer {
   margin-top: 2em;
   display: grid;
   grid-template-areas: "product product total total" "notes notes update checkout" "shipping shipping empty empty";
@@ -22437,10 +22437,43 @@ a.product__form__link:after {
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #f8f8f8; /* Ensures the cart items don't show through the footer */
-  padding: 20px;            /* Adds breathing room inside the fixed bar */
-  margin-bottom: 0;         /* Overrides your -10px margin */
-  box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
+  background-color: #f8f8f8; 
+  padding: 20px;            
+  margin-bottom: 0;        
+  box-sizing: border-box;   
+} */
+ .template__cart__footer {
+  margin-top: 2em;
+  display: grid;
+  /* CHANGE: We put everything into one single row group on the right */
+  grid-template-areas: "notes notes total total" "notes notes checkout checkout" "notes notes shipping shipping";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-column-gap: var(--gutter);
+  grid-row-gap: 2px !important; /* This closes the vertical gap between lines */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #f8f8f8;
+  padding: 10px 20px !important;
+  box-sizing: border-box;
+}
+
+/* Force the right-side elements to align strictly to the right */
+.template__cart__footer .cart__footer__total,
+.template__cart__footer .cart__footer__checkout,
+.template__cart__footer .cart__footer__shipping {
+  text-align: right !important;
+  justify-self: end !important;
+  margin: 0 !important;
+}
+
+/* Bring the button up even more */
+.template__cart__footer .cart__footer__checkout {
+  margin-top: 5px !important;
 }
 
 .template__cart__footer .upsell__holder {
