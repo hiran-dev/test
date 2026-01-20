@@ -26368,12 +26368,12 @@ a.BIS_trigger.bis-collection-button.product-card__name {
 }
 /* Add the cross icon to active filter tags  */
 .active-filter-tag::after {
-  content: '\00d7'; /* Unicode for the × symbol */
+  content: '\00d7'; 
   margin-left: 10px;
   font-size: 16px;
   line-height: 1;
   display: inline-block;
-  color: #555; /* Matches your current text color */
+  color: #555; 
 }
 
 /* Ensure the tag stays centered and looks like a button */
