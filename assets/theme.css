@@ -22445,13 +22445,13 @@ a.product__form__link:after {
  .template__cart__footer {
   margin-top: 2em;
   display: grid !important;
-  /* We align the notes on the left and stack everything else on the right */
+  /* This creates two clear columns: one for notes, one for everything else */
   grid-template-areas: 
     "notes notes total total" 
     "notes notes checkout checkout" 
     "notes notes shipping shipping" !important;
-  grid-template-columns: 1.5fr 0.5fr 1fr 1fr !important;
-  grid-row-gap: 0px !important; /* Forces items to touch each other */
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-row-gap: 0px !important; /* This is the key to removing the vertical gap */
   position: fixed;
   bottom: 0;
   left: 0;
@@ -22463,26 +22463,25 @@ a.product__form__link:after {
   box-sizing: border-box;
 }
 
-/* Force the Subtotal and Shipping text to stay tight to the Checkout button */
+/* Force the price, button, and shipping text to stay right-aligned and tight */
 .template__cart__footer .cart__footer__total, 
+.template__cart__footer .cart__footer__checkout, 
 .template__cart__footer .cart__footer__shipping {
+  text-align: right !important;
+  justify-self: end !important;
   margin: 0 !important;
-  padding: 5px 0 !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-  align-self: end !important;
+  padding: 2px 0 !important;
 }
 
-.template__cart__footer .cart__footer__checkout {
-  margin: 5px 0 !important;
-  display: flex !important;
-  justify-content: flex-end !important;
-}
-
-/* Ensure the Notes/Instructions stay on the left without moving */
+/* Ensure the Special Instructions box stays on the left and looks correct */
 .template__cart__footer .cart__footer__notes {
   grid-area: notes !important;
-  padding-right: 20px;
+  align-self: start;
+}
+
+/* Add a tiny bit of breathing room above the button itself */
+.template__cart__footer .cart__footer__checkout {
+  padding-top: 8px !important;
 }
 
 .template__cart__footer .upsell__holder {
