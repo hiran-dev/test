@@ -20237,7 +20237,7 @@ body.focus-enabled .subcollection__link:focus {
   margin: 0 !important;
 }
 .collection-tabs {
-  --offset: 20px;
+  --offset: 50px;
   position: relative;
 }
 @media only screen and (min-width: 480px) {
