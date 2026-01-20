@@ -152,193 +152,117 @@
  {%- comment -%} 
   Keeping your original logic: using the sidebar "Collection List" selector.
 {%- endcomment -%}
-{%- comment -%}
-  1. We look for a menu handle that matches the current page handle (e.g., 'unstitched')
+ 
+{%- comment -%} 
+  1. Pull from the Metafield you created 
 {%- endcomment -%}
-{%- assign sub_menu_handle = collection.handle -%}
-{%- assign sub_menu = linklists[sub_menu_handle] -%}
+{%- assign sub_menu = collection.metafields.custom.sub_menu.value -%}
 
 {%- if sub_menu != blank and sub_menu.links.size > 0 -%}
-<section class="subcollection-circles-section" 
-         style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background-color: transparent;">
-  <div class="{{ section.settings.width }}">
+<section class="{{ section.settings.color_bg }}"
+  style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
     
-    <div class="circle-nav-container">
-      {% for link in sub_menu.links limit: section.settings.limit %}
-        
-        {%- comment -%} Skip the 'View All' link so it doesn't show as a circle {%- endcomment -%}
-        {%- assign link_title_downcase = link.title | downcase -%}
-        {%- if link_title_downcase contains 'view all' -%}{% continue %}{%- endif -%}
+    <div class="{{ section.settings.width }}">
+      <div class="subcollections">
+        {%- comment -%} Standard Flexbox wrapper for scannable circles {%- endcomment -%}
+        <div class="subcollections__inner"
+          style="display: flex; justify-content: center; gap: 20px; flex-wrap: nowrap; overflow-x: auto; padding: 10px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
+          
+          {% for link in sub_menu.links limit: section.settings.limit %}
+            
+            {%- assign link_title_downcase = link.title | downcase -%}
+            {%- if link_title_downcase contains 'view all' -%}{% continue %}{%- endif -%}
 
-        {%- if link.type == 'collection_link' -%}
-          {%- assign sub = link.object -%}
-          <div class="circle-nav-item">
-            <a href="{{ sub.url }}" class="circle-nav-link">
+            {%- if link.type == 'collection_link' -%}
+              {%- assign sub_col = link.object -%}
               
-              <div class="circle-image-container">
-                {%- assign image = sub.image -%}
-                {%- if section.settings.select_image == 'product' or image == blank -%}
-                  {%- assign image = sub.products.first.featured_media.preview_image -%}
-                {%- endif -%}
+              <div class="subcollection__item" style="flex: 0 0 auto; width: 140px; text-align: center;">
+                <a href="{{ sub_col.url }}" style="text-decoration: none; display: block;">
+                  
+                  <div class="circle-img-wrap" style="width: 110px; height: 110px; border-radius: 50%; overflow: hidden; margin: 0 auto 12px; border: 1px solid #e1e1e1; display: flex; align-items: center; justify-content: center; background: #fff;">
+                    {%- assign image = sub_col.image -%}
+                    {%- if section.settings.select_image == 'product' or image == blank -%}
+                      {%- assign image = sub_col.products.first.featured_media.preview_image -%}
+                    {%- endif -%}
 
-                {%- if image != blank -%}
-                  <img src="{{ image | image_url: width: 400 }}" 
-                       alt="{{ sub.title }}" 
-                       class="circle-img"
-                       loading="lazy">
-                {%- else -%}
-                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-                {%- endif -%}
+                    {%- if image != blank -%}
+                       <img src="{{ image | image_url: width: 300, height: 300, crop: 'center' }}" 
+                            alt="{{ sub_col.title }}" 
+                            style="width: 100%; height: 100%; object-fit: cover;"
+                            loading="lazy">
+                    {%- else -%}
+                      {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {%- endif -%}
+                  </div>
+                  
+                  <p style="margin: 0; font-size: 13px; color: #333; font-weight: 500; text-transform: capitalize;">{{ link.title }}</p>
+                </a>
               </div>
-
-              <p class="circle-title">{{ link.title }}</p>
-            </a>
-          </div>
-        {%- endif -%}
-      {% endfor %}
+            {%- endif -%}
+          {% endfor %}
+        </div>
+      </div>
     </div>
-
-  </div>
 </section>
-
-<style>
-  /* I kept your exact CSS below */
-  .circle-nav-container {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 10px 0;
-    scrollbar-width: none;
-  }
-  .circle-nav-container::-webkit-scrollbar { display: none; }
-
-  .circle-nav-item {
-    flex: 0 0 auto;
-    width: 140px;
-    text-align: center;
-  }
-
-  .circle-nav-link {
-    text-decoration: none;
-    display: block;
-  }
-
-  .circle-image-container {
-    width: 110px;
-    height: 110px;
-    margin: 0 auto 12px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 1px solid #e1e1e1;
-    transition: all 0.3s ease;
-    background: #ffffff; 
-    display: flex;
-    align-items: center;     
-    justify-content: center; 
-  }
-
-  .circle-nav-item:hover .circle-image-container {
-    border-color: #000;
-    transform: translateY(-3px);
-  }
-
-  .circle-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    object-position: center top; 
-    display: block;
-  }
-
-  .circle-title {
-    margin: 0;
-    font-size: 13px;
-    color: #333;
-    font-weight: 500;
-    text-transform: capitalize;
-    letter-spacing: 0.5px;
-  }
-
-  @media only screen and (max-width: 767px) {
-    .circle-nav-container {
-      justify-content: flex-start;
-      padding-left: 15px;
-      gap: 15px;
-    }
-    .circle-nav-item {
-      width: 100px;
-    }
-    .circle-image-container {
-      width: 90px;
-      height: 90px;
-    }
-    .circle-title {
-      font-size: 11px;
-    }
-  }
-</style>
 {%- endif -%}
 
 {% schema %}
 {
-  "name": "Subcollections (Dynamic)",
-  "settings": [
-    {
-      "type": "paragraph",
-      "content": "This section shows links from the Navigation Menu that matches your Collection Handle."
-    },
-    {
-      "type": "range",
-      "id": "limit",
-      "min": 1,
-      "max": 12,
-      "step": 1,
-      "label": "Show up to",
-      "default": 6
-    },
-    {
-      "type": "select",
-      "id": "select_image",
-      "label": "Image source",
-      "default": "collection",
-      "options": [
-        { "value": "collection", "label": "Collection image" },
-        { "value": "product", "label": "First product" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "width",
-      "label": "Section width",
-      "default": "wrapper",
-      "options": [
-        { "value": "wrapper--none", "label": "Full width" },
-        { "value": "wrapper", "label": "Page width" }
-      ]
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 25
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 25
-    }
-  ]
+    "name": "Subcollections Meta",
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "Uses 'Sub-menu' metafield to show circles."
+        },
+        {
+            "type": "range",
+            "id": "limit",
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "label": "Limit",
+            "default": 6
+        },
+        {
+            "type": "select",
+            "id": "select_image",
+            "label": "Image source",
+            "default": "collection",
+            "options": [
+                { "value": "collection", "label": "Collection image" },
+                { "value": "product", "label": "First product" }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "width",
+            "label": "Width",
+            "default": "wrapper",
+            "options": [
+                { "value": "wrapper--none", "label": "Full" },
+                { "value": "wrapper", "label": "Page" }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "padding_top",
+            "min": 0,
+            "max": 100,
+            "step": 2,
+            "unit": "px",
+            "label": "Padding Top",
+            "default": 20
+        },
+        {
+            "type": "range",
+            "id": "padding_bottom",
+            "min": 0,
+            "max": 100,
+            "step": 2,
+            "unit": "px",
+            "label": "Padding Bottom",
+            "default": 20
+        }
+    ]
 }
 {% endschema %}
