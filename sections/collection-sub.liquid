@@ -152,37 +152,49 @@
  {%- comment -%} 
   Keeping your original logic: using the sidebar "Collection List" selector.
 {%- endcomment -%}
-{%- assign sub_collections = section.settings.subcollections -%}
+{%- comment -%}
+  1. We look for a menu handle that matches the current page handle (e.g., 'unstitched')
+{%- endcomment -%}
+{%- assign sub_menu_handle = collection.handle -%}
+{%- assign sub_menu = linklists[sub_menu_handle] -%}
 
-{%- if sub_collections != blank -%}
+{%- if sub_menu != blank and sub_menu.links.size > 0 -%}
 <section class="subcollection-circles-section" 
          style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background-color: transparent;">
   <div class="{{ section.settings.width }}">
     
     <div class="circle-nav-container">
-      {% for sub in sub_collections limit: section.settings.limit %}
-        <div class="circle-nav-item">
-          <a href="{{ sub.url }}" class="circle-nav-link">
-            
-            <div class="circle-image-container">
-              {%- assign image = sub.image -%}
-              {%- if section.settings.select_image == 'product' or image == blank -%}
-                {%- assign image = sub.products.first.featured_media.preview_image -%}
-              {%- endif -%}
+      {% for link in sub_menu.links limit: section.settings.limit %}
+        
+        {%- comment -%} Skip the 'View All' link so it doesn't show as a circle {%- endcomment -%}
+        {%- assign link_title_downcase = link.title | downcase -%}
+        {%- if link_title_downcase contains 'view all' -%}{% continue %}{%- endif -%}
 
-              {%- if image != blank -%}
-                <img src="{{ image | image_url: width: 400 }}" 
-                     alt="{{ sub.title }}" 
-                     class="circle-img"
-                     loading="lazy">
-              {%- else -%}
-                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </div>
+        {%- if link.type == 'collection_link' -%}
+          {%- assign sub = link.object -%}
+          <div class="circle-nav-item">
+            <a href="{{ sub.url }}" class="circle-nav-link">
+              
+              <div class="circle-image-container">
+                {%- assign image = sub.image -%}
+                {%- if section.settings.select_image == 'product' or image == blank -%}
+                  {%- assign image = sub.products.first.featured_media.preview_image -%}
+                {%- endif -%}
 
-            <p class="circle-title">{{ sub.title }}</p>
-          </a>
-        </div>
+                {%- if image != blank -%}
+                  <img src="{{ image | image_url: width: 400 }}" 
+                       alt="{{ sub.title }}" 
+                       class="circle-img"
+                       loading="lazy">
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+
+              <p class="circle-title">{{ link.title }}</p>
+            </a>
+          </div>
+        {%- endif -%}
       {% endfor %}
     </div>
 
@@ -190,7 +202,7 @@
 </section>
 
 <style>
-  /* Flexbox container to center and space the circles */
+  /* I kept your exact CSS below */
   .circle-nav-container {
     display: flex;
     justify-content: center;
@@ -199,9 +211,9 @@
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     padding: 10px 0;
-    scrollbar-width: none; /* Hide scrollbar Firefox */
+    scrollbar-width: none;
   }
-  .circle-nav-container::-webkit-scrollbar { display: none; } /* Hide scrollbar Chrome/Safari */
+  .circle-nav-container::-webkit-scrollbar { display: none; }
 
   .circle-nav-item {
     flex: 0 0 auto;
@@ -214,33 +226,32 @@
     display: block;
   }
 
-  /* Creating the Circle shape */
-.circle-image-container {
-  width: 110px;
-  height: 110px;
-  margin: 0 auto 12px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid #e1e1e1;
-  transition: all 0.3s ease;
-  background: #ffffff; 
-  display: flex;
-  align-items: center;     
-  justify-content: center; 
-}
+  .circle-image-container {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #e1e1e1;
+    transition: all 0.3s ease;
+    background: #ffffff; 
+    display: flex;
+    align-items: center;     
+    justify-content: center; 
+  }
 
   .circle-nav-item:hover .circle-image-container {
     border-color: #000;
     transform: translateY(-3px);
   }
 
-.circle-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; 
-  object-position: center top; 
-  display: block;
-}
+  .circle-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    object-position: center top; 
+    display: block;
+  }
 
   .circle-title {
     margin: 0;
@@ -251,7 +262,6 @@
     letter-spacing: 0.5px;
   }
 
-  /* Responsive Adjustments for Mobile */
   @media only screen and (max-width: 767px) {
     .circle-nav-container {
       justify-content: flex-start;
@@ -274,12 +284,11 @@
 
 {% schema %}
 {
-  "name": "Subcollections (Circles)",
+  "name": "Subcollections (Dynamic)",
   "settings": [
     {
-      "type": "collection_list",
-      "id": "subcollections",
-      "label": "Select Collections to Display"
+      "type": "paragraph",
+      "content": "This section shows links from the Navigation Menu that matches your Collection Handle."
     },
     {
       "type": "range",
