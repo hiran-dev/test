@@ -1,3 +1,4 @@
+
  {%- comment -%} 
   Updated to pull the List of Collections from your new metafield: custom.sub_collection
 {%- endcomment -%}
@@ -27,7 +28,7 @@
                     {%- if image != blank -%}
                        <img src="{{ image | image_url: width: 300, height: 300, crop: 'center' }}" 
                             alt="{{ sub_col.title | escape }}" 
-                            style="width: 100%; height: 100%; object-fit: cover;object postion:top"
+                            style="width: 100%; height: 100%; object-fit: cover;"
                             loading="lazy">
                     {%- else -%}
                       {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
