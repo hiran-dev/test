@@ -22453,7 +22453,7 @@ a.product__form__link:after {
   padding: 2px 0 !important;
 }
 
-/* Ensure the Special Instructions box stays on the left and looks correct */
+/* Special Instructions box stays on the left and looks correct */
 .template__cart__footer .cart__footer__notes {
   grid-area: notes !important;
   align-self: start;
