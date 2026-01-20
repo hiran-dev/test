@@ -312,7 +312,7 @@
       "settings": {
         "heading": "You Might Also Like",
         "bg": "palette--light bg--neutral",
-        "grid_large": 6,
+        "grid_large": 4,
         "grid_medium": 3,
         "grid_small": 1.2,
         "related_products_enable": false,
