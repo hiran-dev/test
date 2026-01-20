@@ -22481,7 +22481,7 @@ a.product__form__link:after {
 
 /* Add a tiny bit of breathing room above the button itself */
 .template__cart__footer .cart__footer__checkout {
-  padding-top: 8px !important;
+  padding-top: 4px !important;
 }
 
 .template__cart__footer .upsell__holder {
