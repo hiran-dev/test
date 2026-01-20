@@ -310,14 +310,14 @@
     "related": {
       "type": "related",
       "settings": {
-        "heading": "",
+        "heading": "You Might Also Like",
         "bg": "palette--light bg--neutral",
-        "grid_large": 4,
+        "grid_large": 6,
         "grid_medium": 3,
         "grid_small": 1.2,
-        "related_products_enable": true,
+        "related_products_enable": false,
         "limit": 8,
-        "product_recommendations_heading": "You Might Also Like",
+        "product_recommendations_heading": "",
         "show_recently_viewed": true,
         "product_recently_limit": 6,
         "product_recently_minimum": 4,
