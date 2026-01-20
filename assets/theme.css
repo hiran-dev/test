@@ -22442,7 +22442,48 @@ a.product__form__link:after {
   margin-bottom: 0;        
   box-sizing: border-box;   
 } */
- 
+ .template__cart__footer {
+  margin-top: 2em;
+  display: grid !important;
+  /* We align the notes on the left and stack everything else on the right */
+  grid-template-areas: 
+    "notes notes total total" 
+    "notes notes checkout checkout" 
+    "notes notes shipping shipping" !important;
+  grid-template-columns: 1.5fr 0.5fr 1fr 1fr !important;
+  grid-row-gap: 0px !important; /* Forces items to touch each other */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #f8f8f8;
+  padding: 10px 40px !important;
+  box-sizing: border-box;
+}
+
+/* Force the Subtotal and Shipping text to stay tight to the Checkout button */
+.template__cart__footer .cart__footer__total, 
+.template__cart__footer .cart__footer__shipping {
+  margin: 0 !important;
+  padding: 5px 0 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  align-self: end !important;
+}
+
+.template__cart__footer .cart__footer__checkout {
+  margin: 5px 0 !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+/* Ensure the Notes/Instructions stay on the left without moving */
+.template__cart__footer .cart__footer__notes {
+  grid-area: notes !important;
+  padding-right: 20px;
+}
 
 .template__cart__footer .upsell__holder {
   grid-area: product;
