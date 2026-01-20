@@ -316,7 +316,7 @@
         "grid_medium": 3,
         "grid_small": 1.2,
         "related_products_enable": false,
-        "limit": 6,
+        "limit": 8,
         "product_recommendations_heading": "",
         "show_recently_viewed": true,
         "product_recently_limit": 6,
