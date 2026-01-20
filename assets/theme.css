@@ -22422,7 +22422,7 @@ a.product__form__link:after {
   grid-column-end: title;
 }
 /* ================ Cart page footer ================ */
-/* .template__cart__footer {
+.template__cart__footer {
   margin-top: 2em;
   display: grid;
   grid-template-areas: "product product total total" "notes notes update checkout" "shipping shipping empty empty";
@@ -22437,39 +22437,10 @@ a.product__form__link:after {
   right: 0;
   width: 100%;
   z-index: 1000;
-  background-color: #f8f8f8; 
-  padding: 20px;            
-  margin-bottom: 0;         
-  box-sizing: border-box;   
-} */
- .template__cart__footer {
-  margin-top: 2em;
-  display: flex !important; /* Changed from Grid to Flex */
-  flex-direction: column !important; /* Stacks items on top of each other */
-  align-items: flex-end !important; /* Aligns everything to the right */
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #f8f8f8;
-  padding: 10px 40px !important; /* Reduced padding to bring it closer */
-  box-sizing: border-box;
-}
-
-/* Remove the grid spacing from the individual elements */
-.template__cart__footer .cart__footer__total, 
-.template__cart__footer .cart__footer__checkout, 
-.template__cart__footer .cart__footer__shipping {
-  grid-area: auto !important; /* Disables the row system */
-  margin: 0 !important;
-  padding: 2px 0 !important; /* This brings the button and text together */
-}
-
-/* Ensure the button has a reasonable width */
-.template__cart__footer .cart__footer__checkout {
-  margin-top: 10px !important;
+  background-color: #f8f8f8; /* Ensures the cart items don't show through the footer */
+  padding: 20px;            /* Adds breathing room inside the fixed bar */
+  margin-bottom: 0;         /* Overrides your -10px margin */
+  box-sizing: border-box;   /* Ensures padding doesn't break the 100% width */
 }
 
 .template__cart__footer .upsell__holder {
