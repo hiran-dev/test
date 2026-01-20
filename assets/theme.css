@@ -26386,7 +26386,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
 
 /* Change the background color of the entire filter tag on hover */
 .active-filter-tag:hover {
-  background-color:rgb(248, 246, 246) !important;
+  background-color: #f5f5f5 !important;
   transition: background-color 0.2s ease; /* Makes the color change smooth */
   text-decoration: none !important;
 }
