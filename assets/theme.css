@@ -22483,6 +22483,37 @@ a.product__form__link:after {
 .template__cart__footer .cart__footer__checkout {
   padding-top: 4px !important;
 }
+/* Mobile-specific fix for the cart footer */
+@media screen and (max-width: 767px) {
+  .template__cart__footer {
+    display: flex !important;
+    flex-direction: column !important; /* Stack items vertically on mobile */
+    padding: 15px !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    align-items: stretch !important; /* Make items full width */
+  }
+
+  .template__cart__footer .cart__footer__notes {
+    order: 2; /* Put instructions below the checkout button on mobile */
+    margin-top: 15px !important;
+    width: 100% !important;
+  }
+
+  .template__cart__footer .cart__footer__total,
+  .template__cart__footer .cart__footer__shipping,
+  .template__cart__footer .cart__footer__checkout {
+    order: 1; /* Keep price and button at the top of the bar */
+    text-align: right !important;
+    width: 100% !important;
+    grid-area: auto !important;
+    margin-bottom: 5px !important;
+  }
+
+  .template__cart__footer .cart__footer__checkout {
+    margin-top: 10px !important;
+  }
+}
 
 .template__cart__footer .upsell__holder {
   grid-area: product;
