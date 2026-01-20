@@ -26390,22 +26390,3 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   transition: background-color 0.2s ease; 
   text-decoration: none !important;
 }
-/* Move checkout button up under the shipping line */
-.template__cart_footer {
-  position: relative !important; /* Removes it from the bottom of the screen */
-  bottom: auto !important;
-  width: 100% !important;
-  margin-top: 20px !important; /* Adds space above the checkout section */
-  display: block !important; /* Helps alignment */
-}
-
-/* Align the totals and checkout button to the right */
-.cart__footer_total {
-  text-align: right;
-  margin-bottom: 15px;
-}
-
-/* Ensure the button itself isn't forced to a specific spot */
-.cart__page_shipping {
-  margin-bottom: 10px;
-}
