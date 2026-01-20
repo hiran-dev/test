@@ -26387,5 +26387,4 @@ a.BIS_trigger.bis-collection-button.product-card__name {
 /* Change color on hover to show it is clickable */
 .active-filter-tag:hover::after {
   color: #000;
-  background-color:#f5f5f5;
 }
