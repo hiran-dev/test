@@ -26378,8 +26378,8 @@ input[value="UNSTITCH" i] + label {
 .selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])),
 .product__block__variants:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
     display: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
+        margin: 0 !important;
+            padding: 0 !important;
 }
 
 /* hides sold out from product detail page */
