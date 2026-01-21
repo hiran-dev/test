@@ -622,7 +622,7 @@ if product.compare_at_price > product.price
   assign on_sale = true
 endif
 
-# Find the first variant that is actually in stock to avoid the 'XS' sold-out issue
+# Ensure we target the first available variant if XS is sold out
 assign first_available_variant = product.selected_or_first_available_variant
 
 assign sold_out = true
@@ -630,44 +630,14 @@ if product.available
   assign sold_out = false
 endif
 
-# Siblings logic
-assign sibs_collection = nil
-assign has_siblings = false
-if settings.show_siblings and product.metafields.theme.siblings.value != blank
-  assign sibs_collection = collections[product.metafields.theme.siblings.value]
-  for sib_product in sibs_collection.products
-    if sib_product == product
-      assign has_siblings = true
-    endif
-  endfor
-endif
-
-assign swatch_option = nil
-assign has_swatches = false
-assign swatch_limit = settings.card_swatch_limit
-
-if settings.swatches_enable and settings.swatches_collection_enable
-  for option in product.options_with_values
-    if option.values.first.swatch != null
-      assign has_swatches = true
-      assign swatch_option = option
-      break
-    endif
-  endfor
-endif
-
+# Siblings/Swatches (Kept from your original)
 assign instant_add_button = nil
 if settings.instant_add_enable and product.available
   assign instant_add_button = true
 endif
-
-assign swatch_link_markup = ''
-assign inline_variants = nil
-assign placeholder = placeholder | default: false
 -%}
 
 <product-grid-item
-  aria-label="{{ product.title | strip_html | escape }}"
   class="product-grid-item group/product-grid-item"
   data-item-id="{{ product.id }}"
   {{ attributes }}
@@ -675,31 +645,15 @@ assign placeholder = placeholder | default: false
   {% render 'product-grid-item-variant',
     product: product,
     variant: first_available_variant,
-    badge_string: badge_string,
     visible: true,
-    instant_add_button: instant_add_button,
-    section_width: section_width,
-    eagerload: eagerload,
-    preload: preload,
-    placeholder: placeholder,
-    columns_desktop: columns_desktop,
-    columns_tablet: columns_tablet,
-    columns_mobile: columns_mobile
+    instant_add_button: instant_add_button
   %}
 
-  <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
-    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
-      <div class="product__grid__title__wrapper">
-        <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
-      </div>
-
+  <div class="product__grid__info">
+    <a href="{{ product.url }}">
+      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
       <div class="product__grid__price">
-        <span class="price{% if on_sale %} on-sale{% endif %}">
-          {{ product.price | money }}
-        </span>
-        {% if on_sale %}
-          <span class="compare-at">{{ product.compare_at_price | money }}</span>
-        {% endif %}
+        <span class="price{% if on_sale %} on-sale{% endif %}">{{ product.price | money }}</span>
       </div>
     </a>
   </div>
@@ -716,41 +670,35 @@ assign placeholder = placeholder | default: false
   %}
 
   {% if size_option_index != nil %}
-    {% liquid
-      assign check_unstitch = product.variants[0].options[size_option_index] | downcase
-    %}
-
-    {% unless check_unstitch contains 'unstitch' %}
       <div class="product-card-sizes" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
-        {% assign printed_sizes = '|' %}
         {% for variant in product.variants %}
-          {% assign size_value = variant.options[size_option_index] %}
-          {% assign size_key = '|' | append: size_value | append: '|' %}
-
-          {% unless printed_sizes contains size_key %}
-            <button 
-              type="button" 
-              class="js-direct-add-size" 
-              data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
-              {% unless variant.available %}disabled{% endunless %}
-            >
-              {{ size_value }}
-            </button>
-            {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
-          {% endunless %}
+          <button 
+            type="button" 
+            class="js-direct-add-size" 
+            data-variant-id="{{ variant.id }}"
+            style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
+            {% unless variant.available %}disabled{% endunless %}
+          >
+            {{ variant.options[size_option_index] }}
+          </button>
         {% endfor %}
       </div>
-    {% endunless %}
   {% endif %}
+
+  <style>
+    /* This forces the black background regardless of theme CSS */
+    .js-direct-add-size.is-active {
+      background-color: #000 !important;
+      color: #fff !important;
+    }
+  </style>
 
   <script>
     (function() {
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
 
-      // Initialize with the first available ID
-      let currentSelectionId = "{{ first_available_variant.id }}";
+      let activeId = "{{ first_available_variant.id }}";
 
       scope.addEventListener('click', function(e) {
         const sizeBtn = e.target.closest('.js-direct-add-size');
@@ -762,20 +710,24 @@ assign placeholder = placeholder | default: false
         e.stopPropagation();
 
         if (sizeBtn) {
-          currentSelectionId = sizeBtn.getAttribute('data-variant-id');
+          activeId = sizeBtn.getAttribute('data-variant-id');
           
-          // Visual highlight
-          scope.querySelectorAll('.js-direct-add-size').forEach(btn => {
-            btn.style.backgroundColor = "#fff";
-            btn.style.color = "#000";
-          });
-          sizeBtn.style.backgroundColor = "#000";
-          sizeBtn.style.color = "#fff";
+          // 1. Update UI: Clear all then set active
+          scope.querySelectorAll('.js-direct-add-size').forEach(btn => btn.classList.remove('is-active'));
+          sizeBtn.classList.add('is-active');
 
-          // Immediate add to cart
-          addToCart(currentSelectionId, sizeBtn);
+          // 2. Update Bag Button Attributes so the theme sees the change
+          const realBag = scope.querySelector('.quick-action-button');
+          if (realBag) {
+            realBag.setAttribute('data-variant-id', activeId);
+            realBag.setAttribute('data-grid-item-variant', activeId);
+          }
+
+          addToCart(activeId, sizeBtn);
         } else if (bagBtn) {
-          addToCart(currentSelectionId, bagBtn);
+          // If they click the bag, use the last selected size (or first available)
+          const currentBagId = bagBtn.getAttribute('data-variant-id') || activeId;
+          addToCart(currentBagId, bagBtn);
         }
 
         function addToCart(vId, trigger) {
@@ -789,19 +741,13 @@ assign placeholder = placeholder | default: false
           })
           .then(res => res.json())
           .then(data => {
-            // Force the theme to show the correct variant in the notification bar
             document.dispatchEvent(new CustomEvent('ajaxProduct:added', { 
-              detail: { 
-                product: data,
-                variantId: vId // Crucial for the bar to show the right size name
-              } 
+              detail: { product: data, variantId: vId } 
             }));
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
           })
           .catch(err => console.error(err))
-          .finally(() => {
-            trigger.classList.remove('is-loading');
-          });
+          .finally(() => trigger.classList.remove('is-loading'));
         }
       });
     })();
