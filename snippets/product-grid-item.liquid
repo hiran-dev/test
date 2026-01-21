@@ -622,9 +622,6 @@ if product.compare_at_price > product.price
   assign on_sale = true
 endif
 
-# Find the first variant that is actually in stock to avoid the 'XS' sold-out issue
-assign first_available_variant = product.selected_or_first_available_variant
-
 assign sold_out = true
 if product.available
   assign sold_out = false
@@ -656,6 +653,7 @@ if settings.swatches_enable and settings.swatches_collection_enable
   endfor
 endif
 
+# Force instant add behavior for the main Bag CTA
 assign instant_add_button = nil
 if settings.instant_add_enable and product.available
   assign instant_add_button = true
@@ -674,7 +672,7 @@ assign placeholder = placeholder | default: false
 >
   {% render 'product-grid-item-variant',
     product: product,
-    variant: first_available_variant,
+    variant: product.selected_or_first_available_variant,
     badge_string: badge_string,
     visible: true,
     instant_add_button: instant_add_button,
@@ -732,7 +730,7 @@ assign placeholder = placeholder | default: false
               type="button" 
               class="js-direct-add-size" 
               data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
+              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
               {% unless variant.available %}disabled{% endunless %}
             >
               {{ size_value }}
@@ -749,38 +747,47 @@ assign placeholder = placeholder | default: false
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
 
-      // Initialize with the first available ID
-      let currentSelectionId = "{{ first_available_variant.id }}";
-
       scope.addEventListener('click', function(e) {
         const sizeBtn = e.target.closest('.js-direct-add-size');
-        const bagBtn = e.target.closest('.quick-action-button');
+        // Theme's Bag button usually has this class or data-variant-id
+        const bagBtn = e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]');
         
-        if (!sizeBtn && !bagBtn) return;
-
-        e.preventDefault();
-        e.stopPropagation();
-
+        // 1. If size is clicked: Highlight it and UPDATE THE BAG BUTTON'S ID
         if (sizeBtn) {
-          currentSelectionId = sizeBtn.getAttribute('data-variant-id');
+          e.preventDefault();
+          e.stopPropagation();
+
+          const vId = sizeBtn.getAttribute('data-variant-id');
           
-          // Visual highlight
-          scope.querySelectorAll('.js-direct-add-size').forEach(btn => {
-            btn.style.backgroundColor = "#fff";
-            btn.style.color = "#000";
+          // Visual selection
+          scope.querySelectorAll('.js-direct-add-size').forEach(b => {
+            b.style.backgroundColor = "#fff";
+            b.style.color = "#000";
           });
           sizeBtn.style.backgroundColor = "#000";
           sizeBtn.style.color = "#fff";
 
-          // Immediate add to cart
-          addToCart(currentSelectionId, sizeBtn);
-        } else if (bagBtn) {
-          addToCart(currentSelectionId, bagBtn);
+          // UPDATE THE THEME'S BAG BUTTON ID
+          // We search for anything that might be the bag button and force the new ID on it
+          const realBag = scope.querySelector('.quick-action-button') || scope.querySelector('[data-variant-id]:not(.js-direct-add-size)');
+          if (realBag) {
+            realBag.setAttribute('data-variant-id', vId);
+            // Some themes use href or a hidden input
+            const bagLink = realBag.querySelector('a');
+            if (bagLink) bagLink.setAttribute('href', '/cart/add?id=' + vId);
+          }
         }
 
-        function addToCart(vId, trigger) {
-          if (trigger.classList.contains('is-loading')) return;
-          trigger.classList.add('is-loading');
+        // 2. Handle the "Add to Cart" AJAX call for both buttons
+        if (sizeBtn || bagBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+
+          const target = sizeBtn || bagBtn;
+          const vId = target.getAttribute('data-variant-id');
+          
+          if (target.classList.contains('is-loading')) return;
+          target.classList.add('is-loading');
 
           fetch('/cart/add.js', {
             method: 'POST',
@@ -789,21 +796,19 @@ assign placeholder = placeholder | default: false
           })
           .then(res => res.json())
           .then(data => {
-            // Force the theme to show the correct variant in the notification bar
-            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { 
-              detail: { 
-                product: data,
-                variantId: vId // Crucial for the bar to show the right size name
-              } 
-            }));
+            // TRIGGERS THE TOP BAR
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+            
+            // If your theme uses theme-specific events:
+            document.dispatchEvent(new CustomEvent('theme:cart:add', { detail: { product: data } }));
           })
           .catch(err => console.error(err))
           .finally(() => {
-            trigger.classList.remove('is-loading');
+            target.classList.remove('is-loading');
           });
         }
-      });
+      }, true); // Use capture phase to override theme scripts
     })();
   </script>
 </product-grid-item>
