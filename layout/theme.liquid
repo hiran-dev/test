@@ -311,7 +311,7 @@
   <!-- And above this comment line ================================================== -->
  {% render 'footfiles' %}
  
- {% comment %} to hide quantity, get it sticted and size guide in case of out od stock {% endcomment %}
+ {% comment %} to hide quantity, get it sticted and size guide in case of out od stock
   <script>
   // Function to hide elements when Sold Out / Notify Me is active
   const handleSoldOutState = () => {
@@ -359,4 +359,53 @@
   }
 </style>
 </body>
-</html>
+</html> {% endcomment %}
+
+{% comment %} Optimized: Only hides blocks if UNSTITCHED is selected OR if the whole product is dead {% endcomment %}
+<script>
+  const handleProductUI = () => {
+    // 1. Check if the "Notify Me" button is currently visible
+    const bisButton = document.getElementById('BIS_trigger');
+    const isNotifyMeVisible = bisButton && bisButton.offsetParent !== null;
+
+    // 2. Select your sections
+    const qtyBox = document.querySelector('.product__block__quantity');
+    const stitchingApp = document.querySelector('.tpo_radio-button-wrapper');
+    const sizeGuide = document.querySelector('.best-fit-size-chart');
+    const sizeGuideAlt = document.querySelector('.scr-open-size-chart');
+
+    // LOGIC: Only hide if the "Notify Me" button is active
+    if (isNotifyMeVisible) {
+      if (qtyBox) qtyBox.style.setProperty('display', 'none', 'important');
+      if (stitchingApp) stitchingApp.style.setProperty('display', 'none', 'important');
+      if (sizeGuide) sizeGuide.style.setProperty('display', 'none', 'important');
+      if (sizeGuideAlt) sizeGuideAlt.style.setProperty('display', 'none', 'important');
+    } else {
+      // Show them back for available sizes (Ready to Wear)
+      if (qtyBox) qtyBox.style.setProperty('display', 'block', 'important');
+      if (stitchingApp) stitchingApp.style.setProperty('display', 'block', 'important');
+      if (sizeGuide) sizeGuide.style.setProperty('display', 'block', 'important');
+      if (sizeGuideAlt) sizeGuideAlt.style.setProperty('display', 'block', 'important');
+    }
+  };
+
+  // Run on load and whenever variants change
+  window.addEventListener('load', handleProductUI);
+  const observer = new MutationObserver(() => handleProductUI());
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>
+
+<style>
+  /* 1. PERMANENTLY HIDE THE UNSTITCH OPTION BUTTON */
+  [data-value*="UNSTITCH" i], 
+  input[value*="UNSTITCH" i], 
+  input[value*="UNSTITCH" i] + label {
+    display: none !important;
+  }
+
+  /* 2. Backup CSS: Only hide blocks if the Notify Me button is actually present in the HTML */
+  body:has(#BIS_trigger:not([style*="display: none"])) .product__block__quantity,
+  body:has(#BIS_trigger:not([style*="display: none"])) .best-fit-size-chart {
+    display: none !important;
+  }
+</style>
