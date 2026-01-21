@@ -394,4 +394,12 @@
   const observer = new MutationObserver(() => handleProductUI());
   observer.observe(document.body, { childList: true, subtree: true });
 </script>
-
+<style>
+  <style>
+  /* Extra CSS backup to ensure the elements stay hidden */
+  body:has(#BIS_trigger) .product__block__quantity,
+  body:has(#BIS_trigger) .tpo_radio-button-wrapper,
+  body:has(#BIS_trigger) .best-fit-size-chart {
+    display: none !important;
+  }
+</style>
