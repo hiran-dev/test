@@ -26370,7 +26370,7 @@ a.siblings__more-link {
       display: none !important;
   }
 
-/* [data-value="UNSTITCH" i], 
+[data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
 }
@@ -26380,28 +26380,9 @@ input[value="UNSTITCH" i] + label {
     display: none !important;
         margin: 0 !important;
             padding: 0 !important;
-} */
+} 
 
-/* 1. Hide UNSTITCH specifically */
-[data-value="UNSTITCH" i], 
-[data-value="Unstitch" i],
-input[value="UNSTITCH" i], 
-input[value="UNSTITCH" i] + label {
-    display: none !important;
-}
 
-/* 2. Hide Quantity and Size blocks ONLY when the product is sold out */
-/* Instead of looking for specific size names, we look for the "Sold Out" state of the button */
-.product-page:has(.btn--sold-out) .product__block__quantity,
-.product-page:has(.btn--sold-out) .product-description__actions,
-.product-page:has(.btn--sold-out) .scr-open-size-chart {
-    display: none !important;
-}
-
-/* 3. Also hide the variants block if NO buttons are available to click */
-.product__block__variants:not(:has(input:not([disabled]))) {
-    display: none !important;
-}
 
 /* hides sold out from product detail page */
 button[aria-label*="Sold Out"], 
