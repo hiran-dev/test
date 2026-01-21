@@ -616,7 +616,6 @@ assign placeholder = placeholder | default: false
 
 
 
-
 {%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
@@ -731,7 +730,7 @@ assign placeholder = placeholder | default: false
               type="button" 
               class="js-direct-add-size" 
               data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.4; cursor: not-allowed;{% endunless %}"
+              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
               {% unless variant.available %}disabled{% endunless %}
             >
               {{ size_value }}
@@ -748,6 +747,9 @@ assign placeholder = placeholder | default: false
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
 
+      // Start with first available variant
+      let selectedVariantId = {{ product.selected_or_first_available_variant.id }};
+
       scope.addEventListener('click', function(e) {
         const sizeBtn = e.target.closest('.js-direct-add-size');
         const bagBtn = e.target.closest('.quick-action-button');
@@ -757,33 +759,52 @@ assign placeholder = placeholder | default: false
         e.preventDefault();
         e.stopPropagation();
 
-        const vId = sizeBtn ? sizeBtn.getAttribute('data-variant-id') : {{ product.selected_or_first_available_variant.id }};
-        
-        if (sizeBtn) sizeBtn.style.opacity = "0.5";
-
-        fetch('/cart/add.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: vId, quantity: 1 })
-        })
-        .then(res => res.json())
-        .then(data => {
-          // 1. Tell the theme something was added (triggers the top bar)
-          document.dispatchEvent(new CustomEvent('ajaxProduct:added', {
-            detail: { product: data }
-          }));
+        // 1. Logic for clicking a size
+        if (sizeBtn) {
+          selectedVariantId = sizeBtn.getAttribute('data-variant-id');
           
-          // 2. Refresh any cart counters or drawers
-          document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+          // Visual feedback for selection
+          scope.querySelectorAll('.js-direct-add-size').forEach(b => {
+            b.style.backgroundColor = "#fff";
+            b.style.color = "#000";
+          });
+          sizeBtn.style.backgroundColor = "#000";
+          sizeBtn.style.color = "#fff";
 
-          // 3. Reset the size button opacity
-          if (sizeBtn) sizeBtn.style.opacity = "1";
-        })
-        .catch(err => {
-          console.error(err);
-          // Only redirect if something actually fails
-          window.location.href = '{{ product.url }}'; 
-        });
+          // Optional: If you want clicking the size to add it immediately, keep the code below.
+          // If you only want it to "select", delete the fetch block inside this 'if'.
+          addToCart(selectedVariantId, sizeBtn);
+        }
+
+        // 2. Logic for clicking the main Bag icon
+        if (bagBtn) {
+          addToCart(selectedVariantId, bagBtn);
+        }
+
+        function addToCart(vId, triggerBtn) {
+          if (triggerBtn.classList.contains('is-loading')) return;
+          triggerBtn.classList.add('is-loading');
+          if (triggerBtn.tagName === 'BUTTON') triggerBtn.style.opacity = "0.5";
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: Number(vId), quantity: 1 })
+          })
+          .then(res => res.json())
+          .then(data => {
+            // Trigger the top bar
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added', {
+              detail: { product: data }
+            }));
+            document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+          })
+          .catch(err => console.error(err))
+          .finally(() => {
+            triggerBtn.classList.remove('is-loading');
+            if (triggerBtn.tagName === 'BUTTON') triggerBtn.style.opacity = "1";
+          });
+        }
       });
     })();
   </script>
