@@ -26369,7 +26369,7 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
- only hides unstitch from product detail page
+ /* only hides unstitch from product detail page */
 [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
