@@ -26382,6 +26382,28 @@ input[value="UNSTITCH" i] + label {
             padding: 0 !important;
 }  */
 
+/* 1. KEEP HIDING UNSTITCH */
+[data-value*="UNSTITCH" i], 
+input[value*="UNSTITCH" i], 
+input[value*="UNSTITCH" i] + label {
+    display: none !important;
+}
+
+/* 2. FIX FOR READY TO WEAR */
+/* Remove your old .selector-wrapper:not(:has(...)) code completely */
+
+/* This new code ONLY hides the blocks if the WHOLE product is sold out. */
+/* If only one size is sold out, the blocks will STAY VISIBLE. */
+.product-page:has(.is-unavailable) .product__block__quantity,
+.product-page:has(.is-unavailable) .scr-open-size-chart {
+    display: none !important;
+}
+
+/* 3. Force blocks to show even if a single size is out of stock */
+.product__block__quantity, 
+.scr-open-size-chart {
+    display: block !important;
+}
 
 
 /* hides sold out from product detail page */
