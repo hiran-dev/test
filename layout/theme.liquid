@@ -312,7 +312,7 @@
  {% render 'footfiles' %}
  
  
-  {% comment %} <script>
+  <script>
   // Function to hide elements when Sold Out / Notify Me is active
   const handleSoldOutState = () => {
     // Check for the Notify Me button (ID used by your app)
@@ -359,51 +359,4 @@
   }
 </style>
 </body>
-</html> {% endcomment %}
-
-<script>
-  const handleSoldOutState = () => {
-    const bisButton = document.getElementById('BIS_trigger');
-    const qtyBox = document.querySelector('.product__block__quantity');
-    const stitchingApp = document.querySelector('.tpo_radio-button-wrapper');
-    const sizeGuide = document.querySelector('.best-fit-size-chart');
-
-    // NEW LOGIC: Check if ANY size variant is still available (not marked as sold-out)
-    // This looks for radio inputs that do NOT have the 'sold-out' class
-    const availableSizes = document.querySelectorAll('.radio__button input:not(.sold-out):not(.unavailable)');
-    const isAnySizeAvailable = availableSizes.length > 0;
-
-    // Only hide if the Notify Me button is there AND NO other sizes are available
-    if (bisButton && !isAnySizeAvailable) {
-      if (qtyBox) qtyBox.style.setProperty('display', 'none', 'important');
-      if (stitchingApp) stitchingApp.style.setProperty('display', 'none', 'important');
-      if (sizeGuide) sizeGuide.style.setProperty('display', 'none', 'important');
-    } else {
-      // Show them if the product is available OR if it's a "Ready to Wear" with mixed stock
-      if (qtyBox) qtyBox.style.setProperty('display', 'block', 'important');
-      if (stitchingApp) stitchingApp.style.setProperty('display', 'block', 'important');
-      if (sizeGuide) sizeGuide.style.setProperty('display', 'block', 'important');
-    }
-  };
-
-  window.addEventListener('load', handleSoldOutState);
-
-  const productObserver = new MutationObserver((mutations) => {
-    handleSoldOutState();
-  });
-
-  productObserver.observe(document.body, { 
-    childList: true, 
-    subtree: true 
-  });
-</script>
-
-<style>
-  /* Remove the old body:has(#BIS_trigger) CSS because it was hiding it globally. 
-     Use this instead to only hide UNSTITCH */
-  [data-value*="UNSTITCH" i], 
-  input[value*="UNSTITCH" i], 
-  input[value*="UNSTITCH" i] + label {
-    display: none !important;
-  }
-</style>
+</html>
