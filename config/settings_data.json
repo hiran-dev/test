@@ -56,7 +56,7 @@
     "product_grid_image": "uneven",
     "product_card_wh_ratio": 0.8,
     "instant_add_enable": true,
-    "quickview_enable": true,
+    "quickview_enable": false,
     "quick_add_button_color": "stain-button-canvas",
     "swatches_enable": true,
     "swatches_squares": true,
