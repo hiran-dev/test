@@ -749,17 +749,16 @@ assign placeholder = placeholder | default: false
 
       scope.addEventListener('click', function(e) {
         const sizeBtn = e.target.closest('.js-direct-add-size');
-        // Theme's Bag button usually has this class or data-variant-id
-        const bagBtn = e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]');
+        const bagBtn = e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]:not(.js-direct-add-size)');
         
-        // 1. If size is clicked: Highlight it and UPDATE THE BAG BUTTON'S ID
+        // 1. Logic for Size Button
         if (sizeBtn) {
           e.preventDefault();
           e.stopPropagation();
 
           const vId = sizeBtn.getAttribute('data-variant-id');
           
-          // Visual selection
+          // Visual selection styling
           scope.querySelectorAll('.js-direct-add-size').forEach(b => {
             b.style.backgroundColor = "#fff";
             b.style.color = "#000";
@@ -767,25 +766,26 @@ assign placeholder = placeholder | default: false
           sizeBtn.style.backgroundColor = "#000";
           sizeBtn.style.color = "#fff";
 
-          // UPDATE THE THEME'S BAG BUTTON ID
-          // We search for anything that might be the bag button and force the new ID on it
-          const realBag = scope.querySelector('.quick-action-button') || scope.querySelector('[data-variant-id]:not(.js-direct-add-size)');
-          if (realBag) {
-            realBag.setAttribute('data-variant-id', vId);
-            // Some themes use href or a hidden input
-            const bagLink = realBag.querySelector('a');
-            if (bagLink) bagLink.setAttribute('href', '/cart/add?id=' + vId);
-          }
+          // SYNC ALL THEME TRIGGERS: Force every Bag button in this card to use the NEW ID
+          const allTriggers = scope.querySelectorAll('[data-variant-id], [data-grid-item-variant]');
+          allTriggers.forEach(el => {
+             el.setAttribute('data-variant-id', vId);
+             el.setAttribute('data-grid-item-variant', vId);
+          });
+
+          // Add to cart immediately
+          handleAddToCart(vId, sizeBtn);
         }
 
-        // 2. Handle the "Add to Cart" AJAX call for both buttons
-        if (sizeBtn || bagBtn) {
+        // 2. Logic for Theme Bag Button
+        if (bagBtn && !sizeBtn) {
           e.preventDefault();
           e.stopPropagation();
+          const currentId = bagBtn.getAttribute('data-variant-id');
+          handleAddToCart(currentId, bagBtn);
+        }
 
-          const target = sizeBtn || bagBtn;
-          const vId = target.getAttribute('data-variant-id');
-          
+        function handleAddToCart(vId, target) {
           if (target.classList.contains('is-loading')) return;
           target.classList.add('is-loading');
 
@@ -796,19 +796,18 @@ assign placeholder = placeholder | default: false
           })
           .then(res => res.json())
           .then(data => {
-            // TRIGGERS THE TOP BAR
-            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
+            // Trigger the Notification Bar with the SPECIFIC variant data
+            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { 
+              detail: { product: data, variantId: vId } 
+            }));
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-            
-            // If your theme uses theme-specific events:
-            document.dispatchEvent(new CustomEvent('theme:cart:add', { detail: { product: data } }));
           })
           .catch(err => console.error(err))
           .finally(() => {
             target.classList.remove('is-loading');
           });
         }
-      }, true); // Use capture phase to override theme scripts
+      }, true); // Use capture phase
     })();
   </script>
 </product-grid-item>
