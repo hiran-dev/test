@@ -26370,7 +26370,7 @@ a.siblings__more-link {
       display: none !important;
   }
 
-[data-value="UNSTITCH" i], 
+/* [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
 }
@@ -26380,7 +26380,7 @@ input[value="UNSTITCH" i] + label {
     display: none !important;
         margin: 0 !important;
             padding: 0 !important;
-} 
+}  */
 
 
 
