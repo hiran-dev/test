@@ -26369,8 +26369,8 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
- /* only hides unstitch from product detail page */
-[data-value="UNSTITCH" i], 
+
+/* [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
 }
@@ -26380,6 +26380,24 @@ input[value="UNSTITCH" i] + label {
     display: none !important;
         margin: 0 !important;
             padding: 0 !important;
+} */
+
+/* 1. Hides UNSTITCH */
+[data-value="UNSTITCH" i], 
+input[value="UNSTITCH" i],
+input[value="UNSTITCH" i] + label {
+    display: none !important;
+}
+
+/* 2. Fixed logic: Only hides the section if the product is truly unavailable */
+/* We check the main product container state instead of individual inputs */
+
+.product-page:has([data-add-to-cart][disabled]) .product__block__variants,
+.product-page:has([data-add-to-cart][disabled]) .product__block__quantity,
+.product-page:has([data-add-to-cart][disabled]) .product__block__size-and-remaining {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* hides sold out from product detail page */
