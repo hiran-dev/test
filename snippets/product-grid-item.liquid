@@ -622,7 +622,7 @@ if product.compare_at_price > product.price
   assign on_sale = true
 endif
 
-# Find the first variant that is actually in stock to avoid the 'XS' sold-out issue
+# Logic to always start with the first variant that is actually in stock
 assign first_available_variant = product.selected_or_first_available_variant
 
 assign sold_out = true
@@ -732,7 +732,7 @@ assign placeholder = placeholder | default: false
               type="button" 
               class="js-direct-add-size" 
               data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
+              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; transition: none; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
               {% unless variant.available %}disabled{% endunless %}
             >
               {{ size_value }}
@@ -749,8 +749,8 @@ assign placeholder = placeholder | default: false
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
 
-      // Initialize with the first available ID
-      let currentSelectionId = "{{ first_available_variant.id }}";
+      // Ensure the script starts with the first variant that is actually in stock
+      let activeVariantId = "{{ first_available_variant.id }}";
 
       scope.addEventListener('click', function(e) {
         const sizeBtn = e.target.closest('.js-direct-add-size');
@@ -762,20 +762,27 @@ assign placeholder = placeholder | default: false
         e.stopPropagation();
 
         if (sizeBtn) {
-          currentSelectionId = sizeBtn.getAttribute('data-variant-id');
+          activeVariantId = sizeBtn.getAttribute('data-variant-id');
           
-          // Visual highlight
+          // Instant visual change (removed transition for speed)
           scope.querySelectorAll('.js-direct-add-size').forEach(btn => {
-            btn.style.backgroundColor = "#fff";
+            btn.style.background = "#fff";
             btn.style.color = "#000";
           });
-          sizeBtn.style.backgroundColor = "#000";
+          sizeBtn.style.background = "#000";
           sizeBtn.style.color = "#fff";
 
-          // Immediate add to cart
-          addToCart(currentSelectionId, sizeBtn);
+          // FORCE the main Bag button to update its ID so it doesn't add the old one
+          const themeBag = scope.querySelector('.quick-action-button');
+          if (themeBag) {
+            themeBag.setAttribute('data-variant-id', activeVariantId);
+          }
+
+          addToCart(activeVariantId, sizeBtn);
         } else if (bagBtn) {
-          addToCart(currentSelectionId, bagBtn);
+          // Use the ID currently set on the button (which we update when size is clicked)
+          const finalId = bagBtn.getAttribute('data-variant-id') || activeVariantId;
+          addToCart(finalId, bagBtn);
         }
 
         function addToCart(vId, trigger) {
@@ -789,12 +796,9 @@ assign placeholder = placeholder | default: false
           })
           .then(res => res.json())
           .then(data => {
-            // Force the theme to show the correct variant in the notification bar
+            // Success bar trigger
             document.dispatchEvent(new CustomEvent('ajaxProduct:added', { 
-              detail: { 
-                product: data,
-                variantId: vId // Crucial for the bar to show the right size name
-              } 
+              detail: { product: data, variantId: vId } 
             }));
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
           })
