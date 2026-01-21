@@ -1,4 +1,4 @@
-
+{% comment %} 
   {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
@@ -442,7 +442,7 @@
       });
     </script>
   </product-grid-item>
-
+ {% endcomment %}
 
 
 
@@ -611,5 +611,183 @@ assign placeholder = placeholder | default: false
       });
     })();
   </script>
+</product-grid-item> {% endcomment %}
+
+
+
+
+
+{%- liquid
+assign on_sale = false
+if product.compare_at_price > product.price
+  assign on_sale = true
+endif
+
+assign sold_out = true
+if product.available
+  assign sold_out = false
+endif
+
+# Siblings logic
+assign sibs_collection = nil
+assign has_siblings = false
+if settings.show_siblings and product.metafields.theme.siblings.value != blank
+  assign sibs_collection = collections[product.metafields.theme.siblings.value]
+  for sib_product in sibs_collection.products
+    if sib_product == product
+      assign has_siblings = true
+    endif
+  endfor
+endif
+
+assign swatch_option = nil
+assign has_swatches = false
+assign swatch_limit = settings.card_swatch_limit
+
+if settings.swatches_enable and settings.swatches_collection_enable
+  for option in product.options_with_values
+    if option.values.first.swatch != null
+      assign has_swatches = true
+      assign swatch_option = option
+      break
+    endif
+  endfor
+endif
+
+# Force instant add behavior for the main Bag CTA
+assign instant_add_button = nil
+if settings.instant_add_enable and product.available
+  assign instant_add_button = true
+endif
+
+assign swatch_link_markup = ''
+assign inline_variants = nil
+assign placeholder = placeholder | default: false
+-%}
+
+<product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  {{ attributes }}
+>
+  {% render 'product-grid-item-variant',
+    product: product,
+    variant: product.selected_or_first_available_variant,
+    badge_string: badge_string,
+    visible: true,
+    instant_add_button: instant_add_button,
+    section_width: section_width,
+    eagerload: eagerload,
+    preload: preload,
+    placeholder: placeholder,
+    columns_desktop: columns_desktop,
+    columns_tablet: columns_tablet,
+    columns_mobile: columns_mobile
+  %}
+
+  <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
+    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
+      <div class="product__grid__title__wrapper">
+        <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+      </div>
+
+      <div class="product__grid__price">
+        <span class="price{% if on_sale %} on-sale{% endif %}">
+          {{ product.price | money }}
+        </span>
+        {% if on_sale %}
+          <span class="compare-at">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+    </a>
+  </div>
+
+  {% comment %} --- SIZES SECTION: AJAX ENABLED --- {% endcomment %}
+  {% liquid
+    assign size_option_index = nil
+    for option in product.options
+      if option == 'Size' or option == 'size'
+        assign size_option_index = forloop.index0
+        break
+      endif
+    endfor
+  %}
+
+  {% if size_option_index != nil %}
+    {% liquid
+      assign check_unstitch = product.variants[0].options[size_option_index] | downcase
+    %}
+
+    {% unless check_unstitch contains 'unstitch' %}
+      <div class="product-card-sizes" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+        {% assign printed_sizes = '|' %}
+        {% for variant in product.variants %}
+          {% assign size_value = variant.options[size_option_index] %}
+          {% assign size_key = '|' | append: size_value | append: '|' %}
+
+          {% unless printed_sizes contains size_key %}
+            <button 
+              type="button" 
+              class="js-direct-add-size" 
+              data-variant-id="{{ variant.id }}"
+              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase;"
+              {% unless variant.available %}style="opacity: 0.4; cursor: not-allowed;" disabled{% endunless %}
+            >
+              {{ size_value }}
+            </button>
+            {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+    {% endunless %}
+  {% endif %}
+
+  <script>
+    (function() {
+      const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!scope) return;
+
+      scope.addEventListener('click', function(e) {
+        const sizeBtn = e.target.closest('.js-direct-add-size');
+        const bagBtn = e.target.closest('.quick-action-button');
+        
+        if (!sizeBtn && !bagBtn) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const vId = sizeBtn ? sizeBtn.getAttribute('data-variant-id') : {{ product.selected_or_first_available_variant.id }};
+        const activeBtn = sizeBtn || bagBtn;
+        
+        activeBtn.style.opacity = "0.5";
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: vId, quantity: 1 })
+        })
+        .then(res => res.json())
+        .then(data => {
+          // --- THEME NOTIFICATION TRIGGERS ---
+          // This tells the theme to show the "Added to Cart" bar at the top
+          document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
+          document.dispatchEvent(new CustomEvent('theme:cart:add', { detail: { product: data } }));
+          document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+
+          // Update cart count numbers across the site
+          document.querySelectorAll('.cart-count').forEach(el => {
+            el.textContent = parseInt(el.textContent || 0) + 1;
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          window.location.href = '{{ product.url }}';
+        })
+        .finally(() => {
+          activeBtn.style.opacity = "1";
+        });
+      });
+    })();
+  </script>
 </product-grid-item>
- {% endcomment %}
