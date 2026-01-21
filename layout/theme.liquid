@@ -312,7 +312,7 @@
  {% render 'footfiles' %}
  
  
-  <script>
+  {% comment %} <script>
   // Function to hide elements when Sold Out / Notify Me is active
   const handleSoldOutState = () => {
     // Check for the Notify Me button (ID used by your app)
@@ -357,6 +357,51 @@
   body:has(#BIS_trigger) .best-fit-size-chart {
     display: none !important;
   }
+</style> {% endcomment %}
+<script>
+  const handleProductUI = () => {
+    // 1. Identify the sections to show/hide
+    const qtyBox = document.querySelector('.product__block__quantity');
+    const sizeGuide = document.querySelector('.best-fit-size-chart, .scr-open-size-chart');
+    const stitchingApp = document.querySelector('.tpo_radio-button-wrapper');
+    
+    // 2. Identify the Add to Cart button
+    const addToCartBtn = document.querySelector('[name="add"], .ad-to-cart, #AddToCart');
+    
+    // 3. LOGIC: Is the product (or selected size) actually available to buy right now?
+    // We check if the Add to Cart button is visible and NOT disabled.
+    const isAvailable = addToCartBtn && addToCartBtn.offsetParent !== null && !addToCartBtn.hasAttribute('disabled');
+
+    if (isAvailable) {
+      // SHOW EVERYTHING if the item is buyable
+      if (qtyBox) qtyBox.style.setProperty('display', 'block', 'important');
+      if (sizeGuide) sizeGuide.style.setProperty('display', 'block', 'important');
+      // Stitching only shows if the stitching app exists (for Unstitch products)
+      if (stitchingApp) stitchingApp.style.setProperty('display', 'block', 'important');
+    } else {
+      // HIDE EVERYTHING if it's Sold Out (so only Notify Me shows)
+      if (qtyBox) qtyBox.style.setProperty('display', 'none', 'important');
+      if (sizeGuide) sizeGuide.style.setProperty('display', 'none', 'important');
+      if (stitchingApp) stitchingApp.style.setProperty('display', 'none', 'important');
+    }
+  };
+
+  // Run on load and whenever variants change
+  window.addEventListener('load', handleProductUI);
+  const observer = new MutationObserver(() => handleProductUI());
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>
+
+<style>
+  /* 1. PERMANENTLY HIDE THE 'UNSTITCH' OPTION BUTTON ITSELF */
+  [data-value*="UNSTITCH" i], 
+  input[value*="UNSTITCH" i], 
+  input[value*="UNSTITCH" i] + label {
+    display: none !important;
+  }
+
+  /* 2. REMOVE all your previous "body:has(#BIS_trigger)" CSS. 
+     That CSS was hiding things too early. This script handles the logic now. */
 </style>
 </body>
 </html>
