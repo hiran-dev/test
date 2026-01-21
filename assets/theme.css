@@ -26374,13 +26374,13 @@ a.siblings__more-link {
 input[value="UNSTITCH" i] + label {
     display: none !important;
 }
-/* only hides the section if NO sizes (XS to XL) are present
+/* only hides the section if NO sizes (XS to XL) are present */
 .selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])),
 .product__block__variants:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
     display: none !important;
     margin: 0 !important;
     padding: 0 !important;
-} */
+}
 
 /* hides sold out from product detail page */
 button[aria-label*="Sold Out"], 
