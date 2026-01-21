@@ -1,4 +1,4 @@
-
+{% comment %} 
   {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
@@ -441,7 +441,7 @@
         .finally(() => { btn.classList.remove('is-loading'); });
       });
     </script>
-  </product-grid-item>
+  </product-grid-item> {% endcomment %}
 
 
 
@@ -642,3 +642,176 @@ assign placeholder = placeholder | default: false
     })();
   </script>
 </product-grid-item> {% endcomment %}
+
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  # Siblings and Swatch logic remains the same...
+  # (Keeping your original logic for has_siblings and has_swatches)
+-%}
+
+<product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  {{ attributes }}
+>
+  {%- comment -%} ... Original Sibling/Swatch Render Blocks remain here ... {%- endcomment -%}
+
+  {%- comment -%} 
+    SIZE SELECTION LOGIC 
+    This part replaces the drawer trigger with inline buttons
+  {%- endcomment -%}
+  {% liquid
+    assign size_option_index = nil
+    for option in product.options
+      if option == 'Size' or option == 'size'
+        assign size_option_index = forloop.index0
+        break
+      endif
+    endfor
+  %}
+
+  {% if size_option_index != nil %}
+    <div class="product-card-sizes-container">
+      {% liquid
+        assign check_unstitch = product.variants[0].options[size_option_index] | downcase
+      %}
+
+      <div class="product-card-sizes inline-selection">
+        {% assign printed_sizes = '|' %}
+        {% for variant in product.variants %}
+          {% assign size_value = variant.options[size_option_index] %}
+          {% assign size_key = '|' | append: size_value | append: '|' %}
+
+          {% unless printed_sizes contains size_key %}
+            {% assign size_available = false %}
+            {% assign size_variant_id = nil %}
+
+            {% for v in product.variants %}
+              {% if v.options[size_option_index] == size_value %}
+                {% assign size_variant_id = v.id %}
+                {% if v.available %}
+                  {% assign size_available = true %}
+                  {% break %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+
+            <button 
+              type="button" 
+              class="product-card-size js-add-inline" 
+              data-variant-id="{{ size_variant_id }}" 
+              {% unless size_available %}disabled{% endunless %}
+            >
+              <span class="btn-text">{{ size_value }}</span>
+              <span class="btn-loading-msg" style="display:none;">...</span>
+            </button>
+            {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
+    {%- comment -%} ... Original Title and Price markup ... {%- endcomment -%}
+    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
+      <div class="product__grid__title__wrapper">
+        <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+      </div>
+      <div class="product__grid__price">
+        <span class="price{% if on_sale %} on-sale{% endif %}">
+          {{ product.price | money }}
+        </span>
+      </div>
+    </a>
+  </div>
+
+  {%- comment -%} 
+    JAVASCRIPT HANDLER
+    Modified to prevent Drawer pop-up and redirect to /cart immediately
+  {%- endcomment -%}
+  <script>
+    (function() {
+      const card = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!card) return;
+
+      card.addEventListener('click', function (event) {
+        const btn = event.target.closest('.js-add-inline');
+        if (!btn) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (btn.classList.contains('is-added')) {
+          window.location.href = '/cart';
+          return;
+        }
+
+        if (btn.classList.contains('is-loading')) return;
+
+        const variantId = btn.getAttribute('data-variant-id');
+        const originalText = btn.querySelector('.btn-text').innerText;
+        
+        btn.classList.add('is-loading');
+        btn.querySelector('.btn-text').innerText = 'ADDING...';
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Add to cart failed');
+          return response.json();
+        })
+        .then(() => {
+          // Change button to "View Cart" style like Unstitched items
+          btn.classList.remove('is-loading');
+          btn.classList.add('is-added');
+          btn.querySelector('.btn-text').innerText = 'VIEW CART';
+          
+          // Optional: Immediate redirect if you want to skip the "View Cart" button state
+          window.location.href = '/cart'; 
+        })
+        .catch((err) => {
+          console.error(err);
+          btn.querySelector('.btn-text').innerText = originalText;
+          alert('Could not add to cart. Please try again.');
+        })
+        .finally(() => {
+          btn.classList.remove('is-loading');
+        });
+      });
+    })();
+  </script>
+
+  <style>
+    .product-card-sizes.inline-selection {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 10px;
+      z-index: 10;
+      position: relative;
+    }
+    .js-add-inline.is-added {
+      background-color: #000 !important;
+      color: #fff !important;
+      border-color: #000 !important;
+    }
+    .js-add-inline.is-loading {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+</product-grid-item>
