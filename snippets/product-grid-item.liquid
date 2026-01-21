@@ -622,6 +622,9 @@ if product.compare_at_price > product.price
   assign on_sale = true
 endif
 
+# FIX: Find the first variant that is actually in stock
+assign first_available_variant = product.selected_or_first_available_variant
+
 assign sold_out = true
 if product.available
   assign sold_out = false
@@ -653,7 +656,6 @@ if settings.swatches_enable and settings.swatches_collection_enable
   endfor
 endif
 
-# Force instant add behavior for the main Bag CTA
 assign instant_add_button = nil
 if settings.instant_add_enable and product.available
   assign instant_add_button = true
@@ -672,7 +674,7 @@ assign placeholder = placeholder | default: false
 >
   {% render 'product-grid-item-variant',
     product: product,
-    variant: product.selected_or_first_available_variant,
+    variant: first_available_variant,
     badge_string: badge_string,
     visible: true,
     instant_add_button: instant_add_button,
@@ -730,7 +732,7 @@ assign placeholder = placeholder | default: false
               type="button" 
               class="js-direct-add-size" 
               data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
+              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; transition: all 0.2s ease; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
               {% unless variant.available %}disabled{% endunless %}
             >
               {{ size_value }}
@@ -747,47 +749,39 @@ assign placeholder = placeholder | default: false
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
 
+      // Track the ID to add (Starts with first available variant)
+      let activeVariantId = "{{ first_available_variant.id }}";
+
       scope.addEventListener('click', function(e) {
         const sizeBtn = e.target.closest('.js-direct-add-size');
-        const bagBtn = e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]:not(.js-direct-add-size)');
+        const bagBtn = e.target.closest('.quick-action-button');
         
-        // 1. Logic for Size Button
-        if (sizeBtn) {
-          e.preventDefault();
-          e.stopPropagation();
+        if (!sizeBtn && !bagBtn) return;
 
-          const vId = sizeBtn.getAttribute('data-variant-id');
+        e.preventDefault();
+        e.stopPropagation();
+
+        // If Size Clicked: Update selection and ID
+        if (sizeBtn) {
+          activeVariantId = sizeBtn.getAttribute('data-variant-id');
           
-          // Visual selection styling
           scope.querySelectorAll('.js-direct-add-size').forEach(b => {
             b.style.backgroundColor = "#fff";
             b.style.color = "#000";
           });
           sizeBtn.style.backgroundColor = "#000";
           sizeBtn.style.color = "#fff";
-
-          // SYNC ALL THEME TRIGGERS: Force every Bag button in this card to use the NEW ID
-          const allTriggers = scope.querySelectorAll('[data-variant-id], [data-grid-item-variant]');
-          allTriggers.forEach(el => {
-             el.setAttribute('data-variant-id', vId);
-             el.setAttribute('data-grid-item-variant', vId);
-          });
-
-          // Add to cart immediately
-          handleAddToCart(vId, sizeBtn);
+          
+          addToCart(activeVariantId, sizeBtn);
+        } 
+        // If Bag Clicked: Use the currently active ID
+        else if (bagBtn) {
+          addToCart(activeVariantId, bagBtn);
         }
 
-        // 2. Logic for Theme Bag Button
-        if (bagBtn && !sizeBtn) {
-          e.preventDefault();
-          e.stopPropagation();
-          const currentId = bagBtn.getAttribute('data-variant-id');
-          handleAddToCart(currentId, bagBtn);
-        }
-
-        function handleAddToCart(vId, target) {
-          if (target.classList.contains('is-loading')) return;
-          target.classList.add('is-loading');
+        function addToCart(vId, trigger) {
+          if (trigger.classList.contains('is-loading')) return;
+          trigger.classList.add('is-loading');
 
           fetch('/cart/add.js', {
             method: 'POST',
@@ -796,18 +790,18 @@ assign placeholder = placeholder | default: false
           })
           .then(res => res.json())
           .then(data => {
-            // Trigger the Notification Bar with the SPECIFIC variant data
+            // This triggers your success bar at the top
             document.dispatchEvent(new CustomEvent('ajaxProduct:added', { 
-              detail: { product: data, variantId: vId } 
+              detail: { product: data } 
             }));
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
           })
           .catch(err => console.error(err))
           .finally(() => {
-            target.classList.remove('is-loading');
+            trigger.classList.remove('is-loading');
           });
         }
-      }, true); // Use capture phase
+      });
     })();
   </script>
 </product-grid-item>
