@@ -1,6 +1,5 @@
-
- {%- comment -%} 
-  Updated to pull the List of Collections from your new metafield: custom.sub_collection
+{%- comment -%} 
+  Pull the List of Collections from your metafield: custom.sub_collection
 {%- endcomment -%}
 {%- assign sub_collections = collection.metafields.custom.sub_collection.value -%}
 
@@ -13,7 +12,6 @@
         <div class="subcollections__inner"
           style="display: flex; justify-content: center; gap: 20px; flex-wrap: nowrap; overflow-x: auto; padding: 10px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
           
-          {%- comment -%} Loop through the collections you manually picked in the admin {%- endcomment -%}
           {% for sub_col in sub_collections limit: section.settings.limit %}
               
               <div class="subcollection__item" style="flex: 0 0 auto; width: 140px; text-align: center;">
@@ -26,9 +24,12 @@
                     {%- endif -%}
 
                     {%- if image != blank -%}
-                       <img src="{{ image | image_url: width: 300, height: 300, crop: 'center' }}" 
+                       {%- comment -%} 
+                         FIX: Removed crop: 'center' and added object-position: top to fix cut-off heads 
+                       {%- endcomment -%}
+                       <img src="{{ image | image_url: width: 600, height: 600 }}" 
                             alt="{{ sub_col.title | escape }}" 
-                            style="width: 100%; height: 100%; object-position: top;"
+                            style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;"
                             loading="lazy">
                     {%- else -%}
                       {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
