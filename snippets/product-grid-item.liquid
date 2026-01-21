@@ -452,91 +452,68 @@ if product.compare_at_price > product.price
   assign on_sale = true
 endif
 
-assign sold_out = true
-if product.available
-  assign sold_out = false
-endif
+assign first_available_variant = product.selected_or_first_available_variant
 
-# Siblings logic
-assign sibs_collection = nil
-assign has_siblings = false
-if settings.show_siblings and product.metafields.theme.siblings.value != blank
-  assign sibs_collection = collections[product.metafields.theme.siblings.value]
-  for sib_product in sibs_collection.products
-    if sib_product == product
-      assign has_siblings = true
-    endif
-  endfor
-endif
-
-assign swatch_option = nil
+# Swatch and Siblings logic (Standard theme setup)
 assign has_swatches = false
-assign swatch_limit = settings.card_swatch_limit
-
 if settings.swatches_enable and settings.swatches_collection_enable
   for option in product.options_with_values
     if option.values.first.swatch != null
       assign has_swatches = true
-      assign swatch_option = option
       break
     endif
   endfor
 endif
 
-# Force instant add behavior for the main Bag CTA
 assign instant_add_button = nil
 if settings.instant_add_enable and product.available
   assign instant_add_button = true
 endif
-
-assign swatch_link_markup = ''
-assign inline_variants = nil
-assign placeholder = placeholder | default: false
 -%}
 
 <product-grid-item
-  aria-label="{{ product.title | strip_html | escape }}"
   class="product-grid-item group/product-grid-item"
   data-item-id="{{ product.id }}"
   {{ attributes }}
 >
-  {% render 'product-grid-item-variant',
-    product: product,
-    variant: product.selected_or_first_available_variant,
-    badge_string: badge_string,
-    visible: true,
-    instant_add_button: instant_add_button,
-    section_width: section_width,
-    eagerload: eagerload,
-    preload: preload,
-    placeholder: placeholder,
-    columns_desktop: columns_desktop,
-    columns_tablet: columns_tablet,
-    columns_mobile: columns_mobile
-  %}
+  {% comment %} --- 1. CLICKABLE IMAGE --- {% endcomment %}
+  <a href="{{ product.url }}" class="product-grid-item__image-link" style="display: block;">
+    {% render 'product-grid-item-variant',
+      product: product,
+      variant: first_available_variant,
+      badge_string: badge_string,
+      visible: true,
+      instant_add_button: instant_add_button,
+      section_width: section_width,
+      eagerload: eagerload,
+      preload: preload,
+      placeholder: placeholder,
+      columns_desktop: columns_desktop,
+      columns_tablet: columns_tablet,
+      columns_mobile: columns_mobile
+    %}
+  </a>
 
   <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
-    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
+    <a href="{{ product.url }}">
       <div class="product__grid__title__wrapper">
         <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
       </div>
-
       <div class="product__grid__price">
         <span class="price{% if on_sale %} on-sale{% endif %}">
           {{ product.price | money }}
         </span>
-        {% if on_sale %}
-          <span class="compare-at">{{ product.compare_at_price | money }}</span>
-        {% endif %}
+        {% if on_sale %}<span class="compare-at">{{ product.compare_at_price | money }}</span>{% endif %}
       </div>
     </a>
   </div>
 
-  {% comment %} --- SIZES SECTION --- {% endcomment %}
+  {% comment %} --- 2. SIZES SECTION --- {% endcomment %}
   {% liquid
     assign size_option_index = nil
     for option in product.options
-      if option == 'Size' or option == 'size'
+      assign down-option = option | downcase
+      if down-option == 'size'
         assign size_option_index = forloop.index0
         break
       endif
@@ -544,101 +521,93 @@ assign placeholder = placeholder | default: false
   %}
 
   {% if size_option_index != nil %}
-    {% liquid
-      assign check_unstitch = product.variants[0].options[size_option_index] | downcase
-    %}
-
-    {% unless check_unstitch contains 'unstitch' %}
-      <div class="product-card-sizes" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
-        {% assign printed_sizes = '|' %}
-        {% for variant in product.variants %}
-          {% assign size_value = variant.options[size_option_index] %}
-          {% assign size_key = '|' | append: size_value | append: '|' %}
-
-          {% unless printed_sizes contains size_key %}
-            <button 
-              type="button" 
-              class="js-direct-add-size" 
-              data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
-              {% unless variant.available %}disabled{% endunless %}
-            >
-              {{ size_value }}
-            </button>
-            {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
-          {% endunless %}
-        {% endfor %}
-      </div>
-    {% endunless %}
+    <div class="product-card-sizes" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+      {% assign printed_sizes = '' %}
+      {% for variant in product.variants %}
+        {% assign size_value = variant.options[size_option_index] %}
+        {% unless printed_sizes contains size_value %}
+          <button 
+            type="button" 
+            class="js-grid-size-btn" 
+            data-variant-id="{{ variant.id }}"
+            style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; color: #000; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; text-decoration: line-through; cursor: not-allowed;{% endunless %}"
+            {% unless variant.available %}disabled{% endunless %}
+          >
+            {{ size_value }}
+          </button>
+          {% assign printed_sizes = printed_sizes | append: size_value | append: ',' %}
+        {% endunless %}
+      {% endfor %}
+    </div>
   {% endif %}
+
+  <style>
+    .js-grid-size-btn.is-active { background: #000 !important; color: #fff !important; }
+    .product-grid-item { position: relative; }
+  </style>
 
   <script>
     (function() {
-      const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
-      if (!scope) return;
+      const container = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!container) return;
 
-      scope.addEventListener('click', function(e) {
-        const sizeBtn = e.target.closest('.js-direct-add-size');
-        // Theme's Bag button usually has this class or data-variant-id
-        const bagBtn = e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]');
-        
-        // 1. If size is clicked: Highlight it and UPDATE THE BAG BUTTON'S ID
+      // Default selection is the first available variant
+      let activeVariantId = "{{ first_available_variant.id }}";
+
+      container.addEventListener('click', function(e) {
+        const sizeBtn = e.target.closest('.js-grid-size-btn');
+        const bagBtn = e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]:not(.js-grid-size-btn)');
+
+        // Handle Size Selection
         if (sizeBtn) {
           e.preventDefault();
           e.stopPropagation();
-
-          const vId = sizeBtn.getAttribute('data-variant-id');
           
-          // Visual selection
-          scope.querySelectorAll('.js-direct-add-size').forEach(b => {
-            b.style.backgroundColor = "#fff";
-            b.style.color = "#000";
-          });
-          sizeBtn.style.backgroundColor = "#000";
-          sizeBtn.style.color = "#fff";
+          activeVariantId = sizeBtn.getAttribute('data-variant-id');
 
-          // UPDATE THE THEME'S BAG BUTTON ID
-          // We search for anything that might be the bag button and force the new ID on it
-          const realBag = scope.querySelector('.quick-action-button') || scope.querySelector('[data-variant-id]:not(.js-direct-add-size)');
+          // UI Toggle
+          container.querySelectorAll('.js-grid-size-btn').forEach(b => b.classList.remove('is-active'));
+          sizeBtn.classList.add('is-active');
+
+          // Force "Bag" button to recognize this new ID
+          const realBag = container.querySelector('.quick-action-button');
           if (realBag) {
-            realBag.setAttribute('data-variant-id', vId);
-            // Some themes use href or a hidden input
-            const bagLink = realBag.querySelector('a');
-            if (bagLink) bagLink.setAttribute('href', '/cart/add?id=' + vId);
+            realBag.setAttribute('data-variant-id', activeVariantId);
           }
-        }
-
-        // 2. Handle the "Add to Cart" AJAX call for both buttons
-        if (sizeBtn || bagBtn) {
+          
+          // Optional: Add to cart immediately on size click
+          // remove the line below if you ONLY want the bag button to add to cart
+          handleCartAdd(activeVariantId, sizeBtn);
+        } 
+        
+        // Handle Bag Button Click
+        else if (bagBtn) {
           e.preventDefault();
           e.stopPropagation();
-
-          const target = sizeBtn || bagBtn;
-          const vId = target.getAttribute('data-variant-id');
-          
-          if (target.classList.contains('is-loading')) return;
-          target.classList.add('is-loading');
-
-          fetch('/cart/add.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: Number(vId), quantity: 1 })
-          })
-          .then(res => res.json())
-          .then(data => {
-            // TRIGGERS THE TOP BAR
-            document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
-            document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
-            
-            // If your theme uses theme-specific events:
-            document.dispatchEvent(new CustomEvent('theme:cart:add', { detail: { product: data } }));
-          })
-          .catch(err => console.error(err))
-          .finally(() => {
-            target.classList.remove('is-loading');
-          });
+          handleCartAdd(activeVariantId, bagBtn);
         }
-      }, true); // Use capture phase to override theme scripts
+      }, true);
+
+      function handleCartAdd(id, trigger) {
+        if (trigger.classList.contains('is-loading')) return;
+        trigger.classList.add('is-loading');
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: Number(id), quantity: 1 })
+        })
+        .then(res => res.json())
+        .then(data => {
+          // Trigger theme events for cart drawer/notification
+          document.dispatchEvent(new CustomEvent('ajaxProduct:added', {
+            detail: { product: data, variantId: id }
+          }));
+          document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+        })
+        .catch(err => console.error('Error adding to cart', err))
+        .finally(() => trigger.classList.remove('is-loading'));
+      }
     })();
   </script>
 </product-grid-item>
