@@ -81,8 +81,11 @@
                 {%- assign lock_width_class = 'radio__inputs--swatch' -%}
               {%- endif -%}
               <div class="radio__inputs {{ lock_width_class }}">
-                {%- for value in option.values -%}
-                  {%- capture variant_url -%}
+                {% comment %} {%- for value in option.values -%}
+                  {%- capture variant_url -%} {% endcomment %}
+                   {%- for value in option.values -%}
+  {% if value contains 'UNSTITCH' %}{% continue %}{% endif %}
+  {%- capture variant_url -%}
                     {%- render 'product-form-variant-url',
                       product: product,
                       variant: value.variant,
@@ -206,8 +209,11 @@
                   </button>
 
                   <ul id="{{ uniq_id }}-select-{{ option.name | handle }}-{{ forloop.index }}" class="select-popout__list" data-popout-list data-scroll-lock-scrollable>
-                    {%- for value in option.values -%}
-                      {%- capture variant_url -%}
+                    {% comment %} {%- for value in option.values -%}
+                      {%- capture variant_url -%} {% endcomment %}
+                               {%- for value in option.values -%}
+  {% if value contains 'UNSTITCH' %}{% continue %}{% endif %}
+  {%- capture variant_url -%}
                         {%- render 'product-form-variant-url',
                           product: product,
                           variant: value.variant,
