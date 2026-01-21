@@ -26369,7 +26369,7 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* only hides unstitch from product detail page
+ only hides unstitch from product detail page
 [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
@@ -26380,21 +26380,6 @@ input[value="UNSTITCH" i] + label {
     display: none !important;
         margin: 0 !important;
             padding: 0 !important;
-} */
-
-/* 1. HIDE UNSTITCH (Button and Label) */
-[data-value*="UNSTITCH" i], 
-[data-value*="Unstitch" i],
-input[value*="UNSTITCH" i], 
-input[value*="UNSTITCH" i] + label {
-    display: none !important;
-}
-
-/* 2. HIDE SECTION ONLY IF EVERYTHING IS SOLD OUT */
-/* We target the wrapper only when the main product form says it's unavailable */
-.product-page:has(.is-unavailable) .product__block__quantity,
-.product-page:has(.is-unavailable) .product__block__size-and-remaining {
-    display: none !important;
 }
 
 /* hides sold out from product detail page */
