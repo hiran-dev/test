@@ -26369,36 +26369,17 @@ a.siblings__more-link {
   .drawer--right .cs-desktop-icons {
       display: none !important;
   }
-/* only hides unstitch from product detail page
+/* only hides unstitch from product detail page */
 [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
 }
-
+/* only hides the section if NO sizes (XS to XL) are present */
 .selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])),
 .product__block__variants:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
     display: none !important;
         margin: 0 !important;
             padding: 0 !important;
-} */
-
-/* 1. Always hide UNSTITCH */
-[data-value="UNSTITCH" i], 
-input[value="UNSTITCH" i] + label {
-    display: none !important;
-}
-
-/* 2. Hide specific blocks ONLY when the product is completely sold out */
-/* This works by checking if the 'add to cart' button is disabled */
-.product-page:has([data-add-to-cart][disabled]) .product__block__quantity,
-.product-page:has([data-add-to-cart][disabled]) .product__block__size-and-remaining {
-    display: none !important;
-}
-
-/* 3. Ensure these blocks stay visible if the product IS available */
-.product-page:not(:has([data-add-to-cart][disabled])) .product__block__quantity,
-.product-page:not(:has([data-add-to-cart][disabled])) .product__block__size-and-remaining {
-    display: block !important;
 }
 
 /* hides sold out from product detail page */
