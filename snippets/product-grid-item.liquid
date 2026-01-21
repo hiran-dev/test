@@ -1,4 +1,4 @@
-{% comment %} 
+
   {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
@@ -442,7 +442,6 @@
       });
     </script>
   </product-grid-item>
- {% endcomment %}
 
 
 
@@ -616,7 +615,7 @@ assign placeholder = placeholder | default: false
 
 
 
-{%- liquid
+{% comment %} {%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
   assign on_sale = true
@@ -811,4 +810,4 @@ assign placeholder = placeholder | default: false
       }, true); // Use capture phase to override theme scripts
     })();
   </script>
-</product-grid-item>
+</product-grid-item> {% endcomment %}
