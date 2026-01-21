@@ -26410,7 +26410,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
     right: 4px !important;
 }
 
-/* 3. MOBILE: Your preferred small settings */
+/* 3. MOBILE: Your preferred small settings  for notify me */
 @media (max-width: 768px) {
     a.BIS_trigger.bis-collection-button.product-card__name {
         font-size: 8px !important;
