@@ -139,7 +139,6 @@
   assign link_level = link_level | default: 0
   assign link_level_next = link_level | plus: 1
 
-  # we loop through this snippet in the secondary menu, but blocks are not shown there
   assign show_block_content = true
   if secondary_menu
     assign show_block_content = false
@@ -153,7 +152,6 @@
         if display == 'desktop'
           continue
         endif
-
         if block.type == 'collection'
           assign block_count = block_count | plus: block.settings.limit
         else
@@ -170,13 +168,12 @@
 
   assign link_title_handle = link.title | handle
   assign highlight_links = 'general.header.highlight_links' | t | strip | split: ',' | join: '___' | handle | replace: '___-', '___' | replace: '-___', '___' | split: '___'
-  assign collections_string = '/collections/'
-
-  # CUSTOM LOGIC: Check if this is the "Shop by Collection" level to prevent sliding
-  assign is_shop_by_collection = false
+  
+  # Logic to identify the "Shop by Collection" heading
   assign link_title_downcase = link.title | downcase | strip
+  assign is_header_style = false
   if link_title_downcase == 'shop by collection'
-    assign is_shop_by_collection = true
+    assign is_header_style = true
   endif
 -%}
 
@@ -190,21 +187,29 @@
 
 <div class="sliderule__wrapper{% if secondary_menu %} sliderule__wrapper--secondary{% endif %}">
   {%- if expands -%}
-    {%- if is_shop_by_collection -%}
-      {% comment %} --- STATIC HEADER VIEW (No Slide) --- {% endcomment %}
-      <div class="sliderow sliderow--static-header" style="background-color: #000; color: #fff; font-weight: bold; text-transform: uppercase;">
-        <span class="sliderow__title" style="color: #fff !important; padding-left: 20px;">{{ link.title | strip_html | escape }}</span>
+    {%- if is_header_style -%}
+      {% comment %} 
+        This block renders the Black Heading and the list immediately 
+        instead of a button that slides to a new screen.
+      {% endcomment %}
+      <div class="sliderow" style="background-color: #000 !important; margin-bottom: 5px;">
+        <span class="sliderow__title" style="color: #fff !important; font-weight: bold; text-transform: uppercase; padding: 12px 20px; display: block;">
+          {{ link.title | strip_html | escape }}
+        </span>
       </div>
       
-      <div class="sliderow__links-static">
-        {% for link in link.links %}
-          {% assign index_recursive = index | append: 'x' | append: forloop.index %}
-          {% render 'nav-item-mobile', link: link, index: index_recursive, link_level: link_level_next %}
+      <div class="static-menu-list">
+        {% for sublink in link.links %}
+          <div class="sliderow" data-animates="{{ link_level_next }}">
+            <a class="sliderow__title" href="{{ sublink.url }}" style="padding-left: 25px; font-size: 0.9em;">
+              {{ sublink.title | strip_html | escape }}
+            </a>
+          </div>
         {% endfor %}
       </div>
 
     {%- else -%}
-      {% comment %} --- ORIGINAL SLIDERULE VIEW --- {% endcomment %}
+      {% comment %} Standard Sliding Menu Logic for everything else {% endcomment %}
       <button class="sliderow{% if secondary_menu %} sliderow--secondary{% endif %}"
         data-animates="{{ link_level }}"
         data-sliderule-open="sliderule-{{ key }}">
@@ -215,44 +220,15 @@
         </span>
       </button>
 
-      <div class="mobile__menu__dropdown sliderule__panel"
-        data-sliderule
-        id="sliderule-{{ key }}">
-
-        {%- assign image_html = '' -%}
-        {%- if link_level_next == 2 and section.settings.show_collection_images and link.url contains collections_string -%}
-          {%- assign collection_string = link.url | split: collections_string | last -%}
-          {%- assign collection_obj = collections[collection_string] -%}
-
-          {%- if collection_obj.image != blank -%}
-            {%- capture image_html -%}
-              <div class="sliderule__image" data-animates>
-                {%- render 'image',
-                  cover: true,
-                  img_object: collection_obj.image,
-                  wh_ratio: section.settings.collection_wh_ratio,
-                  sizes: '100vw',
-                  loading: 'lazy'
-                -%}
-              </div>
-            {%- endcapture -%}
-          {%- endif -%}
-        {%- endif -%}
-
-        <div class="sliderow{% if image_html != '' %} sliderow--borderless{% endif %} sliderow__back" data-animates="{{ link_level_next }}">
-          <button class="drawer__button"
-            data-sliderule-close="sliderule-{{ key }}">
+      <div class="mobile__menu__dropdown sliderule__panel" data-sliderule id="sliderule-{{ key }}">
+        <div class="sliderow sliderow__back" data-animates="{{ link_level_next }}">
+          <button class="drawer__button" data-sliderule-close="sliderule-{{ key }}">
             <span class="sliderule__chevron--left">
               {% render 'icon-core-chevron-left' %}
-              <span class="visually-hidden">{{ 'general.accessibility.hide_menu' | t }}</span>
             </span>
           </button>
           {{ link_markup }}
         </div>
-
-        {%- if image_html != '' -%}
-          {{ image_html }}
-        {%- endif -%}
 
         <div class="sliderow__links" data-links>
           {% for link in link.links %}
@@ -260,21 +236,11 @@
             {% render 'nav-item-mobile', link: link, index: index_recursive, link_level: link_level_next %}
           {% endfor %}
         </div>
-
-        {%- if section and show_block_content -%}
-          <div class="sliderule-grid blocks-{{ block_count }}">
-            {% for block in section.blocks %}
-              {%- if block.settings.position == index -%}
-                {% render 'header-block', block: block, mobile: true %}
-              {%- endif -%}
-            {% endfor %}
-          </div>
-        {%- endif -%}
       </div>
     {%- endif -%}
 
   {%- else -%}
-    {% comment %} Single menu item, no nesting {% endcomment %}
+    {% comment %} Simple link with no children {% endcomment %}
     <div class="sliderow" data-animates="{{ link_level }}">
       {{ link_markup }}
     </div>
