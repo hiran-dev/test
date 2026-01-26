@@ -1,5 +1,5 @@
 
-  {%- liquid
+  {% comment %} {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
     assign on_sale = true
@@ -442,7 +442,7 @@
       });
     </script>
   </product-grid-item>
-
+ {% endcomment %}
 
 
 
@@ -642,3 +642,8 @@ assign placeholder = placeholder | default: false
     })();
   </script>
 </product-grid-item> {% endcomment %}
+
+
+
+
+
