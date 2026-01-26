@@ -1,5 +1,5 @@
 
-  {% comment %} {%- liquid
+  {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
     assign on_sale = true
@@ -442,7 +442,7 @@
       });
     </script>
   </product-grid-item>
- {% endcomment %}
+
 
 
 
@@ -642,148 +642,3 @@ assign placeholder = placeholder | default: false
     })();
   </script>
 </product-grid-item> {% endcomment %}
-
-
-
-
-{%- liquid
-  assign on_sale = false
-  if product.compare_at_price > product.price
-    assign on_sale = true
-  endif
-
-  assign sold_out = true
-  if product.available
-    assign sold_out = false
-  endif
-
-  assign swatch_limit = settings.card_swatch_limit
-  assign placeholder = placeholder | default: false
--%}
-
-<product-grid-item
-  aria-label="{{ product.title | strip_html | escape }}"
-  class="product-grid-item group/product-grid-item"
-  data-item-id="{{ product.id }}"
-  {{ attributes }}
-  style="position: relative;"
->
-  {%- comment -%} Theme's default variant rendering (The Bag Icon) {%- endcomment -%}
-  {% render 'product-grid-item-variant',
-    product: product,
-    variant: product.selected_or_first_available_variant,
-    visible: true,
-    placeholder: placeholder
-  %}
-
-  <div class="product__grid__info">
-    <a href="{{ product.url }}">
-      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
-      <div class="product__grid__price">
-        <span class="price{% if on_sale %} on-sale{% endif %}">
-          {{ product.price | money }}
-        </span>
-      </div>
-    </a>
-  </div>
-
-  {%- comment -%} --- CENTERED MODAL --- {%- endcomment -%}
-  <div id="Modal-{{ product.id }}" class="js-atc-modal custom-atc-modal" style="display: none;">
-    <div class="modal-overlay js-close-modal"></div>
-    <div class="modal-window">
-      <button type="button" class="js-close-modal modal-x">&times;</button>
-      <div class="modal-content-grid">
-        <div class="modal-image-side">
-          <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title }}">
-        </div>
-        <div class="modal-text-side">
-          <h3 class="modal-prod-title">{{ product.title }}</h3>
-          <p class="modal-prod-price">{{ product.price | money }}</p>
-          <div class="modal-size-selection">
-            <p class="size-heading">SELECT SIZE</p>
-            <div class="size-button-row">
-              {% for variant in product.variants %}
-                <button type="button" 
-                  class="js-add-to-cart-final size-option-btn" 
-                  data-v-id="{{ variant.id }}"
-                  {% unless variant.available %}disabled{% endunless %}>
-                  {{ variant.title }}
-                </button>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    .custom-atc-modal { position: fixed; inset: 0; z-index: 999999999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-    .modal-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); cursor: pointer; }
-    .modal-window { position: relative; background: #fff; width: 100%; max-width: 450px; padding: 25px; border-radius: 4px; z-index: 10; color: #000; text-align: left; }
-    .modal-x { position: absolute; top: 5px; right: 10px; font-size: 28px; border: none; background: none; cursor: pointer; color: #000; }
-    .modal-content-grid { display: flex; gap: 20px; align-items: flex-start; }
-    .modal-image-side { width: 40%; }
-    .modal-image-side img { width: 100%; height: auto; display: block; }
-    .modal-text-side { width: 60%; }
-    .size-heading { font-size: 11px; font-weight: bold; margin: 15px 0 10px; letter-spacing: 0.5px; }
-    .size-button-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .size-option-btn { border: 1px solid #ddd; background: #fff; padding: 8px 4px; font-size: 11px; cursor: pointer; text-transform: uppercase; }
-    .size-option-btn:hover:not([disabled]) { border-color: #000; background: #000; color: #fff; }
-    .size-option-btn:disabled { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
-    @media (max-width: 500px) { .modal-content-grid { flex-direction: column; } .modal-image-side, .modal-text-side { width: 100%; } }
-  </style>
-
-  <script>
-    (function() {
-      const pId = "{{ product.id }}";
-      const container = document.querySelector(`[data-item-id="${pId}"]`);
-      const modal = container.querySelector('#Modal-' + pId);
-
-      // CRITICAL: We use "true" for Capture Phase to catch the click 
-      // BEFORE the theme's side-drawer script even sees it.
-      container.addEventListener('click', function(e) {
-        // This targets the theme's Bag icon or Add to Cart buttons
-        const trigger = e.target.closest('[data-instant-add], .quick-add, .js-quick-add, .product-grid-item__btn');
-        
-        if (trigger) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation(); // KILLS THE DRAWER
-          
-          modal.style.display = 'flex';
-          document.body.style.overflow = 'hidden';
-        }
-      }, true); // <--- This 'true' is what stops the drawer
-
-      // Close Logic
-      modal.addEventListener('click', function(e) {
-        if (e.target.classList.contains('js-close-modal')) {
-          modal.style.display = 'none';
-          document.body.style.overflow = '';
-        }
-      });
-
-      // Cart Logic
-      modal.querySelectorAll('.js-add-to-cart-final').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          const vid = this.getAttribute('data-v-id');
-          this.innerText = 'ADDING...';
-          this.style.pointerEvents = 'none';
-
-          fetch('/cart/add.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: Number(vid), quantity: 1 })
-          })
-          .then(() => { window.location.href = '/cart'; })
-          .catch(() => { 
-            this.innerText = 'ERROR'; 
-            this.style.pointerEvents = 'auto'; 
-          });
-        });
-      });
-    })();
-  </script>
-</product-grid-item>
