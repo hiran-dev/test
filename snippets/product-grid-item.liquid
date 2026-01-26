@@ -1,4 +1,4 @@
-{% comment %} 
+
   {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
@@ -441,7 +441,7 @@
         .finally(() => { btn.classList.remove('is-loading'); });
       });
     </script>
-  </product-grid-item> {% endcomment %}
+  </product-grid-item>
 
 
 
@@ -642,138 +642,3 @@ assign placeholder = placeholder | default: false
     })();
   </script>
 </product-grid-item> {% endcomment %}
-
-
-
-
-
-{%- liquid
-  assign on_sale = false
-  if product.compare_at_price > product.price
-    assign on_sale = true
-  endif
-
-  # FIX: Corrected syntax for line 655
-  assign sold_out = false
-  unless product.available
-    assign sold_out = true
-  endunless
-
-  assign swatch_limit = settings.card_swatch_limit
-  assign placeholder = placeholder | default: false
--%}
-
-<product-grid-item
-  aria-label="{{ product.title | strip_html | escape }}"
-  class="product-grid-item group/product-grid-item"
-  data-item-id="{{ product.id }}"
-  {{ attributes }}
-  style="position: relative;"
->
-  {%- comment -%} RENDER MAIN VARIANT (This contains the Bag Icon) {%- endcomment -%}
-  {% render 'product-grid-item-variant', product: product, variant: product.selected_or_first_available_variant, visible: true %}
-
-  <div class="product__grid__info">
-    <a href="{{ product.url }}">
-      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
-      <div class="product__grid__price">
-        <span class="price{% if on_sale %} on-sale{% endif %}">{{ product.price | money }}</span>
-      </div>
-    </a>
-  </div>
-
-  {%- comment -%} --- CENTERED MODAL --- {%- endcomment -%}
-  <div class="js-custom-modal-{{ product.id }} g-modal-overlay" style="display: none;">
-    <div class="g-modal-content">
-      <button type="button" class="js-close-modal g-modal-close" aria-label="Close">&times;</button>
-      <div class="g-modal-grid">
-        <div class="g-modal-image">
-          <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
-        </div>
-        <div class="g-modal-details">
-          <h3 class="product__grid__title">{{ product.title }}</h3>
-          <p class="price">{{ product.price | money }}</p>
-          
-          <div class="g-modal-sizes">
-            <p style="font-size: 11px; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px;">SELECT SIZE</p>
-            <div class="g-size-list">
-              {% for variant in product.variants %}
-                <button type="button" 
-                  class="js-add-to-cart-modal g-size-btn" 
-                  data-variant-id="{{ variant.id }}"
-                  {% unless variant.available %}disabled{% endunless %}>
-                  {{ variant.title }}
-                </button>
-              {% endfor %}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <style>
-    .g-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2147483647; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .g-modal-content { background: #fff; width: 100%; max-width: 500px; padding: 30px; position: relative; border-radius: 0px; color: #000; text-align: left; }
-    .g-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
-    .g-modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; background: none; border: none; cursor: pointer; color: #000; z-index: 10; }
-    .g-modal-image img { width: 100%; height: auto; display: block; }
-    .g-size-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 8px; }
-    .g-size-btn { border: 1px solid #e8e8e8; background: #fff; padding: 10px 5px; font-size: 12px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; }
-    .g-size-btn:hover:not([disabled]) { border-color: #000; background: #000; color: #fff; }
-    .g-size-btn:disabled { opacity: 0.4; text-decoration: line-through; cursor: not-allowed; }
-    @media (max-width: 600px) { .g-modal-grid { grid-template-columns: 1fr; } .g-modal-content { padding: 20px; } }
-  </style>
-
-  <script>
-    (function() {
-      const pId = "{{ product.id }}";
-      const container = document.querySelector(`[data-item-id="${pId}"]`);
-      const modal = container.querySelector(`.js-custom-modal-${pId}`);
-      
-      // Capture Phase Listener stops the theme's drawer code before it starts
-      container.addEventListener('click', function(e) {
-        const trigger = e.target.closest('[data-instant-add], .product-grid-item__btn, .quick-add-button, .js-quick-add, .product-item__quick-buy');
-        
-        if (trigger) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation(); 
-          
-          modal.style.display = 'flex';
-          document.body.style.overflow = 'hidden';
-        }
-      }, true); // The 'true' is critical to intercept the click
-
-      modal.addEventListener('click', function(e) {
-        if (e.target === modal || e.target.closest('.js-close-modal')) {
-          modal.style.display = 'none';
-          document.body.style.overflow = '';
-        }
-      });
-
-      modal.querySelectorAll('.js-add-to-cart-modal').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          const vId = this.dataset.variantId;
-          this.innerText = 'ADDING...';
-          this.style.pointerEvents = 'none';
-
-          fetch('/cart/add.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: Number(vId), quantity: 1 })
-          })
-          .then(res => {
-            if(res.ok) window.location.href = '/cart';
-            else throw new Error();
-          })
-          .catch(() => {
-            this.innerText = 'ERROR';
-            this.style.pointerEvents = 'auto';
-          });
-        });
-      });
-    })();
-  </script>
-</product-grid-item>
