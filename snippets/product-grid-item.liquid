@@ -1,5 +1,5 @@
 
-  {%- liquid
+  {% comment %} {%- liquid
   assign on_sale = false
   if product.compare_at_price > product.price
     assign on_sale = true
@@ -442,7 +442,7 @@
       });
     </script>
   </product-grid-item>
-
+ {% endcomment %}
 
 
 
@@ -642,3 +642,201 @@ assign placeholder = placeholder | default: false
     })();
   </script>
 </product-grid-item> {% endcomment %}
+
+
+
+
+
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  # Siblings / Swatches logic (Original)
+  assign sibs_collection = nil
+  assign has_siblings = false
+  if settings.show_siblings and product.metafields.theme.siblings.value != blank
+    assign sibs_collection = collections[product.metafields.theme.siblings.value]
+    for sib_product in sibs_collection.products
+      if sib_product == product
+        assign has_siblings = true
+      endif
+    endfor
+  endif
+
+  assign swatch_option = nil
+  assign has_swatches = false
+  assign swatch_limit = settings.card_swatch_limit
+  if settings.swatches_enable and settings.swatches_collection_enable
+    for option in product.options_with_values
+      if option.values.first.swatch != null
+        assign has_swatches = true
+        assign swatch_option = option
+        break
+      endif
+    endfor
+  endif
+
+  assign instant_add_button = nil
+  if settings.instant_add_enable
+    if product.variants.size == 1
+      assign instant_add_button = true
+    elsif has_swatches and product.options.size == 1
+      assign instant_add_button = true
+    endif
+  endif
+-%}
+
+<style>
+  /* Modal Overlay - Forced to Center */
+  .pret-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 2147483647 !important; /* Force above theme drawers */
+    justify-content: center;
+    align-items: center;
+  }
+  .pret-modal-content {
+    background: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+  }
+  .pret-modal-close {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 24px; cursor: pointer;
+  }
+  .pret-modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .pret-btn-view {
+    background: #000;
+    color: #fff;
+    padding: 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .pret-btn-close {
+    background: #fff;
+    border: 1px solid #000;
+    padding: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+</style>
+
+<product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  {{ attributes }}
+>
+  {% if has_siblings and sibs_collection.products.size > 0 %}
+    {%- for sib_product in sibs_collection.products limit: swatch_limit -%}
+       {% render 'product-grid-item-variant', product: sib_product, variant: sib_product.variants[0], visible: true %}
+    {%- endfor -%}
+  {% else %}
+     {% render 'product-grid-item-variant', product: product, variant: product.selected_or_first_available_variant, visible: true %}
+  {% endif %}
+
+  <div class="product__grid__info {{ text_align | default: 'text-left' }}">
+    <a href="{{ product.url }}" data-grid-link>
+      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+      <div class="product__grid__price">
+        <span class="price">{{ product.price | money }}</span>
+      </div>
+    </a>
+  </div>
+
+  {% liquid
+    assign size_option_index = nil
+    for option in product.options
+      if option == 'Size' or option == 'size'
+        assign size_option_index = forloop.index0
+        break
+      endif
+    endfor
+  %}
+
+  {% if size_option_index != nil %}
+    {% assign first_val = product.variants[0].options[size_option_index] | downcase %}
+    {% unless first_val contains 'unstitch' %}
+      <div class="product-card-sizes js-pret-container">
+        {% assign printed_sizes = '' %}
+        {% for variant in product.variants %}
+          {% assign size_value = variant.options[size_option_index] %}
+          {% unless printed_sizes contains size_value %}
+            <button type="button" class="product-card-size js-add-size" data-variant-id="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+              {{ size_value }}
+            </button>
+            {% assign printed_sizes = printed_sizes | append: size_value | append: ',' %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+    {% endunless %}
+  {% endif %}
+
+  <div id="pret-modal-{{ product.id }}" class="pret-modal-overlay">
+    <div class="pret-modal-content">
+      <span class="pret-modal-close" onclick="this.closest('.pret-modal-overlay').style.display='none'">&times;</span>
+      <h2 style="margin:0 0 10px 0;">Added to Cart</h2>
+      <p style="margin:0;">{{ product.title }}</p>
+      <div class="pret-modal-actions">
+        <a href="/cart" class="pret-btn-view">View Cart</a>
+        <button type="button" class="pret-btn-close" onclick="this.closest('.pret-modal-overlay').style.display='none'">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const card = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!card) return;
+
+      card.addEventListener('click', function (event) {
+        const btn = event.target.closest('.js-add-size');
+        
+        // 1. STRICT CHECK: If it's not a Ready-to-Wear size button, let the theme handle it (for Unstitched)
+        if (!btn || !btn.closest('.js-pret-container')) return;
+
+        // 2. STOP THE DRAWER: Kill all other scripts from running on this click
+        event.preventDefault();
+        event.stopImmediatePropagation(); 
+
+        if (btn.classList.contains('is-loading')) return;
+        
+        const vId = btn.getAttribute('data-variant-id');
+        btn.classList.add('is-loading');
+
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: Number(vId), quantity: 1 })
+        })
+        .then(r => r.json())
+        .then(() => {
+          document.getElementById('pret-modal-{{ product.id }}').style.display = 'flex';
+        })
+        .catch(e => console.error(e))
+        .finally(() => btn.classList.remove('is-loading'));
+      }, true); // Capture phase is key
+    })();
+  </script>
+</product-grid-item>
