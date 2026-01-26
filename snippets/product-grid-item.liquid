@@ -688,18 +688,7 @@ if product.available
   assign sold_out = false
 endif
 
-# Siblings logic
-assign sibs_collection = nil
-assign has_siblings = false
-if settings.show_siblings and product.metafields.theme.siblings.value != blank
-  assign sibs_collection = collections[product.metafields.theme.siblings.value]
-  for sib_product in sibs_collection.products
-    if sib_product == product
-      assign has_siblings = true
-    endif
-  endfor
-endif
-
+# Force instant add behavior for the main Bag CTA
 assign instant_add_button = nil
 if settings.instant_add_enable and product.available
   assign instant_add_button = true
@@ -707,14 +696,14 @@ endif
 -%}
 
 <style>
-  /* Centered Modal Styles */
+  /* Centered Modal Styles - Increased Z-index to beat the top bar */
   .custom-pret-modal {
     display: none;
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(0,0,0,0.6);
-    z-index: 9999999;
+    z-index: 2147483647 !important;
     justify-content: center;
     align-items: center;
   }
@@ -726,13 +715,14 @@ endif
     text-align: center;
     position: relative;
     border-radius: 4px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.4);
   }
   .custom-pret-close {
     position: absolute;
     top: 10px; right: 15px;
     font-size: 24px; cursor: pointer;
     line-height: 1;
+    color: #000;
   }
   .custom-pret-actions {
     display: flex;
@@ -741,8 +731,8 @@ endif
     margin-top: 20px;
   }
   .pret-view-cart {
-    background: #000;
-    color: #fff;
+    background: #000 !important;
+    color: #fff !important;
     padding: 14px;
     text-decoration: none;
     text-transform: uppercase;
@@ -751,13 +741,14 @@ endif
     display: block;
   }
   .pret-continue {
-    background: #fff;
-    border: 1px solid #000;
+    background: #fff !important;
+    border: 1px solid #000 !important;
     padding: 12px;
     cursor: pointer;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 12px;
+    color: #000 !important;
   }
 </style>
 
@@ -767,6 +758,9 @@ endif
   data-item-id="{{ product.id }}"
   {{ attributes }}
 >
+  {% comment %} 
+    We render the variant, but we will target the "Add to Cart" button inside it specifically.
+  {% endcomment %}
   {% render 'product-grid-item-variant',
     product: product,
     variant: product.selected_or_first_available_variant,
@@ -798,7 +792,7 @@ endif
   {% if size_option_index != nil %}
     {% assign check_unstitch = product.variants[0].options[size_option_index] | downcase %}
     {% unless check_unstitch contains 'unstitch' %}
-      <div class="product-card-sizes" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+      <div class="product-card-sizes js-topbar-container" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
         {% assign printed_sizes = '|' %}
         {% for variant in product.variants %}
           {% assign size_value = variant.options[size_option_index] %}
@@ -806,7 +800,7 @@ endif
           {% unless printed_sizes contains size_key %}
             <button 
               type="button" 
-              class="js-direct-add-size" 
+              class="js-direct-add-size js-add-size" 
               data-variant-id="{{ variant.id }}"
               style="border: 1px solid #e5e5e5; padding: 6px 12px; font-size: 12px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
               {% unless variant.available %}disabled{% endunless %}
@@ -838,18 +832,29 @@ endif
       if (!scope) return;
 
       scope.addEventListener('click', function(e) {
+        // 1. Identify which button was clicked
         const sizeBtn = e.target.closest('.js-direct-add-size');
-        // Bag button usually has 'quick-action-button' or 'product-grid-item__btn'
-        const bagBtn = e.target.closest('[class*="btn"]') || e.target.closest('[class*="button"]');
-        
-        // Ensure we aren't clicking a link or the modal itself
-        if ((sizeBtn || bagBtn) && !e.target.closest('.custom-pret-modal')) {
+        // We look for the theme's main add button (often has 'quick-add' or 'btn' classes)
+        const bagBtn = e.target.closest('.product-grid-item__btn') || e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]:not(.js-direct-add-size)');
+
+        if (sizeBtn || bagBtn) {
           const target = sizeBtn || bagBtn;
           const vId = target.getAttribute('data-variant-id') || target.dataset.id;
+          
           if (!vId) return;
 
-          e.preventDefault();
-          e.stopPropagation();
+          // 2. Stop the theme from showing the top bar drawer for the BAG button
+          if (bagBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+          }
+
+          // If size is clicked, we let it bubble a bit more but still handle the AJAX
+          if (sizeBtn) {
+              // We don't necessarily want to stop propagation here if we want the theme to see it
+              // but we want to make sure the AJAX happens.
+          }
 
           if (target.classList.contains('is-loading')) return;
           target.classList.add('is-loading');
@@ -862,20 +867,20 @@ endif
           .then(res => res.json())
           .then(data => {
             if (sizeBtn) {
-              // SIZES -> TOP BAR (Drawer)
+              // FOR SIZES: Fire the Top Bar Event
               document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
             } else {
-              // ADD TO CART (BAG) -> CENTERED MODAL
+              // FOR BAG BUTTON: Show Centered Modal
               const modal = document.getElementById('pret-modal-{{ product.id }}');
               if (modal) modal.style.display = 'flex';
             }
-            // Always refresh cart count
+            // Sync cart count
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
           })
           .catch(err => console.error(err))
           .finally(() => target.classList.remove('is-loading'));
         }
-      }, true);
+      }, true); // Capture phase to intercept theme scripts
     })();
   </script>
 </product-grid-item>
