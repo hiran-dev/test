@@ -652,33 +652,30 @@ assign placeholder = placeholder | default: false
   if product.compare_at_price > product.price
     assign on_sale = true
   endif
-  assign sold_out = product.available == false
 
-  # Sibling / Swatch logic scoped to theme settings
-  assign has_swatches = false
-  if settings.swatches_enable and settings.swatches_collection_enable
-    for option in product.options_with_values
-      if option.values.first.swatch != null
-        assign has_swatches = true
-        break
-      endif
-    endfor
-  endif
+  # FIX: Corrected syntax for line 655
+  assign sold_out = false
+  unless product.available
+    assign sold_out = true
+  endunless
+
+  assign swatch_limit = settings.card_swatch_limit
+  assign placeholder = placeholder | default: false
 -%}
 
 <product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
   class="product-grid-item group/product-grid-item"
   data-item-id="{{ product.id }}"
+  {{ attributes }}
   style="position: relative;"
 >
-  {%- comment -%} Main Product Image and Hover Actions {%- endcomment -%}
-  <div class="product-grid-item__image-container">
-    {% render 'product-grid-item-variant', product: product, variant: product.selected_or_first_available_variant, visible: true %}
-  </div>
+  {%- comment -%} RENDER MAIN VARIANT (This contains the Bag Icon) {%- endcomment -%}
+  {% render 'product-grid-item-variant', product: product, variant: product.selected_or_first_available_variant, visible: true %}
 
   <div class="product__grid__info">
     <a href="{{ product.url }}">
-      <p class="product__grid__title">{{ product.title | escape }}</p>
+      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
       <div class="product__grid__price">
         <span class="price{% if on_sale %} on-sale{% endif %}">{{ product.price | money }}</span>
       </div>
@@ -686,26 +683,29 @@ assign placeholder = placeholder | default: false
   </div>
 
   {%- comment -%} --- CENTERED MODAL --- {%- endcomment -%}
-  <div class="js-custom-modal-{{ product.id }} custom-modal-overlay" style="display: none;">
-    <div class="custom-modal-content">
-      <button type="button" class="js-close-modal custom-modal-close">&times;</button>
-      <div class="custom-modal-grid">
-        <div class="custom-modal-image">
-          <img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title }}">
+  <div class="js-custom-modal-{{ product.id }} g-modal-overlay" style="display: none;">
+    <div class="g-modal-content">
+      <button type="button" class="js-close-modal g-modal-close" aria-label="Close">&times;</button>
+      <div class="g-modal-grid">
+        <div class="g-modal-image">
+          <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.title }}" loading="lazy">
         </div>
-        <div class="custom-modal-details">
-          <h3>{{ product.title }}</h3>
-          <p class="modal-price">{{ product.price | money }}</p>
-          <p class="modal-label">SELECT SIZE</p>
-          <div class="modal-size-grid">
-            {% for variant in product.variants %}
-              <button type="button" 
-                class="js-modal-add-btn size-btn" 
-                data-vid="{{ variant.id }}"
-                {% unless variant.available %}disabled{% endunless %}>
-                {{ variant.title }}{% unless variant.available %} (Sold Out){% endunless %}
-              </button>
-            {% endfor %}
+        <div class="g-modal-details">
+          <h3 class="product__grid__title">{{ product.title }}</h3>
+          <p class="price">{{ product.price | money }}</p>
+          
+          <div class="g-modal-sizes">
+            <p style="font-size: 11px; font-weight: bold; margin-bottom: 10px; letter-spacing: 1px;">SELECT SIZE</p>
+            <div class="g-size-list">
+              {% for variant in product.variants %}
+                <button type="button" 
+                  class="js-add-to-cart-modal g-size-btn" 
+                  data-variant-id="{{ variant.id }}"
+                  {% unless variant.available %}disabled{% endunless %}>
+                  {{ variant.title }}
+                </button>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
@@ -713,16 +713,16 @@ assign placeholder = placeholder | default: false
   </div>
 
   <style>
-    .custom-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2147483647; display: none; align-items: center; justify-content: center; padding: 20px; }
-    .custom-modal-content { background: #fff; width: 100%; max-width: 500px; padding: 30px; position: relative; border-radius: 4px; color: #000; }
-    .custom-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .custom-modal-close { position: absolute; top: 5px; right: 10px; font-size: 30px; border: none; background: none; cursor: pointer; color: #000; }
-    .modal-label { font-size: 10px; font-weight: bold; margin: 15px 0 10px; letter-spacing: 1px; }
-    .modal-size-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-    .size-btn { border: 1px solid #ddd; background: #fff; padding: 10px 15px; cursor: pointer; font-size: 13px; flex: 1 1 30%; }
-    .size-btn:hover:not([disabled]) { border-color: #000; background: #000; color: #fff; }
-    .size-btn[disabled] { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
-    @media (max-width: 600px) { .custom-modal-grid { grid-template-columns: 1fr; } .custom-modal-content { padding: 15px; } }
+    .g-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2147483647; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .g-modal-content { background: #fff; width: 100%; max-width: 500px; padding: 30px; position: relative; border-radius: 0px; color: #000; text-align: left; }
+    .g-modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+    .g-modal-close { position: absolute; top: 10px; right: 15px; font-size: 28px; background: none; border: none; cursor: pointer; color: #000; z-index: 10; }
+    .g-modal-image img { width: 100%; height: auto; display: block; }
+    .g-size-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 8px; }
+    .g-size-btn { border: 1px solid #e8e8e8; background: #fff; padding: 10px 5px; font-size: 12px; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; }
+    .g-size-btn:hover:not([disabled]) { border-color: #000; background: #000; color: #fff; }
+    .g-size-btn:disabled { opacity: 0.4; text-decoration: line-through; cursor: not-allowed; }
+    @media (max-width: 600px) { .g-modal-grid { grid-template-columns: 1fr; } .g-modal-content { padding: 20px; } }
   </style>
 
   <script>
@@ -730,35 +730,32 @@ assign placeholder = placeholder | default: false
       const pId = "{{ product.id }}";
       const container = document.querySelector(`[data-item-id="${pId}"]`);
       const modal = container.querySelector(`.js-custom-modal-${pId}`);
-
-      // 1. INTERCEPT THE CLICK IN THE "CAPTURE" PHASE
-      // This stops the theme's side drawer script before it even knows you clicked.
+      
+      // Capture Phase Listener stops the theme's drawer code before it starts
       container.addEventListener('click', function(e) {
-        // Targets the theme's "Bag" icon or "Add" buttons
-        const isTrigger = e.target.closest('[data-instant-add], .product-grid-item__btn, .quick-add, .js-quick-add');
+        const trigger = e.target.closest('[data-instant-add], .product-grid-item__btn, .quick-add-button, .js-quick-add, .product-item__quick-buy');
         
-        if (isTrigger) {
+        if (trigger) {
           e.preventDefault();
           e.stopPropagation();
-          e.stopImmediatePropagation(); // KILLS THE DRAWER SCRIPT
+          e.stopImmediatePropagation(); 
           
           modal.style.display = 'flex';
           document.body.style.overflow = 'hidden';
         }
-      }, true); // <--- TRUE is the secret sauce for Capture Phase
+      }, true); // The 'true' is critical to intercept the click
 
-      // 2. CLOSE MODAL
       modal.addEventListener('click', function(e) {
-        if (e.target === modal || e.target.classList.contains('js-close-modal')) {
+        if (e.target === modal || e.target.closest('.js-close-modal')) {
           modal.style.display = 'none';
           document.body.style.overflow = '';
         }
       });
 
-      // 3. ADD TO CART FROM MODAL
-      modal.querySelectorAll('.js-modal-add-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const vId = this.dataset.vid;
+      modal.querySelectorAll('.js-add-to-cart-modal').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const vId = this.dataset.variantId;
           this.innerText = 'ADDING...';
           this.style.pointerEvents = 'none';
 
@@ -767,8 +764,14 @@ assign placeholder = placeholder | default: false
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: Number(vId), quantity: 1 })
           })
-          .then(() => { window.location.href = '/cart'; })
-          .catch(() => { this.innerText = 'ERROR'; this.style.pointerEvents = 'auto'; });
+          .then(res => {
+            if(res.ok) window.location.href = '/cart';
+            else throw new Error();
+          })
+          .catch(() => {
+            this.innerText = 'ERROR';
+            this.style.pointerEvents = 'auto';
+          });
         });
       });
     })();
