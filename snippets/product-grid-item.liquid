@@ -653,7 +653,11 @@ assign placeholder = placeholder | default: false
     assign on_sale = true
   endif
 
-  assign sold_out = product.available == false
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
   assign swatch_limit = settings.card_swatch_limit
   assign placeholder = placeholder | default: false
 -%}
@@ -665,11 +669,11 @@ assign placeholder = placeholder | default: false
   {{ attributes }}
   style="position: relative;"
 >
-  {%- comment -%} --- RENDER IMAGES/VARIANTS (Your existing logic) --- {%- endcomment -%}
+  {%- comment -%} --- RENDER IMAGES/VARIANTS --- {%- endcomment -%}
   {%- if has_siblings and sibs_collection.products.size > 0 -%}
-    {%- comment -%} ... sibling logic remains same ... {%- endcomment -%}
+    {%- comment -%} Sibling logic goes here if applicable {%- endcomment -%}
   {%- elsif has_swatches -%}
-    {%- comment -%} ... swatch logic remains same ... {%- endcomment -%}
+    {%- comment -%} Swatch logic goes here if applicable {%- endcomment -%}
   {%- else -%}
     {% render 'product-grid-item-variant', product: product, variant: product.selected_or_first_available_variant, visible: true %}
   {%- endif -%}
@@ -681,7 +685,9 @@ assign placeholder = placeholder | default: false
       </div>
       <div class="product__grid__price">
         <span class="price{% if on_sale %} on-sale{% endif %}">{{ product.price | money }}</span>
-        {% if on_sale %}<span class="compare-at">{{ product.compare_at_price | money }}</span>{% endif %}
+        {% if on_sale %}
+          <span class="compare-at">{{ product.compare_at_price | money }}</span>
+        {% endif %}
       </div>
     </a>
   </div>
@@ -691,10 +697,10 @@ assign placeholder = placeholder | default: false
     <button type="button" class="js-show-quick-card button" style="width: 100%;">Add to Cart</button>
   </div>
 
-  {%- comment -%} --- THE QUICK ADD CARD (Appears over the item) --- {%- endcomment -%}
+  {%- comment -%} --- THE QUICK ADD CARD --- {%- endcomment -%}
   <div class="js-quick-card quick-card-overlay" style="display: none;">
     <div class="quick-card-content">
-      <button type="button" class="js-close-quick-card close-x">&times;</button>
+      <button type="button" class="js-close-quick-card close-x" aria-label="Close">&times;</button>
       
       <img src="{{ product.featured_image | image_url: width: 200 }}" alt="{{ product.title }}" loading="lazy" class="quick-card-img">
       
@@ -761,16 +767,19 @@ assign placeholder = placeholder | default: false
   <script>
     (function() {
       const container = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!container) return;
+      
+      const quickCard = container.querySelector('.js-quick-card');
       
       // Open Card
       container.querySelector('.js-show-quick-card').addEventListener('click', (e) => {
         e.preventDefault();
-        container.querySelector('.js-quick-card').style.display = 'flex';
+        quickCard.style.display = 'flex';
       });
 
       // Close Card
       container.querySelector('.js-close-quick-card').addEventListener('click', () => {
-        container.querySelector('.js-quick-card').style.display = 'none';
+        quickCard.style.display = 'none';
       });
 
       // Add to Cart Logic
@@ -780,7 +789,9 @@ assign placeholder = placeholder | default: false
           e.stopPropagation();
           
           const variantId = this.getAttribute('data-variant-id');
-          this.classList.add('is-loading');
+          const originalText = this.innerText;
+          
+          this.disabled = true;
           this.innerText = '...';
 
           fetch('/cart/add.js', {
@@ -790,22 +801,23 @@ assign placeholder = placeholder | default: false
           })
           .then(response => response.json())
           .then(data => {
-            this.classList.remove('is-loading');
             this.classList.add('is-added');
             this.innerText = 'Added';
             
-            // Optional: Update header cart count here if your theme has a global event
-            // document.dispatchEvent(new CustomEvent('cart:updated', {detail: data}));
+            // Dispatch event to update theme cart bubble if applicable
+            document.dispatchEvent(new CustomEvent('cart:updated', {detail: data}));
 
             setTimeout(() => {
-              container.querySelector('.js-quick-card').style.display = 'none';
+              quickCard.style.display = 'none';
               this.classList.remove('is-added');
-              this.innerText = this.getAttribute('data-original-text') || 'Add';
+              this.disabled = false;
+              this.innerText = originalText;
             }, 1000);
           })
           .catch(err => {
             console.error(err);
             this.innerText = 'Error';
+            this.disabled = false;
           });
         });
       });
