@@ -688,7 +688,7 @@ if product.available
   assign sold_out = false
 endif
 
-# Force instant add behavior for the main Bag CTA
+# Force instant add behavior
 assign instant_add_button = nil
 if settings.instant_add_enable and product.available
   assign instant_add_button = true
@@ -696,7 +696,6 @@ endif
 -%}
 
 <style>
-  /* Centered Modal Styles - Increased Z-index to beat the top bar */
   .custom-pret-modal {
     display: none;
     position: fixed;
@@ -708,75 +707,37 @@ endif
     align-items: center;
   }
   .custom-pret-content {
-    background: #fff;
-    padding: 30px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    position: relative;
-    border-radius: 4px;
-    box-shadow: 0 10px 50px rgba(0,0,0,0.4);
+    background: #fff; padding: 30px; width: 90%; max-width: 400px;
+    text-align: center; position: relative; border-radius: 4px;
   }
-  .custom-pret-close {
-    position: absolute;
-    top: 10px; right: 15px;
-    font-size: 24px; cursor: pointer;
-    line-height: 1;
-    color: #000;
-  }
-  .custom-pret-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  .pret-view-cart {
-    background: #000 !important;
-    color: #fff !important;
-    padding: 14px;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: 700;
-    font-size: 13px;
-    display: block;
-  }
-  .pret-continue {
-    background: #fff !important;
-    border: 1px solid #000 !important;
-    padding: 12px;
-    cursor: pointer;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 12px;
-    color: #000 !important;
-  }
+  .custom-pret-close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; }
+  .pret-view-cart { background: #000; color: #fff; padding: 14px; text-decoration: none; display: block; font-weight: bold; margin-top: 20px; }
+  .pret-continue { background: #fff; border: 1px solid #000; padding: 12px; cursor: pointer; width: 100%; margin-top: 10px; }
+  
+  /* Loading state for our custom button */
+  .custom-bag-btn.is-loading { opacity: 0.5; pointer-events: none; }
 </style>
 
 <product-grid-item
-  aria-label="{{ product.title | strip_html | escape }}"
-  class="product-grid-item group/product-grid-item"
+  class="product-grid-item"
   data-item-id="{{ product.id }}"
   {{ attributes }}
 >
   {% comment %} 
-    We render the variant, but we will target the "Add to Cart" button inside it specifically.
+    RENDER VARIANT 
   {% endcomment %}
   {% render 'product-grid-item-variant',
     product: product,
     variant: product.selected_or_first_available_variant,
-    badge_string: badge_string,
     visible: true,
     instant_add_button: instant_add_button
   %}
 
-  <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
-    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
-      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
-      <div class="product__grid__price">
-        <span class="price{% if on_sale %} on-sale{% endif %}">{{ product.price | money }}</span>
-        {% if on_sale %}<span class="compare-at">{{ product.compare_at_price | money }}</span>{% endif %}
-      </div>
-    </a>
+  <div class="product__grid__info text-left">
+    <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+    <div class="product__grid__price">
+      <span>{{ product.price | money }}</span>
+    </div>
   </div>
 
   {% liquid
@@ -792,22 +753,20 @@ endif
   {% if size_option_index != nil %}
     {% assign check_unstitch = product.variants[0].options[size_option_index] | downcase %}
     {% unless check_unstitch contains 'unstitch' %}
-      <div class="product-card-sizes js-topbar-container" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
-        {% assign printed_sizes = '|' %}
+      {% comment %} 
+        READY TO WEAR SIZES: 
+        We use the THEME'S EXACT CLASSES (js-add-size) so the top bar works.
+      {% endcomment %}
+      <div class="product-card-sizes" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+        {% assign printed_sizes = '' %}
         {% for variant in product.variants %}
           {% assign size_value = variant.options[size_option_index] %}
-          {% assign size_key = '|' | append: size_value | append: '|' %}
-          {% unless printed_sizes contains size_key %}
-            <button 
-              type="button" 
-              class="js-direct-add-size js-add-size" 
-              data-variant-id="{{ variant.id }}"
-              style="border: 1px solid #e5e5e5; padding: 6px 12px; font-size: 12px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
-              {% unless variant.available %}disabled{% endunless %}
-            >
+          {% unless printed_sizes contains size_value %}
+            <button type="button" class="js-add-size" data-variant-id="{{ variant.id }}" 
+              style="border: 1px solid #000; padding: 5px 10px; background: #fff; cursor: pointer;">
               {{ size_value }}
             </button>
-            {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
+            {% assign printed_sizes = printed_sizes | append: size_value | append: ',' %}
           {% endunless %}
         {% endfor %}
       </div>
@@ -817,12 +776,10 @@ endif
   <div id="pret-modal-{{ product.id }}" class="custom-pret-modal">
     <div class="custom-pret-content">
       <span class="custom-pret-close" onclick="this.closest('.custom-pret-modal').style.display='none'">&times;</span>
-      <h2 style="margin:0 0 10px 0; font-size: 20px; font-weight: bold;">Added to Bag</h2>
-      <p style="margin:0; font-size: 14px; color: #666;">{{ product.title }}</p>
-      <div class="custom-pret-actions">
-        <a href="/cart" class="pret-view-cart">View Bag & Checkout</a>
-        <button type="button" class="pret-continue" onclick="this.closest('.custom-pret-modal').style.display='none'">Continue Shopping</button>
-      </div>
+      <h3>Added to Bag</h3>
+      <p>{{ product.title }}</p>
+      <a href="/cart" class="pret-view-cart">View Bag</a>
+      <button type="button" class="pret-continue" onclick="this.closest('.custom-pret-modal').style.display='none'">Continue</button>
     </div>
   </div>
 
@@ -831,33 +788,31 @@ endif
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
 
-      scope.addEventListener('click', function(e) {
-        // 1. Identify which button was clicked
-        const sizeBtn = e.target.closest('.js-direct-add-size');
-        // We look for the theme's main add button (often has 'quick-add' or 'btn' classes)
-        const bagBtn = e.target.closest('.product-grid-item__btn') || e.target.closest('.quick-action-button') || e.target.closest('[data-variant-id]:not(.js-direct-add-size)');
-
-        if (sizeBtn || bagBtn) {
-          const target = sizeBtn || bagBtn;
-          const vId = target.getAttribute('data-variant-id') || target.dataset.id;
+      // 1. SELECT THE MAIN BAG BUTTON
+      // We wait a split second to find the theme button and "hijack" it
+      setTimeout(() => {
+        const themeBagBtn = scope.querySelector('.quick-action-button, .product-grid-item__btn, [data-variant-id]:not(.js-add-size)');
+        
+        if (themeBagBtn) {
+          // Give it a special class so our script knows it's the one for the modal
+          themeBagBtn.classList.add('custom-bag-btn');
           
-          if (!vId) return;
+          // REMOVE theme classes that trigger the top bar drawer
+          themeBagBtn.classList.remove('js-add-to-cart', 'ajax-submit'); 
+        }
+      }, 500);
 
-          // 2. Stop the theme from showing the top bar drawer for the BAG button
-          if (bagBtn) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-          }
+      scope.addEventListener('click', function(e) {
+        const customBagBtn = e.target.closest('.custom-bag-btn');
+        
+        // ONLY intercept if the main Add to Cart (Bag) button is clicked
+        if (customBagBtn) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
 
-          // If size is clicked, we let it bubble a bit more but still handle the AJAX
-          if (sizeBtn) {
-              // We don't necessarily want to stop propagation here if we want the theme to see it
-              // but we want to make sure the AJAX happens.
-          }
-
-          if (target.classList.contains('is-loading')) return;
-          target.classList.add('is-loading');
+          const vId = customBagBtn.getAttribute('data-variant-id') || customBagBtn.dataset.id;
+          customBagBtn.classList.add('is-loading');
 
           fetch('/cart/add.js', {
             method: 'POST',
@@ -865,22 +820,16 @@ endif
             body: JSON.stringify({ id: Number(vId), quantity: 1 })
           })
           .then(res => res.json())
-          .then(data => {
-            if (sizeBtn) {
-              // FOR SIZES: Fire the Top Bar Event
-              document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
-            } else {
-              // FOR BAG BUTTON: Show Centered Modal
-              const modal = document.getElementById('pret-modal-{{ product.id }}');
-              if (modal) modal.style.display = 'flex';
-            }
-            // Sync cart count
+          .then(() => {
+            document.getElementById('pret-modal-{{ product.id }}').style.display = 'flex';
             document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
           })
-          .catch(err => console.error(err))
-          .finally(() => target.classList.remove('is-loading'));
+          .finally(() => customBagBtn.classList.remove('is-loading'));
         }
-      }, true); // Capture phase to intercept theme scripts
+        
+        // Note: Size buttons (js-add-size) are NOT handled here. 
+        // We let them bubble up to the theme script so the TOP BAR opens.
+      });
     })();
   </script>
 </product-grid-item>
