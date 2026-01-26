@@ -749,4 +749,28 @@ assign placeholder = placeholder | default: false
 
       // 2. CLOSE MODAL
       modal.addEventListener('click', function(e) {
-        if (e.target === modal || e.target.classList.contains
+        if (e.target === modal || e.target.classList.contains('js-close-modal')) {
+          modal.style.display = 'none';
+          document.body.style.overflow = '';
+        }
+      });
+
+      // 3. ADD TO CART FROM MODAL
+      modal.querySelectorAll('.js-modal-add-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const vId = this.dataset.vid;
+          this.innerText = 'ADDING...';
+          this.style.pointerEvents = 'none';
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: Number(vId), quantity: 1 })
+          })
+          .then(() => { window.location.href = '/cart'; })
+          .catch(() => { this.innerText = 'ERROR'; this.style.pointerEvents = 'auto'; });
+        });
+      });
+    })();
+  </script>
+</product-grid-item>
