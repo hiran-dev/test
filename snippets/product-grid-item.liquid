@@ -747,7 +747,6 @@ endif
     font-size: 24px; cursor: pointer;
   }
   
-  /* New Image & Info Styles */
   .modal-product-visual {
     margin-bottom: 15px;
   }
@@ -833,11 +832,17 @@ endif
         break
       endif
     endfor
+
+    assign is_ready_to_wear = false
+    if size_option_index != nil
+       assign check_unstitch = product.variants[0].options[size_option_index] | downcase
+       unless check_unstitch contains 'unstitch'
+          assign is_ready_to_wear = true
+       endunless
+    endif
   %}
 
-  {% if size_option_index != nil %}
-    {% assign check_unstitch = product.variants[0].options[size_option_index] | downcase %}
-    {% unless check_unstitch contains 'unstitch' %}
+  {% if is_ready_to_wear %}
       <div class="product-card-sizes js-pret-container" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
         {% assign printed_sizes = '|' %}
         {% for variant in product.variants %}
@@ -858,7 +863,6 @@ endif
           {% endunless %}
         {% endfor %}
       </div>
-    {% endunless %}
   {% endif %}
 
   <div id="pret-modal-{{ product.id }}" class="custom-pret-modal">
@@ -870,7 +874,7 @@ endif
         <img id="modal-img-{{ product.id }}" src="{{ product.featured_image | img_url: '300x' }}" alt="{{ product.title }}">
         <div class="modal-product-details">
             <p><strong>{{ product.title }}</strong></p>
-            <p>Size: <span id="modal-size-{{ product.id }}"></span></p>
+            <p id="modal-size-container-{{ product.id }}">Size: <span id="modal-size-{{ product.id }}"></span></p>
         </div>
       </div>
 
@@ -893,9 +897,10 @@ endif
         if (sizeBtn || bagBtn) {
           const target = sizeBtn || bagBtn;
           const vId = target.getAttribute('data-variant-id');
-          const vSize = target.getAttribute('data-variant-size') || ''; // Capture size
           
-          const isReadyToWearSize = !!e.target.closest('.js-pret-container');
+          // Logic: If size button was clicked, use its text. If bag was clicked, check if it's Ready to Wear.
+          const vSize = sizeBtn ? sizeBtn.getAttribute('data-variant-size') : null;
+          const isReadyToWear = {{ is_ready_to_wear | json }};
 
           e.preventDefault();
           e.stopPropagation();
@@ -910,14 +915,20 @@ endif
           })
           .then(res => res.json())
           .then(data => {
-            if (isReadyToWearSize) {
-              // Update modal content dynamically
+            if (isReadyToWear) {
               const modal = document.getElementById('pret-modal-{{ product.id }}');
               const sizeDisplay = document.getElementById('modal-size-{{ product.id }}');
+              const sizeContainer = document.getElementById('modal-size-container-{{ product.id }}');
               const imgDisplay = document.getElementById('modal-img-{{ product.id }}');
 
-              if(sizeDisplay) sizeDisplay.innerText = vSize;
-              // Update image to variant image if it exists, otherwise stay as featured
+              // If we have a size (from button), show it. If not (from bag icon), hide the size label.
+              if(vSize && sizeDisplay) {
+                sizeDisplay.innerText = vSize;
+                sizeContainer.style.display = 'block';
+              } else if (sizeContainer) {
+                sizeContainer.style.display = 'none';
+              }
+
               if(data.image && imgDisplay) imgDisplay.src = data.image;
 
               modal.style.display = 'flex';
