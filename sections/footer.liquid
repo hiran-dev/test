@@ -890,7 +890,7 @@
         <span class="visually-hidden">{{ social }}</span>
       </a>
     {%- endif -%}
-  {% endfor %}
+  {%- endfor -%}
 {%- endcapture -%}
 
 {% for block in section.blocks %}
@@ -905,19 +905,21 @@
         {% assign linklist = linklists[block.settings.linklist] %}
         <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
           
-          {%- assign block_title = block.settings.title | upcase -%}
-          {%- if block_title contains 'STORE LOCATIONS' -%}
-            <a href="/pages/store-locations" class="footer__title footer__accordion__head mobile-only-link" style="text-decoration: none;">
-                {{ block.settings.title | default: linklist.title }}
+          {%- assign block_title_clean = block.settings.title | upcase | strip -%}
+          
+          {%- if block_title_clean == 'STORE LOCATIONS' -%}
+            <a href="/pages/store-locator" class="footer__title custom-mobile-link-only">
+               {{ block.settings.title }}
+               {% render 'icon-core-chevron-right' %}
             </a>
-            
-            <p class="footer__title footer__accordion__head js desktop-only-head {{ block.settings.accordion_default }}"
+
+            <p class="footer__title footer__accordion__head js custom-desktop-head-only {{ block.settings.accordion_default }}"
               data-accordion-trigger="{{ accordion_index }}"
               aria-controls="{{ accordion_index }}"
               role="button"
               aria-haspopup="true"
               aria-expanded="false">
-                {{ block.settings.title | default: linklist.title }}
+                {{ block.settings.title }}
                 {% render 'icon-core-chevron-right' %}
             </p>
           {%- else -%}
@@ -933,18 +935,14 @@
             </p>
           {%- endif -%}
 
-          <input type="checkbox"
-            name="{{ accordion_index }}"
-            id="{{ accordion_index }}-checkbox"
-            class="no-js no-js-checkbox">
+          <input type="checkbox" name="{{ accordion_index }}" id="{{ accordion_index }}-checkbox" class="no-js no-js-checkbox">
 
           <label for="{{ accordion_index }}-checkbox" class="footer__title footer__accordion__head no-js">
             {{ linklist.title }}
             {% render 'icon-core-chevron-right' %}
           </label>
 
-          <ul class="footer__quicklinks footer__accordion__body no-js-accordion {% if block_title contains 'STORE LOCATIONS' %}desktop-only-body{% endif %}" 
-              data-accordion-body data-accordion-body-mobile id="{{ accordion_index }}">
+          <ul class="footer__quicklinks footer__accordion__body no-js-accordion {% if block_title_clean == 'STORE LOCATIONS' %}custom-desktop-body-only{% endif %}" data-accordion-body data-accordion-body-mobile id="{{ accordion_index }}">
             {% for link in linklist.links %}
               <li><a href="{{ link.url }}">{{ link.title }}</a></li>
             {% endfor %}
@@ -957,12 +955,12 @@
       {%- capture content_html -%}
         {{ content_html }}
         {% assign page = pages[block.settings.page] %}
-        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
+        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block">
           <p class="footer__title footer__accordion__head js" data-accordion-trigger="{{ accordion_index }}">
             {{ page.title | escape }}
             {% render 'icon-core-chevron-right' %}
           </p>
-          <div class="rte footer__column footer__accordion__body no-js-accordion" id="{{ accordion_index }}">{{ page.content }}</div>
+          <div class="rte footer__column footer__accordion__body no-js-accordion" data-accordion-body id="{{ accordion_index }}">{{ page.content }}</div>
         </div>
       {%- endcapture -%}
 
@@ -970,43 +968,51 @@
       {%- assign content_counter = content_counter | plus: 1 -%}
       {%- capture content_html -%}
         {{ content_html }}
-        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
+        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block">
           <p class="footer__title footer__accordion__head js" data-accordion-trigger="{{ accordion_index }}">
             {{ block.settings.title | escape }}
             {% render 'icon-core-chevron-right' %}
           </p>
-          <div class="footer__column footer__accordion__body no-js-accordion" id="{{ accordion_index }}">
+          <div class="footer__column footer__accordion__body no-js-accordion" data-accordion-body id="{{ accordion_index }}">
             <div class="rte">{{ block.settings.text }}</div>
           </div>
         </div>
       {%- endcapture -%}
 
     {% when 'newsletter' %}
-      {%- capture newsletter_html -%}
+       {%- capture newsletter_html -%}
           <div class="footer__block footer__aside" style="--bg: {{ block.settings.background_color }};">
             <div class="footer__newsletter">
-                <div class="footer__newsletter__body">
-                  {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading }}</h3>{%- endif -%}
-                  {%- if block.settings.newsletter_enable -%}
-                    {% render 'newsletter-form' unique: 'footer-newsletter' %}
-                  {%- endif -%}
-                  <ul class="listblock">
-                    <li class="i-1">45-50 Gulberg III Industrial Area Lahore, Pakistan</li>
-                    <li class="i-2">042-111-111-009</li>
-                    <li class="i-4"><a href="https://api.whatsapp.com/send?phone=923028141555">+92 302 8141555</a></li>
-                    <li class="i-3">sales@crossstitch.pk</li>
-                  </ul>
-                </div>
+              <div class="footer__newsletter__body">
+                {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading }}</h3>{%- endif -%}
+                {%- if block.settings.newsletter_enable -%}
+                  {% render 'newsletter-form' unique: 'footer-newsletter' %}
+                {%- endif -%}
+                <ul class="listblock">
+                  <li class="i-1">45-50 Gulberg III Industrial Area Lahore, Pakistan</li>
+                  <li class="i-2">042-111-111-009</li>
+                  <li class="i-4"><a href="https://api.whatsapp.com/send?phone=923028141555">+92 302 8141555</a></li>
+                  <li class="i-3">sales@crossstitch.pk</li>
+                </ul>
+              </div>
             </div>
           </div>
-      {%- endcapture -%}
-
+       {%- endcapture -%}
     {% when 'social' %}
       {%- assign show_social_block = true -%}
   {% endcase %}
 {% endfor %}
 
-<footer class="footer" id="removed" data-section-id="{{ section.id }}" data-section-type="footer">
+{%- assign content_html = content_html | strip -%}
+
+{% case content_counter %}
+  {% when 1 %}{% assign footer_column_width = 'medium-up--one-half' %}
+  {% when 2 %}{% assign footer_column_width = 'medium-up--one-half' %}
+  {% when 3 %}{% assign footer_column_width = 'medium-up--one-third' %}
+  {% when 4 %}{% assign footer_column_width = 'medium-up--one-quarter' %}
+{% endcase %}
+
+<footer class="footer" data-section-id="{{ section.id }}" data-section-type="footer">
   <div class="footer__holder">
     <div class="{{ section.settings.width }} section-padding-custom">
       <div class="footer__container">
@@ -1024,14 +1030,27 @@
 </footer>
 
 <style>
-/* Logic to handle the Store Locations behavior change */
+/* STYLING FOR STORE LOCATIONS FIX */
 @media screen and (max-width: 767px) {
-  .desktop-only-head, .desktop-only-body { display: none !important; }
-  .mobile-only-link { display: block !important; border-top: 1px solid #eee; padding: 10px 0; }
+  .custom-mobile-link-only {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    text-decoration: none !important;
+    color: #000 !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 13px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .custom-mobile-link-only svg { width: 10px; height: 10px; transform: rotate(0deg); }
+  .custom-desktop-head-only, .custom-desktop-body-only { display: none !important; }
 }
+
 @media screen and (min-width: 768px) {
-  .mobile-only-link { display: none !important; }
-  .desktop-only-head { display: block !important; }
+  .custom-mobile-link-only { display: none !important; }
+  .custom-desktop-head-only { display: block !important; }
 }
 </style>
 
@@ -1040,11 +1059,16 @@
   "name": "Footer",
   "max_blocks": 6,
   "settings": [
-    { "type": "select", "id": "width", "label": "Width", "default": "wrapper--full", "options": [ { "value": "wrapper--full", "label": "Full" }, { "value": "wrapper", "label": "Page" } ] }
+    { "type": "select", "id": "width", "label": "Width", "default": "wrapper--full", "options": [ { "value": "wrapper--full", "label": "Full" }, { "value": "wrapper", "label": "Page" } ] },
+    { "type": "image_picker", "id": "footer_image", "label": "Logo" },
+    { "type": "range", "id": "logo_max_limit", "min": 5, "max": 495, "step": 5, "unit": "px", "label": "Width", "default": 120 }
   ],
   "blocks": [
-    { "type": "linklist", "name": "Link list", "settings": [ { "type": "link_list", "id": "linklist", "label": "Menu" }, { "type": "text", "id": "title", "label": "Title" } ] },
-    { "type": "newsletter", "name": "Newsletter", "settings": [ { "type": "checkbox", "id": "newsletter_enable", "label": "Enable", "default": true }, { "type": "text", "id": "heading", "label": "Title" } ] }
+    { "type": "linklist", "name": "Link list", "settings": [ { "type": "link_list", "id": "linklist", "label": "Menu" }, { "type": "text", "id": "title", "label": "Title" }, { "type": "select", "id": "accordion_default", "label": "Mobile", "default": "", "options": [{"value":"accordion-is-open","label":"Open"},{"value":"","label":"Closed"}] } ] },
+    { "type": "newsletter", "name": "Newsletter", "settings": [ { "type": "checkbox", "id": "newsletter_enable", "label": "Show", "default": true }, { "type": "text", "id": "heading", "label": "Title" }, { "type": "color", "id": "background_color", "label": "BG", "default": "#f7f7f7" } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "text", "id": "title", "label": "Title" }, { "type": "richtext", "id": "text", "label": "Text" } ] },
+    { "type": "page", "name": "Page", "settings": [ { "id": "page", "type": "page", "label": "Page" } ] },
+    { "type": "social", "name": "Social", "limit": 1, "settings": [ { "type": "text", "id": "title", "label": "Title" } ] }
   ]
 }
 {% endschema %}
