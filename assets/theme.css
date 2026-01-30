@@ -26454,3 +26454,30 @@ a.BIS_trigger.bis-collection-button.product-card__name {
 .drawer, .filter-drawer {
   z-index: 1900 !important;
 }
+
+/* Mobile View (Below 768px) */
+@media screen and (max-width: 767px) {
+  /* Hide 'Store Locations' from inside the Customer Care dropdown */
+  .footer_quicklinks ul li a[href*="store"] {
+    display: none !important;
+  }
+
+  /* Style the new standalone Store Locations link to look like a heading */
+  .mobile-store-heading {
+    display: block !important;
+    padding: 15px 0;
+    border-top: 1px solid #e8e8e8; /* Matches your footer borders */
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000;
+    text-decoration: none;
+  }
+}
+
+/* Desktop View (Above 768px) */
+@media screen and (min-width: 768px) {
+  .mobile-store-heading {
+    display: none !important;
+  }
+}
