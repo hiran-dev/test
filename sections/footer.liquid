@@ -393,14 +393,15 @@
 
 
 <style>
-  /* Hide the specific link inside the accordion list on mobile only */
+  /* Mobile specific styling for Store Locations */
   @media screen and (max-width: 767px) {
     .hide-mobile-link {
       display: none !important;
     }
     .mobile-only-store-location {
       display: block;
-      margin-bottom: 20px;
+      margin-bottom: 0px;
+      width: 100%;
     }
     .mobile-only-store-location a {
       font-weight: bold;
@@ -408,13 +409,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
-      padding-bottom: 10px;
+      padding: 15px 0;
       text-decoration: none;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      color: inherit;
+      font-size: 1.1em;
+      letter-spacing: 1px;
     }
   }
 
-  /* Ensure the new main menu item is hidden on desktop */
+  /* Hide the standalone link on desktop */
   @media screen and (min-width: 768px) {
     .mobile-only-store-location {
       display: none !important;
@@ -504,13 +508,15 @@
         {% assign linklist = linklists[block.settings.linklist] %}
         <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
           
-          {% comment %} --- NEW MOBILE ONLY MAIN MENU ITEM --- {% endcomment %}
-          <div class="mobile-only-store-location">
-            <a href="/pages/store-locator" class="footer__title">
-              STORE LOCATIONS
-              {% render 'icon-core-chevron-right' %}
-            </a>
-          </div>
+          {% comment %} Check if this is the menu that contains Store Locations (usually Customer Care) {% endcomment %}
+          {% if block.settings.title contains 'Customer Care' or linklist.title contains 'Customer Care' %}
+             <div class="mobile-only-store-location">
+                <a href="/pages/store-locator">
+                  STORE LOCATIONS
+                  {% render 'icon-core-chevron-right' %}
+                </a>
+             </div>
+          {% endif %}
 
           <p class="footer__title footer__accordion__head js {{ block.settings.accordion_default }}"
             data-accordion-trigger="{{ accordion_index }}"
@@ -537,7 +543,7 @@
 
           <ul class="footer__quicklinks footer__accordion__body no-js-accordion" data-accordion-body data-accordion-body-mobile id="{{ accordion_index }}">
             {% for link in linklist.links %}
-              {% comment %} Hide "Store Locations" from the list on mobile {% endcomment %}
+              {% comment %} Logic to hide "Store Locations" from inside the accordion on mobile {% endcomment %}
               <li class="{% if link.title contains 'Store Locations' %}hide-mobile-link{% endif %}">
                 <a href="{{ link.url }}">{{ link.title }}</a>
               </li>
@@ -645,7 +651,6 @@
 {%- assign content_html = content_html | strip -%}
 {%- assign newsletter_html = newsletter_html | strip -%}
 
-{% comment %} Dynamic Column Width Calculation {% endcomment %}
 {% case content_counter %}
   {% when 1 %}{% assign footer_column_width = 'medium-up--one-half medium-up--push-one-quarter' %}
   {% when 2 %}{% assign footer_column_width = 'medium-up--one-half' %}
@@ -658,7 +663,6 @@
 <footer class="footer" data-section-id="{{ section.id }}" data-section-type="footer" style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
   <div class="footer__holder">
     <div class="{{ section.settings.width }} section-padding-custom">
-      
       <div class="footer-shipped">
         <ul class="shipment-gurranty">
           <li>
@@ -703,13 +707,7 @@
   "name": "Footer",
   "max_blocks": 6,
   "settings": [
-    {
-      "type": "select",
-      "id": "menu_position",
-      "label": "Menu position",
-      "default": "left",
-      "options": [{"value": "left", "label": "Left"}, {"value": "right", "label": "Right"}]
-    },
+    { "type": "select", "id": "menu_position", "label": "Menu position", "default": "left", "options": [{"value": "left", "label": "Left"}, {"value": "right", "label": "Right"}] },
     { "label": "Footer logo", "type": "image_picker", "id": "footer_image" },
     { "type": "range", "id": "logo_max_limit", "min": 5, "max": 495, "step": 5, "unit": "px", "label": "Logo width", "default": 120 },
     { "type": "select", "id": "width", "label": "Width", "default": "wrapper--full", "options": [{"value": "wrapper--full", "label": "Full width padded"}, {"value": "wrapper", "label": "Page width"}] },
@@ -726,58 +724,11 @@
         { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] }
       ]
     },
-    {
-      "type": "newsletter",
-      "name": "Newsletter",
-      "limit": 1,
-      "settings": [
-        { "type": "checkbox", "id": "show_image", "label": "Show image", "default": true },
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "color", "id": "background_color", "label": "Background color", "default": "#f7f7f7" },
-        { "type": "color", "id": "text_color_value", "label": "Text color", "default": "#656565" },
-        { "type": "checkbox", "id": "newsletter_enable", "label": "Show newsletter", "default": true },
-        { "id": "heading", "type": "text", "label": "Title", "default": "Exclusive offers" }
-      ]
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Text column" },
-        { "type": "richtext", "id": "text", "label": "Text" },
-        { "type": "range", "id": "text_size", "label": "Text size", "min": 1, "max": 15, "step": 1, "default": 4 },
-        { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] }
-      ]
-    },
-    {
-      "type": "image",
-      "name": "Image",
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Image column" },
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "range", "id": "image_max_limit", "min": 10, "max": 900, "step": 10, "unit": "px", "label": "Max width", "default": 300 },
-        { "type": "url", "id": "image_link", "label": "Link" },
-        { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] }
-      ]
-    },
-    {
-      "type": "page",
-      "name": "Page",
-      "settings": [
-        { "id": "page", "type": "page", "label": "Page" },
-        { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] }
-      ]
-    },
-    {
-      "type": "social",
-      "name": "Social",
-      "limit": 1,
-      "settings": [
-        { "type": "text", "id": "title", "label": "Title", "default": "Stay in touch." },
-        { "type": "range", "id": "text_size", "label": "Text size", "min": 1, "max": 15, "step": 1, "default": 8 },
-        { "type": "checkbox", "id": "enable_follow_on_shop", "default": true, "label": "Enable Follow on Shop" }
-      ]
-    }
+    { "type": "newsletter", "name": "Newsletter", "limit": 1, "settings": [ { "type": "checkbox", "id": "show_image", "label": "Show image", "default": true }, { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "color", "id": "background_color", "label": "Background color", "default": "#f7f7f7" }, { "type": "color", "id": "text_color_value", "label": "Text color", "default": "#656565" }, { "type": "checkbox", "id": "newsletter_enable", "label": "Show newsletter", "default": true }, { "id": "heading", "type": "text", "label": "Title", "default": "Exclusive offers" } ] },
+    { "type": "text", "name": "Text", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Text column" }, { "type": "richtext", "id": "text", "label": "Text" }, { "type": "range", "id": "text_size", "label": "Text size", "min": 1, "max": 15, "step": 1, "default": 4 }, { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] } ] },
+    { "type": "image", "name": "Image", "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Image column" }, { "type": "image_picker", "id": "image", "label": "Image" }, { "type": "range", "id": "image_max_limit", "min": 10, "max": 900, "step": 10, "unit": "px", "label": "Max width", "default": 300 }, { "type": "url", "id": "image_link", "label": "Link" }, { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] } ] },
+    { "type": "page", "name": "Page", "settings": [ { "id": "page", "type": "page", "label": "Page" }, { "type": "select", "id": "accordion_default", "label": "Mobile accordion", "default": "", "options": [{"value": "accordion-is-open", "label": "Open by default"}, {"value": "", "label": "Closed by default"}] } ] },
+    { "type": "social", "name": "Social", "limit": 1, "settings": [ { "type": "text", "id": "title", "label": "Title", "default": "Stay in touch." }, { "type": "range", "id": "text_size", "label": "Text size", "min": 1, "max": 15, "step": 1, "default": 8 }, { "type": "checkbox", "id": "enable_follow_on_shop", "default": true, "label": "Enable Follow on Shop" } ] }
   ],
   "enabled_on": { "groups": ["footer"] }
 }
