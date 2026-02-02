@@ -1,4 +1,4 @@
-<!-- /sections/footer.liquid -->
+{% comment %} <!-- /sections/footer.liquid -->
 {%- assign socials_html = '' -%}
 {%- assign socials_title_html = '' -%}
 {%- assign content_html = '' -%}
@@ -387,4 +387,191 @@
       height: 12px;
     }
   }
+</style> {% endcomment %}
+
+
+
+
+<style>
+  /* Standalone Store Location Link for Mobile */
+  @media screen and (max-width: 767px) {
+    .main-footer-store-link {
+      display: block;
+      border-top: 1px solid rgba(0,0,0,0.1);
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+    .main-footer-store-link a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #000;
+      letter-spacing: 1px;
+      font-size: 13px;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .main-footer-store-link {
+      display: none !important;
+    }
+  }
 </style>
+
+{%- assign socials_html = '' -%}
+{%- assign socials_title_html = '' -%}
+{%- assign content_html = '' -%}
+{%- assign newsletter_html = '' -%}
+{%- assign footer_logo_html = '' -%}
+{%- assign show_social_block = false -%}
+{%- assign logo_in_content = false -%}
+{%- assign content_counter = 0 -%}
+
+{%- capture footer_logo_html -%}
+  {% if section.settings.footer_image %}
+    <div class="footer__logo__wrapper">
+      <a href="{{ routes.root_url }}" class="footer__logo" style="width: {{ section.settings.logo_max_limit }}px;">
+        {%- assign alt = section.settings.footer_image.alt | default: shop.name | strip_html | escape -%}
+        {{ section.settings.footer_image | image_url: width: section.settings.logo_max_limit | image_tag: alt: alt, loading: 'lazy' }}
+      </a>
+    </div>
+  {% endif %}
+{%- endcapture -%}
+
+{%- capture socials_html -%}
+  {%- assign social_accounts = 'Facebook, X, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium' | split: ', ' -%}
+  {%- for social in social_accounts -%}
+    {%- assign social_handle = social | handleize -%}
+    {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+    {%- if settings[social_link] != blank -%}
+      <a class="footer__icon footer__icon--social" href="{{ settings[social_link] }}" target="_blank">
+        {% render 'social-icon' handle: social_handle %}
+      </a>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{% for block in section.blocks %}
+  {%- assign accordion_index = 'accordion-' | append: block.id | append: '-' | append: forloop.index -%}
+  {% case block.type %}
+    {% when 'linklist' %}
+      {%- assign content_counter = content_counter | plus: 1 -%}
+      {%- capture content_html -%}
+        {{ content_html }}
+        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
+          <p class="footer__title footer__accordion__head js {{ block.settings.accordion_default }}"
+            data-accordion-trigger="{{ accordion_index }}"
+            aria-controls="{{ accordion_index }}"
+            role="button"
+            aria-expanded="false">
+              {{ block.settings.title | default: linklists[block.settings.linklist].title }}
+              {% render 'icon-core-chevron-right' %}
+          </p>
+          <ul class="footer__quicklinks footer__accordion__body no-js-accordion" data-accordion-body id="{{ accordion_index }}">
+            {% for link in linklists[block.settings.linklist].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {%- endcapture -%}
+
+    {% when 'newsletter' %}
+      {%- capture newsletter_html -%}
+        <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
+          <div class="footer__newsletter">
+            <div class="footer__newsletter__body">
+              {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading }}</h3>{%- endif -%}
+              {% render 'newsletter-form' unique: 'footer-newsletter', show_icon: true %}
+              {% render 'whatsapp-subscribe' %}
+              <ul class="listblock">
+                <li class="i-1">45-50 Gulberg III Industrial Area Lahore, Pakistan</li>
+                <li class="i-2">042-111-111-009</li>
+                <li class="i-4"><a href="tel:+923028141555">+92 302 8141555</a></li>
+                <li class="i-3">sales@crossstitch.pk</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {%- endcapture -%}
+
+    {% when 'social' %}
+      {%- assign show_social_block = true -%}
+  {% endcase %}
+{% endfor %}
+
+{%- assign footer_column_width = 'medium-up--one-quarter' -%}
+{% if content_counter == 3 %}{% assign footer_column_width = 'medium-up--one-third' %}{% endif %}
+
+<footer class="footer" id="removed" data-section-id="{{ section.id }}" data-section-type="footer" style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  <div class="footer__holder">
+    <div class="{{ section.settings.width }} section-padding-custom">
+
+      <div class="footer-shipped">
+        <ul class="shipment-gurranty">
+           <li>Worldwide shipping</li>
+           <li>Easy Exchange</li>
+           <li>Safe Payment</li>
+        </ul>
+      </div>
+
+      <div class="footer__container">
+        {%- if newsletter_html != blank -%}{{ newsletter_html }}{%- endif -%}
+
+        <div class="footer__content">
+          <div class="main-footer-store-link">
+            <a href="/pages/store-locator">
+              STORE LOCATIONS
+              {% render 'icon-core-chevron-right' %}
+            </a>
+          </div>
+
+          <div class="footer__content__inner">
+            <div class="float-grid grid--uniform" data-accordion-group>
+              {{ content_html | replace: '@@@@footer-column-width-placeholder@@@@', footer_column_width }}
+            </div>
+          </div>
+
+          {%- if show_social_block -%}
+            <div class="footer__socials">{{ socials_html }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Top Padding", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 5, "unit": "px", "label": "Bottom Padding", "default": 40 },
+    { "type": "select", "id": "width", "label": "Width", "default": "wrapper--full", "options": [{"value": "wrapper--full", "label": "Full"}, {"value": "wrapper", "label": "Page"}] }
+  ],
+  "blocks": [
+    {
+      "type": "linklist",
+      "name": "Link list",
+      "settings": [
+        { "type": "link_list", "id": "linklist", "label": "Link list" },
+        { "type": "text", "id": "title", "label": "Title" }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        { "type": "color", "id": "background_color", "label": "Background", "default": "#f7f7f7" },
+        { "type": "color", "id": "text_color_value", "label": "Text", "default": "#333" },
+        { "id": "heading", "type": "text", "label": "Title" }
+      ]
+    },
+    { "type": "social", "name": "Social", "limit": 1 }
+  ]
+}
+{% endschema %}
