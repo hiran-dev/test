@@ -392,12 +392,150 @@
 
 
 
-{%- comment -%} UPDATED LINK SECTION {%- endcomment -%}
-<div class="main-footer-store-link">
-  <a href="/pages/store-locations" class="footer__title footer__accordion__head" style="border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; padding: 15px 0; background: #fff;">
-    STORE LOCATIONS
-    <span style="display: flex; align-items: center;">
-      {% render 'icon-core-chevron-right' %}
-    </span>
-  </a>
-</div>
+
+{%- comment -%} CSS FOR STORE LOCATIONS BAR {%- endcomment -%}
+<style>
+  @media screen and (max-width: 767px) {
+    .main-footer-store-link {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .main-footer-store-link a {
+      text-decoration: none;
+      color: #000;
+    }
+  }
+  @media screen and (min-width: 768px) {
+    .main-footer-store-link { display: none !important; }
+  }
+</style>
+
+{%- assign socials_html = '' -%}
+{%- assign socials_title_html = '' -%}
+{%- assign content_html = '' -%}
+{%- assign newsletter_html = '' -%}
+{%- assign footer_logo_html = '' -%}
+{%- assign show_social_block = false -%}
+{%- assign logo_in_content = false -%}
+{%- assign content_counter = 0 -%}
+
+{%- capture footer_logo_html -%}
+  {% if section.settings.footer_image %}
+    <div class="footer__logo__wrapper">
+      <a href="{{ routes.root_url }}" class="footer__logo" style="width: {{ section.settings.logo_max_limit }}px;">
+        {%- assign alt = section.settings.footer_image.alt | default: shop.name | strip_html | escape -%}
+        {{ section.settings.footer_image | image_url: width: section.settings.logo_max_limit | image_tag: alt: alt, loading: 'lazy' }}
+      </a>
+    </div>
+  {% endif %}
+{%- endcapture -%}
+
+{% for block in section.blocks %}
+  {%- assign accordion_index = 'accordion-' | append: block.id | append: '-' | append: forloop.index -%}
+  {% case block.type %}
+    {% when 'linklist' %}
+      {%- assign content_counter = content_counter | plus: 1 -%}
+      {%- capture content_html -%}
+        {{ content_html }}
+        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
+          <p class="footer__title footer__accordion__head js" data-accordion-trigger="{{ accordion_index }}">
+              {{ block.settings.title | default: linklists[block.settings.linklist].title }}
+              {% render 'icon-core-chevron-right' %}
+          </p>
+          <ul class="footer__quicklinks footer__accordion__body" data-accordion-body id="{{ accordion_index }}">
+            {% for link in linklists[block.settings.linklist].links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {%- endcapture -%}
+
+    {% when 'newsletter' %}
+      {%- capture newsletter_html -%}
+        <div class="footer__block footer__aside" style="--bg: {{ block.settings.background_color }};" {{ block.shopify_attributes }}>
+          <div class="footer__newsletter">
+            <div class="footer__newsletter__body">
+              {%- if block.settings.heading != blank -%}
+                <h3 style="text-transform: uppercase; letter-spacing: 1px;">{{ block.settings.heading }}</h3>
+              {%- endif -%}
+              {%- if block.settings.newsletter_enable -%}
+                {% render 'newsletter-form' unique: 'footer-newsletter', class_modifier: 'newsletter-block footer__form' %}
+              {%- endif -%}
+              
+              {% render 'whatsapp-subscribe' %}
+              
+              <ul class="listblock" style="list-style: none; padding: 0; margin-top: 20px;">
+                <li class="i-1" style="margin-bottom: 15px; padding-left: 30px; position: relative;">45-50 Gulberg III Industrial Area Lahore, Pakistan<br>Sheikhupura Textile Mills Ltd</li>
+                <li class="i-2" style="margin-bottom: 15px; padding-left: 30px; position: relative;">042-111-111-009<br> (10AM to 5.30PM) Mon to Sat</li>
+                <li class="i-4" style="margin-bottom: 15px; padding-left: 30px; position: relative;"><a href="https://api.whatsapp.com/send?phone=923028141555&amp;text=Hi!">+92 302 8141555 <br>(10AM to 5.30PM) Mon to Sat</a></li>
+                <li class="i-3" style="padding-left: 30px; position: relative;">sales@crossstitch.pk</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {%- endcapture -%}
+  {% endcase %}
+{% endfor %}
+
+<footer class="footer" id="removed" data-section-id="{{ section.id }}" style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+  <div class="footer__holder">
+    <div class="{{ section.settings.width }} section-padding-custom">
+
+      <div class="footer-shipped">
+        <ul class="shipment-gurranty">
+          <li>
+            <span class="ftr-img"><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/truck.svg?v=1766728614" width="50" height="50"></span>
+            <span class="ftr-name">Worldwide shipping</span>
+          </li>
+          <li class="middle-border-list">
+            <span class="ftr-img"><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/exchange.svg?v=1766728614" width="50" height="50"></span>
+            <span class="ftr-name">Easy Exchange</span>
+          </li>
+          <li>
+            <span class="ftr-img"><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/payment.svg?v=1766728614" width="50" height="50"></span>
+            <span class="ftr-name">Safe Payment</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="footer__container">
+        {%- if newsletter_html != '' -%}{{ newsletter_html }}{%- endif -%}
+
+        <div class="footer__content">
+          <div class="main-footer-store-link">
+            <a href="/pages/store-locations" class="footer__title footer__accordion__head" style="border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; padding: 15px 0; background: #fff;">
+              STORE LOCATIONS
+              <span style="display: flex; align-items: center;">
+                {% render 'icon-core-chevron-right' %}
+              </span>
+            </a>
+          </div>
+
+          <div class="footer__content__inner">
+            <div class="float-grid grid--uniform" data-accordion-group>
+              {{ content_html | replace: '@@@@footer-column-width-placeholder@@@@', 'medium-up--one-quarter' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "image_picker", "id": "footer_image", "label": "Logo" },
+    { "type": "range", "id": "logo_max_limit", "min": 5, "max": 495, "step": 5, "unit": "px", "label": "Logo width", "default": 120 },
+    { "type": "select", "id": "width", "label": "Width", "default": "wrapper--full", "options": [ { "value": "wrapper--full", "label": "Full" }, { "value": "wrapper", "label": "Page" } ] },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 180, "step": 2, "unit": "px", "label": "Padding Top", "default": 50 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 180, "step": 2, "unit": "px", "label": "Padding Bottom", "default": 50 }
+  ],
+  "blocks": [
+    { "type": "linklist", "name": "Link list", "settings": [ { "type": "link_list", "id": "linklist", "label": "Link list" }, { "type": "text", "id": "title", "label": "Title" } ] },
+    { "type": "newsletter", "name": "Newsletter", "settings": [ { "type": "text", "id": "heading", "label": "Heading" }, { "type": "checkbox", "id": "newsletter_enable", "label": "Show newsletter", "default": true }, { "type": "color", "id": "background_color", "label": "BG Color", "default": "#f7f7f7" } ] }
+  ]
+}
+{% endschema %}
