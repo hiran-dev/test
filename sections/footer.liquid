@@ -1,4 +1,4 @@
-<!-- /sections/footer.liquid -->
+{% comment %} <!-- /sections/footer.liquid -->
 {%- assign socials_html = '' -%}
 {%- assign socials_title_html = '' -%}
 {%- assign content_html = '' -%}
@@ -387,4 +387,17 @@
       height: 12px;
     }
   }
-</style>
+</style> {% endcomment %}
+
+
+
+
+{%- comment -%} UPDATED LINK SECTION {%- endcomment -%}
+<div class="main-footer-store-link">
+  <a href="/pages/store-locations" class="footer__title footer__accordion__head" style="border-top: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; padding: 15px 0; background: #fff;">
+    STORE LOCATIONS
+    <span style="display: flex; align-items: center;">
+      {% render 'icon-core-chevron-right' %}
+    </span>
+  </a>
+</div>
