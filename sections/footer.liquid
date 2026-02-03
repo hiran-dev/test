@@ -1,4 +1,4 @@
-{% comment %} <!-- /sections/footer.liquid -->
+ <!-- /sections/footer.liquid -->
 {%- assign socials_html = '' -%}
 {%- assign socials_title_html = '' -%}
 {%- assign content_html = '' -%}
@@ -387,12 +387,12 @@
       height: 12px;
     }
   }
-</style> {% endcomment %}
+</style> 
 
 
 
 
-
+{% comment %} 
 {%- comment -%} CSS FOR STORE LOCATIONS BAR {%- endcomment -%}
 <style>
   @media screen and (max-width: 767px) {
@@ -538,4 +538,4 @@
     { "type": "newsletter", "name": "Newsletter", "settings": [ { "type": "text", "id": "heading", "label": "Heading" }, { "type": "checkbox", "id": "newsletter_enable", "label": "Show newsletter", "default": true }, { "type": "color", "id": "background_color", "label": "BG Color", "default": "#f7f7f7" } ] }
   ]
 }
-{% endschema %}
+{% endschema %} {% endcomment %}
