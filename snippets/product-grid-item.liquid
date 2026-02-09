@@ -444,7 +444,6 @@
   </product-grid-item>
  {% endcomment %}
 
-
 {%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
@@ -489,6 +488,32 @@ endif
 -%}
 
 <style>
+  /* --- BUTTON STYLING (Matching your image) --- */
+  .js-direct-add-size {
+    border: 1px solid #ccc;       /* Light grey border from image */
+    padding: 5px 8px;             /* Exact padding from image */
+    font-size: 14px;              /* Text size from image */
+    font-family: 'Poppins', sans-serif; /* Font from image */
+    background: #FCFCFC;          /* Background color from image */
+    color: #333333;               /* Text color from image */
+    cursor: pointer;
+    text-transform: uppercase;
+    border-radius: 4px;           /* Corner rounding from image */
+    line-height: 1;
+    transition: all 0.2s ease;
+  }
+
+  .js-direct-add-size:hover {
+    background: #f0f0f0;
+    border-color: #000;
+  }
+
+  .js-direct-add-size:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+
   /* Centered Modal Styles */
   .custom-pret-modal {
     display: none;
@@ -622,7 +647,6 @@ endif
               class="js-direct-add-size" 
               data-variant-id="{{ variant.id }}"
               data-variant-size="{{ size_value }}"
-              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
               {% unless variant.available %}disabled{% endunless %}
             >
               {{ size_value }}
@@ -659,16 +683,12 @@ endif
       if (!scope) return;
 
       scope.addEventListener('click', function(e) {
-        // Target specific buttons only
         const sizeBtn = e.target.closest('.js-direct-add-size');
-        const bagBtn = e.target.closest('.quick-action-button'); // Narrowed from original data-variant-id selector
+        const bagBtn = e.target.closest('.quick-action-button'); 
         
-        // If the click is on the image or title, this condition is false, 
-        // and the browser will follow the <a> link normally.
         if (sizeBtn || bagBtn) {
           const target = sizeBtn || bagBtn;
           const vId = target.getAttribute('data-variant-id');
-          
           const vSize = sizeBtn ? sizeBtn.getAttribute('data-variant-size') : null;
           const isReadyToWear = {{ is_ready_to_wear | json }};
 
@@ -713,4 +733,4 @@ endif
       }, true);
     })();
   </script>
-</product-grid-item> 
+</product-grid-item>
