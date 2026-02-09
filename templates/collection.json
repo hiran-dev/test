@@ -44,7 +44,7 @@
       "type": "collection-sub",
       "settings": {
         "limit": 12,
-        "select_image": "collection",
+        "select_image": "product",
         "width": "wrapper--none",
         "padding_top": 20,
         "padding_bottom": 0
