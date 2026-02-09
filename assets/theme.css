@@ -21009,7 +21009,7 @@ a.product__form__link:after {
   .drawer--right .drawer__underlay,
   .drawer__underlay__fill,
   .drawer__underlay__blur {
-    /* display: none !important;  */
+    /* display: none !important;  */  /*MSSD */
   }
 }
 .drawer__inner {
