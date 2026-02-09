@@ -28067,3 +28067,26 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   }
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const gridWrapper = document.querySelector('.js-grid');
+  const gridButtons = document.querySelectorAll('[data-toggle-grid]');
+
+  if (!gridWrapper) return;
+
+  // FORCE DEFAULT = 2
+  gridWrapper.setAttribute('data-grid-large', '2');
+
+  // clear any saved layout
+  localStorage.removeItem('collectionGrid');
+  localStorage.removeItem('grid-layout');
+  localStorage.removeItem('grid');
+
+  // activate first (2-column) button
+  gridButtons.forEach(btn => {
+    btn.classList.remove('is-active');
+    if (btn.getAttribute('data-toggle-grid') === '2') {
+      btn.classList.add('is-active');
+    }
+  });
+});
