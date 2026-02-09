@@ -446,7 +446,7 @@
 
 
 
-
+{% comment %} 
 {%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
@@ -713,6 +713,278 @@ endif
           .finally(() => target.classList.remove('is-loading'));
         }
       }, true);
+    })();
+  </script>
+</product-grid-item> {% endcomment %}
+
+
+{%- liquid
+assign on_sale = false
+if product.compare_at_price > product.price
+  assign on_sale = true
+endif
+
+assign sold_out = true
+if product.available
+  assign sold_out = false
+endif
+
+# Siblings logic
+assign sibs_collection = nil
+assign has_siblings = false
+if settings.show_siblings and product.metafields.theme.siblings.value != blank and product.metafields.theme.siblings.type == 'single_line_text_field'
+  assign sibs_collection = collections[product.metafields.theme.siblings.value]
+  for sib_product in sibs_collection.products
+    if sib_product == product
+      assign has_siblings = true
+    endif
+  endfor
+endif
+
+assign swatch_option = nil
+assign has_swatches = false
+assign swatch_limit = settings.card_swatch_limit
+
+if settings.swatches_enable and settings.swatches_collection_enable
+  for option in product.options_with_values
+    if option.values.first.swatch != null
+      assign has_swatches = true
+      assign swatch_option = option
+      break
+    endif
+  endfor
+
+  if has_swatches == false
+    assign swatch_translation = 'general.swatches.color' | t
+    assign swatch_labels = swatch_translation | append: ',' | split: ','
+    for label in swatch_labels
+      assign sanitized_label = label | lstrip | rstrip
+      if product.options_by_name[sanitized_label].values.size > 0
+        assign has_swatches = true
+        assign swatch_option = product.options_by_name[sanitized_label]
+        break
+      endif
+    endfor
+  endif
+endif
+
+assign instant_add_button = nil
+if settings.instant_add_enable
+  if product.variants.size == 1
+    assign instant_add_button = true
+  elsif has_swatches and product.options.size == 1
+    assign instant_add_button = true
+  endif
+endif
+
+assign inline_variant_buttons = nil
+if settings.instant_add_enable
+  if product.options.size == 1
+    assign inline_variant_buttons = product.options_with_values[0]
+  elsif has_swatches and product.options.size == 2
+    if swatch_option.position == 1
+      assign inline_variant_buttons = product.options_with_values[1]
+    else
+      assign inline_variant_buttons = product.options_with_values[0]
+    endif
+  endif
+endif
+
+assign swatch_link_markup = ''
+assign inline_variants = nil
+assign placeholder = placeholder | default: false
+-%}
+
+<product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  {{ attributes }}
+>
+  {% if has_siblings and sibs_collection.products.size > 0 %}
+    {%- liquid
+      assign visible_siblings = "" | split: ","
+      assign visible_sibling_count = 1
+
+      for sibling in sibs_collection.products
+        if sibling.id == product.id or visible_sibling_count < swatch_limit
+          assign new_array = sibling | sort
+          assign visible_siblings = visible_siblings | concat: new_array
+          unless sibling.id == product.id
+            assign visible_sibling_count = visible_sibling_count | plus: 1
+          endunless
+        endif
+      endfor
+    -%}
+
+    {%- for sib_product in visible_siblings -%}
+      {% liquid
+        assign visible = false
+        assign first_sibling_variant = sib_product.variants[0]
+        if sib_product.id == product.id
+          assign visible = true
+        endif
+
+        assign inline_variant_buttons = nil
+        if settings.instant_add_enable and sib_product.options.size == 1
+          assign inline_variant_buttons = sib_product.options_with_values[0]
+        endif
+
+        if inline_variant_buttons
+          assign inline_variants = sib_product.variants
+        endif
+      -%}
+
+      {% render 'product-grid-item-variant',
+        product: sib_product,
+        variant: first_sibling_variant,
+        badge_string: badge_string,
+        visible: visible,
+        instant_add_button: instant_add_button,
+        inline_variant_buttons: inline_variant_buttons,
+        inline_variants: inline_variants,
+        section_width: section_width,
+        placeholder: placeholder,
+        columns_desktop: columns_desktop,
+        columns_tablet: columns_tablet,
+        columns_mobile: columns_mobile
+      %}
+    {% endfor %}
+  {% elsif has_swatches %}
+    {%- liquid
+      assign swatch_position_key = 'option' | append: swatch_option.position
+      assign selected_swatch_value = swatch_option.selected_value
+      assign visible_swatches = "" | split: ","
+
+      for swatch_value in swatch_option.values
+        if swatch_value == selected_swatch_value or visible_swatch_count < swatch_limit
+          assign new_array = swatch_value | sort
+          assign visible_swatches = visible_swatches | concat: new_array
+        endif
+      endfor
+    -%}
+
+    {%- for swatch_value in visible_swatches -%}
+      {% liquid
+        assign this_color_variants = product.variants | where: swatch_position_key, swatch_value
+        assign current_variant = this_color_variants | first
+        assign visible = forloop.first
+      -%}
+
+      {% render 'product-grid-item-variant',
+        product: product,
+        variant: current_variant,
+        badge_string: badge_string,
+        visible: visible,
+        instant_add_button: instant_add_button,
+        section_width: section_width,
+        placeholder: placeholder,
+        columns_desktop: columns_desktop,
+        columns_tablet: columns_tablet,
+        columns_mobile: columns_mobile
+      %}
+
+      {% capture swatch_link_markup %}
+        {{ swatch_link_markup }}
+        <radio-swatch title="{{ swatch_value.name }}" class="swatch__button">
+          <a href="{{ current_variant.url }}" class="swatch__label" data-swatch-index="{{ forloop.index0 }}">
+            <span class="visually-hidden">{{ swatch_value }}</span>
+          </a>
+        </radio-swatch>
+      {% endcapture %}
+    {% endfor %}
+  {% else %}
+    {% render 'product-grid-item-variant',
+      product: product,
+      variant: product.variants[0],
+      visible: true,
+      instant_add_button: instant_add_button,
+      section_width: section_width
+    %}
+  {% endif %}
+
+  <div class="product__grid__info">
+    <a href="{{ product.url }}" data-grid-link tabindex="-1">
+      <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+      <div class="product__grid__price">
+        <span class="price">{{ product.price | money }}</span>
+      </div>
+    </a>
+
+    {%- if has_siblings or has_swatches -%}
+      <div class="grid__swatch__container">
+        {{ swatch_link_markup }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {% liquid
+    assign size_option_index = nil
+    for option in product.options
+      if option == 'Size' or option == 'size'
+        assign size_option_index = forloop.index0
+        break
+      endif
+    endfor
+  %}
+
+  {% if size_option_index != nil %}
+    <div class="product-card-sizes" style="display: flex; gap: 5px; margin-top: 10px;">
+      {% assign printed_sizes = '|' %}
+      {% for variant in product.variants %}
+        {% assign size_value = variant.options[size_option_index] %}
+        {% assign size_key = '|' | append: size_value | append: '|' %}
+        {% unless printed_sizes contains size_key %}
+          <button type="button" class="js-add-size" 
+                  data-variant-id="{{ variant.id }}" 
+                  style="border: 1px solid #000; padding: 5px; cursor: pointer; background: #fff;"
+                  {% unless variant.available %}disabled style="opacity:0.5;"{% endunless %}>
+            {{ size_value }}
+          </button>
+          {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
+        {% endunless %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <script>
+    (function() {
+      const card = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!card) return;
+
+      card.addEventListener('click', function (event) {
+        const btn = event.target.closest('.js-add-size');
+        
+        // IMPORTANT: If they didn't click the size button, 
+        // stop here and let the image link work naturally.
+        if (!btn) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (btn.classList.contains('is-loading')) return;
+        const variantId = btn.getAttribute('data-variant-id');
+        
+        btn.classList.add('is-loading');
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ id: Number(variantId), quantity: 1 })
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Add to cart failed');
+          return response.json();
+        })
+        .then(() => { 
+          window.location.href = '/cart'; 
+        })
+        .catch(() => { 
+          alert('Please try again'); 
+        })
+        .finally(() => { 
+          btn.classList.remove('is-loading'); 
+        });
+      });
     })();
   </script>
 </product-grid-item>
