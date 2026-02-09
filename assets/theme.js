@@ -28068,6 +28068,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
+// MSSD 
+// Collection product grid to use 2 columns by default on page load
 document.addEventListener('DOMContentLoaded', function () {
   const gridWrapper = document.querySelector('.js-grid');
   const gridButtons = document.querySelectorAll('[data-toggle-grid]');
