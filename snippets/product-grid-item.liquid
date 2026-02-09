@@ -447,7 +447,7 @@
 
 
 
-
+{% comment %} 
 {%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
@@ -693,6 +693,281 @@ endif
               const imgDisplay = document.getElementById('modal-img-{{ product.id }}');
 
               // If we have a size (from button), show it. If not (from bag icon), hide the size label.
+              if(vSize && sizeDisplay) {
+                sizeDisplay.innerText = vSize;
+                sizeContainer.style.display = 'block';
+              } else if (sizeContainer) {
+                sizeContainer.style.display = 'none';
+              }
+
+              if(data.image && imgDisplay) imgDisplay.src = data.image;
+
+              modal.style.display = 'flex';
+              document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+            } else {
+              document.dispatchEvent(new CustomEvent('ajaxProduct:added', { detail: { product: data } }));
+              document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+            }
+          })
+          .catch(err => console.error(err))
+          .finally(() => target.classList.remove('is-loading'));
+        }
+      }, true);
+    })();
+  </script>
+</product-grid-item> {% endcomment %}
+
+
+
+
+
+
+{%- liquid
+assign on_sale = false
+if product.compare_at_price > product.price
+  assign on_sale = true
+endif
+
+assign sold_out = true
+if product.available
+  assign sold_out = false
+endif
+
+# Siblings logic
+assign sibs_collection = nil
+assign has_siblings = false
+if settings.show_siblings and product.metafields.theme.siblings.value != blank
+  assign sibs_collection = collections[product.metafields.theme.siblings.value]
+  for sib_product in sibs_collection.products
+    if sib_product == product
+      assign has_siblings = true
+    endif
+  endfor
+endif
+
+assign swatch_option = nil
+assign has_swatches = false
+assign swatch_limit = settings.card_swatch_limit
+
+if settings.swatches_enable and settings.swatches_collection_enable
+  for option in product.options_with_values
+    if option.values.first.swatch != null
+      assign has_swatches = true
+      assign swatch_option = option
+      break
+    endif
+  endfor
+endif
+
+assign instant_add_button = nil
+if settings.instant_add_enable and product.available
+  assign instant_add_button = true
+endif
+-%}
+
+<style>
+  /* Centered Modal Styles */
+  .custom-pret-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 9999999;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-pret-content {
+    background: #fff;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    border-radius: 2px;
+  }
+  .custom-pret-close {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 24px; cursor: pointer;
+  }
+  
+  .modal-product-visual {
+    margin-bottom: 15px;
+  }
+  .modal-product-visual img {
+    max-width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
+  }
+  .modal-product-details p {
+    margin: 2px 0;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .custom-pret-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .pret-view-cart {
+    background: #000;
+    color: #fff;
+    padding: 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: block;
+  }
+  .pret-continue {
+    background: #fff;
+    border: 1px solid #000;
+    padding: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+</style>
+
+<product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  {{ attributes }}
+>
+  {% render 'product-grid-item-variant',
+    product: product,
+    variant: product.selected_or_first_available_variant,
+    badge_string: badge_string,
+    visible: true,
+    instant_add_button: instant_add_button,
+    section_width: section_width,
+    eagerload: eagerload,
+    preload: preload,
+    placeholder: placeholder,
+    columns_desktop: columns_desktop,
+    columns_tablet: columns_tablet,
+    columns_mobile: columns_mobile
+  %}
+
+  <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
+    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
+      <div class="product__grid__title__wrapper">
+        <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+      </div>
+      <div class="product__grid__price">
+        <span class="price{% if on_sale %} on-sale{% endif %}">
+          {{ product.price | money }}
+        </span>
+        {% if on_sale %}
+          <span class="compare-at">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+    </a>
+  </div>
+
+  {% liquid
+    assign size_option_index = nil
+    for option in product.options
+      if option == 'Size' or option == 'size'
+        assign size_option_index = forloop.index0
+        break
+      endif
+    endfor
+
+    assign is_ready_to_wear = false
+    if size_option_index != nil
+       assign check_unstitch = product.variants[0].options[size_option_index] | downcase
+       unless check_unstitch contains 'unstitch'
+          assign is_ready_to_wear = true
+       endunless
+    endif
+  %}
+
+  {% if is_ready_to_wear %}
+      <div class="product-card-sizes js-pret-container" style="display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap;">
+        {% assign printed_sizes = '|' %}
+        {% for variant in product.variants %}
+          {% assign size_value = variant.options[size_option_index] %}
+          {% assign size_key = '|' | append: size_value | append: '|' %}
+          {% unless printed_sizes contains size_key %}
+            <button 
+              type="button" 
+              class="js-direct-add-size" 
+              data-variant-id="{{ variant.id }}"
+              data-variant-size="{{ size_value }}"
+              style="border: 1px solid #000; padding: 4px 8px; font-size: 11px; background: #fff; cursor: pointer; text-transform: uppercase; {% unless variant.available %}opacity: 0.3; cursor: not-allowed; text-decoration: line-through;{% endunless %}"
+              {% unless variant.available %}disabled{% endunless %}
+            >
+              {{ size_value }}
+            </button>
+            {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
+          {% endunless %}
+        {% endfor %}
+      </div>
+  {% endif %}
+
+  <div id="pret-modal-{{ product.id }}" class="custom-pret-modal">
+    <div class="custom-pret-content">
+      <span class="custom-pret-close" onclick="this.closest('.custom-pret-modal').style.display='none'">&times;</span>
+      <h2 style="margin:0 0 15px 0; font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Added to Bag</h2>
+      
+      <div class="modal-product-visual">
+        <img id="modal-img-{{ product.id }}" src="{{ product.featured_image | img_url: '300x' }}" alt="{{ product.title }}">
+        <div class="modal-product-details">
+            <p><strong>{{ product.title }}</strong></p>
+            <p id="modal-size-container-{{ product.id }}">Size: <span id="modal-size-{{ product.id }}"></span></p>
+        </div>
+      </div>
+
+      <div class="custom-pret-actions">
+        <a href="/cart" class="pret-view-cart">View Cart</a>
+        <button type="button" class="pret-continue" onclick="this.closest('.custom-pret-modal').style.display='none'">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!scope) return;
+
+      scope.addEventListener('click', function(e) {
+        // Target specific buttons only
+        const sizeBtn = e.target.closest('.js-direct-add-size');
+        const bagBtn = e.target.closest('.quick-action-button'); // Narrowed from original data-variant-id selector
+        
+        // If the click is on the image or title, this condition is false, 
+        // and the browser will follow the <a> link normally.
+        if (sizeBtn || bagBtn) {
+          const target = sizeBtn || bagBtn;
+          const vId = target.getAttribute('data-variant-id');
+          
+          const vSize = sizeBtn ? sizeBtn.getAttribute('data-variant-size') : null;
+          const isReadyToWear = {{ is_ready_to_wear | json }};
+
+          e.preventDefault();
+          e.stopPropagation();
+
+          if (target.classList.contains('is-loading')) return;
+          target.classList.add('is-loading');
+
+          fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: Number(vId), quantity: 1 })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (isReadyToWear) {
+              const modal = document.getElementById('pret-modal-{{ product.id }}');
+              const sizeDisplay = document.getElementById('modal-size-{{ product.id }}');
+              const sizeContainer = document.getElementById('modal-size-container-{{ product.id }}');
+              const imgDisplay = document.getElementById('modal-img-{{ product.id }}');
+
               if(vSize && sizeDisplay) {
                 sizeDisplay.innerText = vSize;
                 sizeContainer.style.display = 'block';
