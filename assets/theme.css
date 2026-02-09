@@ -20911,11 +20911,11 @@ a.product__form__link:after {
   content-visibility: visible;
   transform: translate3d(0, 0, 0);
   transition: transform 0.3s ease;
-  max-width: 315px;
+  max-width: 315px; /* MSSD  */
 }
 @media only screen and (max-width: 479px) {
   .drawer__content {
-    width: 72vw;
+    width: 72vw; /* MSSD */
   }
 }
 .drawer--right .drawer__content {
