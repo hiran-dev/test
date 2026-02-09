@@ -18896,6 +18896,7 @@ body.focus-enabled .product-grid-item:focus-within {
   margin: 3px 0;
   font-size: calc(var(--font-3) * var(--FONT-ADJUST-BODY));
   line-height: var(--leading-normal);
+  font-weight: 600;
 }
 .text-left .product__grid__price {
   justify-content: flex-start;
