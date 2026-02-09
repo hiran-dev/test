@@ -20967,6 +20967,14 @@ a.product__form__link:after {
   visibility: visible;
   transition: visibility 0.3s ease;
 }
+
+@media only screen and (min-width: 480px) {
+  .drawer--visible .drawer__underlay, .is-open .drawer__underlay, .drawer__underlay.underlay--visible {
+  z-index: 20000;
+  visibility: visible;
+  transition: visibility 0.3s ease;
+  }}
+
 .drawer--visible .drawer__underlay .drawer__underlay__fill, .is-open .drawer__underlay .drawer__underlay__fill, .drawer__underlay.underlay--visible .drawer__underlay__fill {
   background: var(--bg);
   opacity: 0.6;
