@@ -373,6 +373,14 @@ button#toggle-desc {
   display: block;
   max-width: 260px;
 }
+@media only screen and (max-width: 479px) {
+.custom-logo{
+  padding: 14px 20px;
+  display: block;
+  max-width: 260px;
+  }
+}
+
 .drawer__inner {
   padding-top: 20px;
 }
