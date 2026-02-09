@@ -445,9 +445,7 @@
  {% endcomment %}
 
 
-
-
-{% comment %} {%- liquid
+{%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
   assign on_sale = true
@@ -715,4 +713,4 @@ endif
       }, true);
     })();
   </script>
-</product-grid-item> {% endcomment %}
+</product-grid-item> 
