@@ -20915,7 +20915,7 @@ a.product__form__link:after {
 }
 @media only screen and (max-width: 479px) {
   .drawer__content {
-    width: 100vw;
+    width: 72vw;
   }
 }
 .drawer--right .drawer__content {
