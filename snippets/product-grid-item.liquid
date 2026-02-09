@@ -132,6 +132,17 @@ endif
     cursor: pointer;
     text-transform: uppercase;
   }
+
+  /* 1. Fix the "View Cart" Hover - Changes Black to Grey */
+  .pret-view-cart:hover {
+    background: #555555 !important; /* This is the grey color you want */
+    color: #ffffff !important;      /* Keeps the text white so it doesn't turn grey */
+  }
+
+  /* 2. Bold the Price - Using the classes from your liquid code */
+  .product__grid__price .price {
+    font-weight: 800 !important;
+  }
 </style>
 
 <product-grid-item
