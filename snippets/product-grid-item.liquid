@@ -447,7 +447,7 @@
 
 
 
-{%- liquid
+{% comment %} {%- liquid
 assign on_sale = false
 if product.compare_at_price > product.price
   assign on_sale = true
@@ -713,6 +713,296 @@ endif
           .finally(() => target.classList.remove('is-loading'));
         }
       }, true);
+    })();
+  </script>
+</product-grid-item> {% endcomment %}
+
+
+
+
+
+
+{%- liquid
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+  endif
+
+  assign sold_out = true
+  if product.available
+    assign sold_out = false
+  endif
+
+  # Siblings logic
+  assign sibs_collection = nil
+  assign has_siblings = false
+  if settings.show_siblings and product.metafields.theme.siblings.value != blank and product.metafields.theme.siblings.type == 'single_line_text_field'
+    assign sibs_collection = collections[product.metafields.theme.siblings.value]
+    for sib_product in sibs_collection.products
+      if sib_product == product
+        assign has_siblings = true
+      endif
+    endfor
+  endif
+
+  assign swatch_option = nil
+  assign has_swatches = false
+  assign swatch_limit = settings.card_swatch_limit
+
+  if settings.swatches_enable and settings.swatches_collection_enable
+    for option in product.options_with_values
+      if option.values.first.swatch != null
+        assign has_swatches = true
+        assign swatch_option = option
+        break
+      endif
+    endfor
+
+    if has_swatches == false
+      assign swatch_translation = 'general.swatches.color' | t
+      assign swatch_labels = swatch_translation | append: ',' | split: ','
+      for label in swatch_labels
+        assign sanitized_label = label | lstrip | rstrip
+        if product.options_by_name[sanitized_label].values.size > 0
+          assign has_swatches = true
+          assign swatch_option = product.options_by_name[sanitized_label]
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  assign instant_add_button = nil
+  if settings.instant_add_enable
+    if product.variants.size == 1
+      assign instant_add_button = true
+    elsif has_swatches and product.options.size == 1
+      assign instant_add_button = true
+    endif
+  endif
+
+  assign inline_variant_buttons = nil
+  if settings.instant_add_enable
+    if product.options.size == 1
+      assign inline_variant_buttons = product.options_with_values[0]
+    elsif has_swatches and product.options.size == 2
+      if swatch_option.position == 1
+        assign inline_variant_buttons = product.options_with_values[1]
+      else
+        assign inline_variant_buttons = product.options_with_values[0]
+      endif
+    endif
+  endif
+
+  assign swatch_link_markup = ''
+  assign inline_variants = nil
+  assign placeholder = placeholder | default: false
+-%}
+
+<style>
+  /* Modal Styles for Size Clicks */
+  .custom-pret-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999999;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-pret-content {
+    background: #fff;
+    padding: 40px 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .custom-pret-close {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 20px; cursor: pointer;
+    color: #000;
+  }
+  .modal-product-visual img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 15px;
+  }
+  .pret-view-cart {
+    background: #000;
+    color: #fff;
+    padding: 12px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .pret-continue {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    color: #000;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .product-card-sizes {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .js-direct-add-size {
+    border: 1px solid #000;
+    padding: 5px 10px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  .js-direct-add-size:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: #ccc;
+  }
+</style>
+
+<product-grid-item
+  aria-label="{{ product.title | strip_html | escape }}"
+  class="product-grid-item group/product-grid-item"
+  data-item-id="{{ product.id }}"
+  {{ attributes }}
+>
+  {% if has_siblings and sibs_collection.products.size > 0 %}
+    {%- liquid
+      assign visible_siblings = "" | split: ","
+      assign visible_sibling_count = 1
+      for sibling in sibs_collection.products
+        if sibling.id == product.id or visible_sibling_count < swatch_limit
+          assign new_array = sibling | sort
+          assign visible_siblings = visible_siblings | concat: new_array
+          unless sibling.id == product.id
+            assign visible_sibling_count = visible_sibling_count | plus: 1
+          endunless
+        endif
+      endfor
+    -%}
+    {%- for sib_product in visible_siblings -%}
+      {% liquid
+        assign visible = false
+        if sib_product.id == product.id
+          assign visible = true
+        endif
+      -%}
+      {% render 'product-grid-item-variant', product: sib_product, variant: sib_product.variants[0], visible: visible, instant_add_button: instant_add_button, section_width: section_width %}
+    {% endfor %}
+  {% else %}
+     {% render 'product-grid-item-variant', product: product, variant: product.selected_or_first_available_variant, visible: true, instant_add_button: instant_add_button, section_width: section_width %}
+  {% endif %}
+
+  <div class="product__grid__info {{ text_align | default: settings.collection_text_alignment | default: 'text-left' }}">
+    <a href="{{ product.url }}" data-grid-link aria-label="{{ product.title | strip_html | escape }}" tabindex="-1">
+      <div class="product__grid__title__wrapper">
+        <p class="product__grid__title">{{ product.title | strip_html | escape }}</p>
+      </div>
+      <div class="product__grid__price">
+        <span class="price{% if on_sale %} on-sale{% endif %}">{{ product.price | money }}</span>
+        {% if on_sale %}<span class="compare-at">{{ product.compare_at_price | money }}</span>{% endif %}
+      </div>
+    </a>
+
+    {% liquid
+      assign size_option_index = nil
+      for option in product.options
+        if option == 'Size' or option == 'size'
+          assign size_option_index = forloop.index0
+          break
+        endif
+      endfor
+    %}
+
+    {% if size_option_index != nil %}
+      {% liquid
+        assign check_unstitch = product.variants[0].options[size_option_index] | downcase
+      %}
+      {% unless check_unstitch contains 'unstitch' %}
+        <div class="product-card-sizes">
+          {% assign printed_sizes = '|' %}
+          {% for variant in product.variants %}
+            {% assign size_value = variant.options[size_option_index] %}
+            {% assign size_key = '|' | append: size_value | append: '|' %}
+            {% unless printed_sizes contains size_key %}
+              <button type="button" class="js-direct-add-size" data-variant-id="{{ variant.id }}" data-size="{{ size_value }}" {% unless variant.available %}disabled{% endunless %}>
+                {{ size_value }}
+              </button>
+              {% assign printed_sizes = printed_sizes | append: size_value | append: '|' %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+      {% endunless %}
+    {% endif %}
+  </div>
+
+  <div id="modal-{{ product.id }}" class="custom-pret-modal">
+    <div class="custom-pret-content">
+      <span class="custom-pret-close" onclick="this.closest('.custom-pret-modal').style.display='none'">&times;</span>
+      <h2 style="margin: 0 0 20px; font-size: 14px; text-transform: uppercase; font-weight: 400; letter-spacing: 2px;">Added to Bag</h2>
+      <div class="modal-product-visual">
+        <img src="{{ product.featured_image | img_url: '300x' }}" alt="{{ product.title }}">
+        <p style="font-size: 13px; margin: 5px 0; text-transform: uppercase;">{{ product.title }}</p>
+        <p style="font-size: 12px; color: #666;">SIZE: <span class="modal-size-label"></span></p>
+      </div>
+      <div style="margin-top: 25px;">
+        <a href="/cart" class="pret-view-cart">View Cart</a>
+        <button type="button" class="pret-continue" onclick="this.closest('.custom-pret-modal').style.display='none'">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const card = document.querySelector('[data-item-id="{{ product.id }}"]');
+      if (!card) return;
+
+      card.addEventListener('click', function(e) {
+        const sizeBtn = e.target.closest('.js-direct-add-size');
+        
+        // If not a size button, let the theme handle it (opens drawer or goes to link)
+        if (!sizeBtn) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const vId = sizeBtn.getAttribute('data-variant-id');
+        const vSize = sizeBtn.getAttribute('data-size');
+
+        sizeBtn.style.opacity = '0.5';
+        
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: Number(vId), quantity: 1 })
+        })
+        .then(res => res.json())
+        .then(data => {
+          const modal = document.getElementById('modal-{{ product.id }}');
+          modal.querySelector('.modal-size-label').innerText = vSize;
+          modal.style.display = 'flex';
+          
+          // Optional: update cart count on header without opening drawer
+          document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+        })
+        .catch(err => alert('Error adding to cart'))
+        .finally(() => { sizeBtn.style.opacity = '1'; });
+      });
     })();
   </script>
 </product-grid-item>
