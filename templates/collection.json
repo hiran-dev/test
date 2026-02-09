@@ -45,7 +45,7 @@
       "settings": {
         "limit": 12,
         "select_image": "collection",
-        "width": "wrapper",
+        "width": "wrapper--none",
         "padding_top": 20,
         "padding_bottom": 0
       }
