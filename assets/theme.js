@@ -28150,24 +28150,71 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
-  const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
+(function () {
+  const PREFIX_REGEX = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
-  document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
-    // Shopify text span (Dawn + OS 2.0 safe)
-    const textSpan =
-      item.querySelector('.facet-checkbox__text') ||
-      item.querySelector('label span') ||
-      item.querySelector('label');
+  function getBaseColor(value) {
+    return value.replace(PREFIX_REGEX, '').trim();
+  }
 
-    if (!textSpan) return;
+  function normalizeFacets() {
+    const seen = new Set();
 
-    const originalText = textSpan.textContent.trim();
-    const cleanedText = originalText.replace(prefixRegex, '');
+    document.querySelectorAll('.facets__item').forEach(item => {
+      const labelEl = item.querySelector('.facet-checkbox__label-text');
+      const inputEl = item.querySelector('input[type="checkbox"]');
 
-    if (cleanedText !== originalText) {
-      textSpan.textContent = cleanedText;
-    }
+      if (!labelEl || !inputEl) return;
+
+      // store original once
+      if (!labelEl.dataset.original) {
+        labelEl.dataset.original = labelEl.textContent.trim();
+      }
+
+      const original = labelEl.dataset.original;
+      const base = getBaseColor(original);
+
+      // duplicate base → hide
+      if (seen.has(base.toUpperCase())) {
+        item.style.display = 'none';
+      } else {
+        seen.add(base.toUpperCase());
+        labelEl.textContent = base;
+        item.style.display = '';
+      }
+
+      // override click
+      item.onclick = function (e) {
+        e.preventDefault();
+
+        const params = new URLSearchParams(window.location.search);
+        params.delete(inputEl.name);
+
+        document.querySelectorAll('.facet-checkbox__label-text').forEach(el => {
+          const orig = el.dataset.original;
+          if (!orig) return;
+
+          if (getBaseColor(orig).toUpperCase() === base.toUpperCase()) {
+            params.append(inputEl.name, orig);
+          }
+        });
+
+        window.location.search = params.toString();
+      };
+    });
+  }
+
+  // run initially
+  normalizeFacets();
+
+  // Shopify AJAX re-render fix
+  const observer = new MutationObserver(() => {
+    normalizeFacets();
   });
-});
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+})();
 
