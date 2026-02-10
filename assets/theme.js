@@ -28101,7 +28101,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function render(count) {
     if (count > 0) {
-      badge.textContent = count;
+      // LIMIT DISPLAY TO 99+
+      badge.textContent = count > 99 ? '99+' : count;
       badge.style.display = 'flex';
     } else {
       badge.style.display = 'none';
@@ -28148,3 +28149,4 @@ document.addEventListener('DOMContentLoaded', function () {
     open.apply(this, arguments);
   };
 })();
+
