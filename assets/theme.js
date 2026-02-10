@@ -28149,3 +28149,18 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.filter-group label').forEach(label => {
+    let text = label.innerText.trim();
+
+    // split words
+    let words = text.split(" ");
+
+    // take last word as color
+    let cleanColor = words[words.length - 1];
+
+    label.innerText = cleanColor.toUpperCase();
+  });
+});
+</script>
