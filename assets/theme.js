@@ -28070,26 +28070,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // MSSD 
-// Collection product grid to use 2 columns by default on page load
-// document.addEventListener('DOMContentLoaded', function () {
-//   const gridWrapper = document.querySelector('.js-grid');
-//   const gridButtons = document.querySelectorAll('[data-toggle-grid]');
+Collection product grid to use 2 columns by default on page load
+document.addEventListener('DOMContentLoaded', function () {
+  const gridWrapper = document.querySelector('.js-grid');
+  const gridButtons = document.querySelectorAll('[data-toggle-grid]');
 
-//   if (!gridWrapper) return;
+  if (!gridWrapper) return;
 
-//   gridWrapper.setAttribute('data-grid-large', '2');
+  gridWrapper.setAttribute('data-grid-large', '2');
 
-//   localStorage.removeItem('collectionGrid');
-//   localStorage.removeItem('grid-layout');
-//   localStorage.removeItem('grid');
+  localStorage.removeItem('collectionGrid');
+  localStorage.removeItem('grid-layout');
+  localStorage.removeItem('grid');
 
-//   gridButtons.forEach(btn => {
-//     btn.classList.remove('is-active');
-//     if (btn.getAttribute('data-toggle-grid') === '2') {
-//       btn.classList.add('is-active');
-//     }
-//   });
-// });
+  gridButtons.forEach(btn => {
+    btn.classList.remove('is-active');
+    if (btn.getAttribute('data-toggle-grid') === '2') {
+      btn.classList.add('is-active');
+    }
+  });
+});
 
 // MSSD Cart count 
 (function () {
@@ -28146,31 +28146,4 @@ document.addEventListener('DOMContentLoaded', () => {
     open.apply(this, arguments);
   };
 })();
-
-// MSSD Filter prefix 
-document.addEventListener('DOMContentLoaded', () => {
-  const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
-
-  document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
-    // Label ya text container dhundho
-    const label = 
-      item.querySelector('label') ||
-      item.closest('label');
-
-    if (!label) return;
-
-    // Label ke andar har element check karo
-    label.childNodes.forEach(node => {
-      // Sirf text nodes ko target karo (HTML elements nahi)
-      if (node.nodeType === Node.TEXT_NODE) {
-        const originalText = node.textContent.trim();
-        const cleanedText = originalText.replace(prefixRegex, '');
-        
-        if (cleanedText !== originalText) {
-          node.textContent = cleanedText;
-        }
-      }
-    });
-  });
-});
 
