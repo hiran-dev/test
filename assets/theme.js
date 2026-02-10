@@ -28094,35 +28094,52 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-function updateCartCount() {
-  fetch('/cart.js')
-    .then(response => response.json())
-    .then(cart => {
-      const badge = document.querySelector('[data-cart-count]');
-      if (!badge) return;
+(function () {
+  const badgeSelector = '[data-cart-count]';
 
-      if (cart.item_count > 0) {
-        badge.textContent = cart.item_count;
-        badge.style.display = 'flex';
-      } else {
-        badge.style.display = 'none';
-      }
-    })
-    .catch(err => console.error('Cart count error:', err));
-}
+  function setCount(count) {
+    const badge = document.querySelector(badgeSelector);
+    if (!badge) return;
 
-/* Page load */
-document.addEventListener('DOMContentLoaded', function () {
-  updateCartCount();
-});
-
-/* AJAX add to cart support */
-document.addEventListener('cart:updated', updateCartCount);
-document.addEventListener('cart:added', updateCartCount);
-
-/* Fallback – jab bhi koi add-to-cart button click ho */
-document.addEventListener('click', function (e) {
-  if (e.target.closest('button[name="add"], [data-add-to-cart]')) {
-    setTimeout(updateCartCount, 800);
+    if (count > 0) {
+      badge.textContent = count;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
   }
-});
+
+  function fetchCount() {
+    fetch('/cart.js')
+      .then(r => r.json())
+      .then(cart => setCount(cart.item_count));
+  }
+
+  /* Initial load */
+  document.addEventListener('DOMContentLoaded', fetchCount);
+
+  /* 🔑 INTERCEPT ADD TO CART (NO REFRESH FIX) */
+  document.addEventListener('submit', function (e) {
+    const form = e.target;
+    if (!form.matches('form[action="/cart/add"]')) return;
+
+    setTimeout(fetchCount, 300); // wait for Shopify to update cart
+  });
+
+  /* 🔑 BUTTON BASED ADD TO CART */
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest(
+      'button[name="add"], [data-add-to-cart]'
+    );
+    if (!btn) return;
+
+    setTimeout(fetchCount, 300);
+  });
+
+  /* 🔁 Cart drawer quantity change support */
+  document.addEventListener('change', function (e) {
+    if (e.target.matches('[name="updates[]"], [data-qty-input]')) {
+      setTimeout(fetchCount, 300);
+    }
+  });
+})();
