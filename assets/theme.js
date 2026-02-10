@@ -28077,7 +28077,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (!gridWrapper) return;
 
-  gridWrapper.setAttribute('data-grid-large', '2');
+  gridWrapper.setAttribute('data-grid-large', '3');
 
   localStorage.removeItem('collectionGrid');
   localStorage.removeItem('grid-layout');
@@ -28085,7 +28085,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   gridButtons.forEach(btn => {
     btn.classList.remove('is-active');
-    if (btn.getAttribute('data-toggle-grid') === '2') {
+    if (btn.getAttribute('data-toggle-grid') === '3') {
       btn.classList.add('is-active');
     }
   });
