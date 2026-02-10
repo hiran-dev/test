@@ -28150,15 +28150,21 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
-  document.querySelectorAll('.facets__item').forEach(item => {
-    const textEl = item.querySelector('.facet-checkbox__label-text');
-    if (!textEl) return;
+  document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
+    // Shopify text span (Dawn + OS 2.0 safe)
+    const textSpan =
+      item.querySelector('.facet-checkbox__text') ||
+      item.querySelector('label span') ||
+      item.querySelector('label');
 
-    const original = textEl.textContent.trim();
-    const cleaned = original.replace(prefixRegex, '');
+    if (!textSpan) return;
 
-    if (cleaned !== original) {
-      textEl.textContent = cleaned;
+    const originalText = textSpan.textContent.trim();
+    const cleanedText = originalText.replace(prefixRegex, '');
+
+    if (cleanedText !== originalText) {
+      textSpan.textContent = cleanedText;
     }
   });
 });
+
