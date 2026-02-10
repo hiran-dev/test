@@ -28150,24 +28150,3 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
-  const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
-
-  document.querySelectorAll('.filter__button, .facets__item').forEach(item => {
-    const labelEl =
-      item.querySelector('label') ||
-      item.querySelector('.facet-checkbox__text') ||
-      item;
-
-    if (!labelEl) return;
-
-    const originalText = labelEl.innerText.trim();
-
-    const cleanedText = originalText.replace(prefixRegex, '');
-
-    if (cleanedText !== originalText) {
-      labelEl.innerText = cleanedText;
-    }
-  });
-});
-
