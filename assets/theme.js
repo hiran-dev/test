@@ -28093,3 +28093,36 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+function updateCartCount() {
+  fetch('/cart.js')
+    .then(response => response.json())
+    .then(cart => {
+      const badge = document.querySelector('[data-cart-count]');
+      if (!badge) return;
+
+      if (cart.item_count > 0) {
+        badge.textContent = cart.item_count;
+        badge.style.display = 'flex';
+      } else {
+        badge.style.display = 'none';
+      }
+    })
+    .catch(err => console.error('Cart count error:', err));
+}
+
+/* Page load */
+document.addEventListener('DOMContentLoaded', function () {
+  updateCartCount();
+});
+
+/* AJAX add to cart support */
+document.addEventListener('cart:updated', updateCartCount);
+document.addEventListener('cart:added', updateCartCount);
+
+/* Fallback – jab bhi koi add-to-cart button click ho */
+document.addEventListener('click', function (e) {
+  if (e.target.closest('button[name="add"], [data-add-to-cart]')) {
+    setTimeout(updateCartCount, 800);
+  }
+});
