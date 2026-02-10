@@ -377,7 +377,7 @@ button#toggle-desc {
 .custom-logo{
   padding: 14px 20px;
   display: block;
-  max-width: 260px;
+  max-width: 250px;
   }
 }
 
@@ -596,4 +596,24 @@ p.footer__title.footer__accordion__head {
   footer#removed {
     padding: 15px 0 10px;
   }
+}
+.header__mobile__button {
+  position: relative;
+}
+
+.cart-count-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: red;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
