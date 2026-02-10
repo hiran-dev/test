@@ -28095,12 +28095,10 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 (function () {
-  const badgeSelector = '[data-cart-count]';
+  const badge = document.querySelector('[data-cart-count]');
+  if (!badge) return;
 
-  function setCount(count) {
-    const badge = document.querySelector(badgeSelector);
-    if (!badge) return;
-
+  function render(count) {
     if (count > 0) {
       badge.textContent = count;
       badge.style.display = 'flex';
@@ -28109,37 +28107,45 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function fetchCount() {
+  function syncCartCount() {
     fetch('/cart.js')
       .then(r => r.json())
-      .then(cart => setCount(cart.item_count));
+      .then(cart => render(cart.item_count))
+      .catch(() => {});
   }
 
-  /* Initial load */
-  document.addEventListener('DOMContentLoaded', fetchCount);
+  /* initial load */
+  document.addEventListener('DOMContentLoaded', syncCartCount);
 
-  /* 🔑 INTERCEPT ADD TO CART (NO REFRESH FIX) */
-  document.addEventListener('submit', function (e) {
-    const form = e.target;
-    if (!form.matches('form[action="/cart/add"]')) return;
+  /* 🔥 INTERCEPT ALL SHOPIFY CART REQUESTS */
+  const originalFetch = window.fetch;
+  window.fetch = function () {
+    return originalFetch.apply(this, arguments).then(response => {
+      const url = arguments[0];
+      if (
+        typeof url === 'string' &&
+        (url.includes('/cart/add') ||
+         url.includes('/cart/change') ||
+         url.includes('/cart/update'))
+      ) {
+        setTimeout(syncCartCount, 200);
+      }
+      return response;
+    });
+  };
 
-    setTimeout(fetchCount, 300); // wait for Shopify to update cart
-  });
-
-  /* 🔑 BUTTON BASED ADD TO CART */
-  document.addEventListener('click', function (e) {
-    const btn = e.target.closest(
-      'button[name="add"], [data-add-to-cart]'
-    );
-    if (!btn) return;
-
-    setTimeout(fetchCount, 300);
-  });
-
-  /* 🔁 Cart drawer quantity change support */
-  document.addEventListener('change', function (e) {
-    if (e.target.matches('[name="updates[]"], [data-qty-input]')) {
-      setTimeout(fetchCount, 300);
-    }
-  });
+  /* 🔥 XHR fallback (older themes) */
+  const open = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function (method, url) {
+    this.addEventListener('load', function () {
+      if (
+        url.includes('/cart/add') ||
+        url.includes('/cart/change') ||
+        url.includes('/cart/update')
+      ) {
+        setTimeout(syncCartCount, 200);
+      }
+    });
+    open.apply(this, arguments);
+  };
 })();
