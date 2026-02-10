@@ -597,6 +597,8 @@ p.footer__title.footer__accordion__head {
     padding: 15px 0 10px;
   }
 }
+
+/* MSSD for cart count CSS */
 .header__mobile__button {
   position: relative;
 }
