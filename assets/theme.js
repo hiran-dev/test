@@ -28153,20 +28153,17 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', () => {
   const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
-  document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
-    // Shopify text span (Dawn + OS 2.0 safe)
-    const textSpan =
-      item.querySelector('.facet-checkbox__text') ||
-      item.querySelector('label span') ||
-      item.querySelector('label');
+  document.querySelectorAll('.facets__item').forEach(item => {
+    // Dawn ka actual text node
+    const labelText = item.querySelector('.facet-checkbox__label-text');
 
-    if (!textSpan) return;
+    if (!labelText) return;
 
-    const originalText = textSpan.textContent.trim();
-    const cleanedText = originalText.replace(prefixRegex, '');
+    const original = labelText.textContent.trim();
+    const cleaned = original.replace(prefixRegex, '');
 
-    if (cleanedText !== originalText) {
-      textSpan.textContent = cleanedText;
+    if (cleaned !== original) {
+      labelText.textContent = cleaned;
     }
   });
 });
