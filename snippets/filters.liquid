@@ -96,42 +96,65 @@
           {%- capture input_id -%}filter-{{ filter.label | handleize }}-{{ forloop.index }}{%- endcapture -%}
 
           {%- if is_image_option -%}
-            <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
-              <input
-                type="checkbox"
-                name="{{ filter_value.param_name }}"
-                value="{{ filter_value.value }}"
-                id="{{ input_id }}"
-                {% if filter_value.active -%}
-                  checked
-                {%- endif %}
-                {% if filter_value.count == 0 and filter_value.active == false -%}
-                  disabled
-                {%- endif %}
-              >
-              <label
-                class="stateful-filter-icons"
-                data-swapper-hover="{{ filter_value.label | escape_once }}"
-                for="{{ input_id }}"
-                aria-label="{{ filter_value.label }}"
-              >
-                <span class="flex justify-start items-center">
-                  {%- if filter_value.image -%}
-                    <span class="max-w-[140px]">
-                      {%- render 'image',
-                        img_object: filter_value.image,
-                        width: 140,
-                        wh_ratio: filter_value.image.aspect_ratio
-                      -%}
-                    </span>
-                  {%- else -%}
-                    {{ filter_value.label | escape_once }}
-                  {%- endif -%}
-                  {% render 'icon-stateful-box' %}
-                  {% render 'icon-core-refresh' %}
-                </span>
-              </label>
-            </li>
+{% assign raw_label = filter_value.label | upcase | strip %}
+
+{%- comment -%}
+Only normalize for COLOR filter
+{%- endcomment -%}
+{% if filter.label | downcase == 'color' %}
+
+  {%- comment -%} Remove shade prefixes {%- endcomment -%}
+  {% assign base_color = raw_label
+    | remove: 'D '
+    | remove: 'D-'
+    | remove: 'DARK '
+    | remove: 'LIGHT '
+    | remove: 'DEEP '
+    | remove: 'BABY '
+    | strip
+  %}
+
+  {%- comment -%} Skip duplicate base colors {%- endcomment -%}
+  {% unless shown_colors contains base_color %}
+    {% assign shown_colors = shown_colors | append: base_color | append: ',' %}
+
+    <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+      <input
+        type="checkbox"
+        name="{{ filter_value.param_name }}"
+        value="{{ filter_value.value }}"
+        id="{{ input_id }}"
+      >
+      <label class="stateful-filter-icons" for="{{ input_id }}">
+        {{ base_color }}
+        {% render 'icon-stateful-box' %}
+        {% render 'icon-core-refresh' %}
+      </label>
+    </li>
+
+  {% endunless %}
+
+{% else %}
+
+  {%- comment -%} NON-COLOR filters unchanged {%- endcomment -%}
+  <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+    <input
+      type="checkbox"
+      name="{{ filter_value.param_name }}"
+      value="{{ filter_value.value }}"
+      id="{{ input_id }}"
+      {% if filter_value.active %}checked{% endif %}
+      {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
+    >
+    <label class="stateful-filter-icons" for="{{ input_id }}">
+      {{ filter_value.label | escape }}
+      {% render 'icon-stateful-box' %}
+      {% render 'icon-core-refresh' %}
+    </label>
+  </li>
+
+{% endif %}
+
 
           {%- elsif is_swatch_option -%}
             {% comment %} This section is now bypassed {% endcomment %}
