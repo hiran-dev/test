@@ -28147,49 +28147,30 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 })();
 
-<script>
+// MSSD Filter prefix 
 document.addEventListener('DOMContentLoaded', () => {
   const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
-  const seenColors = new Map(); // cleanedColor => first element
 
   document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
-    const label =
+    // Label ya text container dhundho
+    const label = 
       item.querySelector('label') ||
       item.closest('label');
 
     if (!label) return;
 
-    let cleanedColor = null;
-
-    // text node clean
+    // Label ke andar har element check karo
     label.childNodes.forEach(node => {
+      // Sirf text nodes ko target karo (HTML elements nahi)
       if (node.nodeType === Node.TEXT_NODE) {
         const originalText = node.textContent.trim();
         const cleanedText = originalText.replace(prefixRegex, '');
-
+        
         if (cleanedText !== originalText) {
           node.textContent = cleanedText;
         }
-
-        cleanedColor = cleanedText.toUpperCase();
       }
     });
-
-    if (!cleanedColor) return;
-
-    // 🔥 DUPLICATE LOGIC
-    if (seenColors.has(cleanedColor)) {
-      // already exists → hide this duplicate
-      item.style.display = 'none';
-
-      // checkbox disable (safe side)
-      const input = item.querySelector('input');
-      if (input) input.disabled = true;
-    } else {
-      seenColors.set(cleanedColor, item);
-    }
   });
 });
-</script>
-
 
