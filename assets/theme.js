@@ -28150,24 +28150,31 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
+(function () {
   const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
-  document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
-    // Shopify text span (Dawn + OS 2.0 safe)
-    const textSpan =
-      item.querySelector('.facet-checkbox__text') ||
-      item.querySelector('label span') ||
-      item.querySelector('label');
+  function normalizeColors() {
+    document.querySelectorAll('.facet-checkbox__label-text').forEach(el => {
+      const original = el.textContent.trim();
+      const cleaned = original.replace(prefixRegex, '');
 
-    if (!textSpan) return;
+      if (cleaned !== original) {
+        el.textContent = cleaned;
+      }
+    });
+  }
 
-    const originalText = textSpan.textContent.trim();
-    const cleanedText = originalText.replace(prefixRegex, '');
+  // First run
+  normalizeColors();
 
-    if (cleanedText !== originalText) {
-      textSpan.textContent = cleanedText;
-    }
+  // Observe Shopify AJAX re-renders
+  const observer = new MutationObserver(() => {
+    normalizeColors();
   });
-});
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+})();
 
