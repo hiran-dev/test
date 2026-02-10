@@ -96,52 +96,42 @@
           {%- capture input_id -%}filter-{{ filter.label | handleize }}-{{ forloop.index }}{%- endcapture -%}
 
           {%- if is_image_option -%}
-<li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
-
-  {% assign clean_label = filter_value.label
-    | upcase
-    | remove: 'D '
-    | remove: 'T '
-    | remove: 'DARK '
-    | remove: 'LIGHT '
-    | remove: 'DEEP '
-    | remove: 'BABY '
-    | strip
-  %}
-
-  <input
-    type="checkbox"
-    name="{{ filter_value.param_name }}"
-    value="{{ filter_value.value }}"
-    id="{{ input_id }}"
-    {% if filter_value.active %}checked{% endif %}
-    {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
-  >
-
-  <label
-    class="stateful-filter-icons"
-    data-swapper-hover="{{ clean_label }}"
-    for="{{ input_id }}"
-    aria-label="{{ clean_label }}"
-  >
-    <span class="flex justify-start items-center">
-      {%- if filter_value.image -%}
-        <span class="max-w-[140px]">
-          {%- render 'image',
-            img_object: filter_value.image,
-            width: 140,
-            wh_ratio: filter_value.image.aspect_ratio
-          -%}
-        </span>
-      {%- else -%}
-        {{ clean_label }}
-      {%- endif -%}
-      {% render 'icon-stateful-box' %}
-      {% render 'icon-core-refresh' %}
-    </span>
-  </label>
-</li>
-
+            <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+              <input
+                type="checkbox"
+                name="{{ filter_value.param_name }}"
+                value="{{ filter_value.value }}"
+                id="{{ input_id }}"
+                {% if filter_value.active -%}
+                  checked
+                {%- endif %}
+                {% if filter_value.count == 0 and filter_value.active == false -%}
+                  disabled
+                {%- endif %}
+              >
+              <label
+                class="stateful-filter-icons"
+                data-swapper-hover="{{ filter_value.label | escape_once }}"
+                for="{{ input_id }}"
+                aria-label="{{ filter_value.label }}"
+              >
+                <span class="flex justify-start items-center">
+                  {%- if filter_value.image -%}
+                    <span class="max-w-[140px]">
+                      {%- render 'image',
+                        img_object: filter_value.image,
+                        width: 140,
+                        wh_ratio: filter_value.image.aspect_ratio
+                      -%}
+                    </span>
+                  {%- else -%}
+                    {{ filter_value.label | escape_once }}
+                  {%- endif -%}
+                  {% render 'icon-stateful-box' %}
+                  {% render 'icon-core-refresh' %}
+                </span>
+              </label>
+            </li>
 
           {%- elsif is_swatch_option -%}
             {% comment %} This section is now bypassed {% endcomment %}
