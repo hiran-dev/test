@@ -28094,6 +28094,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// MSSD Cart count 
 (function () {
   const badge = document.querySelector('[data-cart-count]');
   if (!badge) return;
@@ -28117,7 +28118,6 @@ document.addEventListener('DOMContentLoaded', function () {
   /* initial load */
   document.addEventListener('DOMContentLoaded', syncCartCount);
 
-  /* 🔥 INTERCEPT ALL SHOPIFY CART REQUESTS */
   const originalFetch = window.fetch;
   window.fetch = function () {
     return originalFetch.apply(this, arguments).then(response => {
@@ -28134,7 +28134,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   };
 
-  /* 🔥 XHR fallback (older themes) */
   const open = XMLHttpRequest.prototype.open;
   XMLHttpRequest.prototype.open = function (method, url) {
     this.addEventListener('load', function () {
