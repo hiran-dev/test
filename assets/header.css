@@ -603,7 +603,7 @@ p.footer__title.footer__accordion__head {
 
 .cart-count-badge {
   position: absolute;
-  top: -6px;
+  top: 16px;
   right: -6px;
   background: red;
   color: #fff;
@@ -616,18 +616,4 @@ p.footer__title.footer__accordion__head {
   align-items: center;
   justify-content: center;
   line-height: 1;
-}
-.header__mobile__button {
-  display: inline-flex;
-  align-items: center;
-  line-height: 1;
-}
-
-.header__mobile__button .svg-wrapper {
-  display: block;
-  line-height: 0;
-}
-
-.header__mobile__button svg {
-  display: block;
 }
