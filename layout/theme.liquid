@@ -344,21 +344,41 @@
   const observer = new MutationObserver(() => handleProductUI());
   observer.observe(document.body, { childList: true, subtree: true });
 </script>
-
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('.filter-group label').forEach(label => {
-    let text = label.innerText.trim();
+(function () {
 
-    // split words
-    let words = text.split(" ");
+  function cleanFilterColors() {
+    document.querySelectorAll('label').forEach(label => {
+      if (!label.innerText) return;
 
-    // take last word as color
-    let cleanColor = words[words.length - 1];
+      let text = label.innerText.trim();
 
-    label.innerText = cleanColor.toUpperCase();
+      // ignore short words
+      if (text.length < 3) return;
+
+      let words = text.split(" ");
+
+      // last word as color
+      let cleanColor = words[words.length - 1];
+
+      label.innerText = cleanColor.toUpperCase();
+    });
+  }
+
+  // Run once
+  cleanFilterColors();
+
+  // Observe AJAX changes
+  const observer = new MutationObserver(() => {
+    cleanFilterColors();
   });
-});
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+})();
 </script>
 
 <style>
