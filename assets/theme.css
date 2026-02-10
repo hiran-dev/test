@@ -18641,9 +18641,7 @@ Collection grid item
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
   .js-grid[data-grid-large="2"] {
-    /* grid-template-columns: repeat(2, minmax(0, 1fr)); */
-        grid-template-columns: repeat(2, minmax(0, 0.9fr));
-    gap: 12px; /* optional – spacing kam */
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .js-grid[data-grid-large="3"] {
     grid-template-columns: repeat(3, minmax(0, 1fr));
