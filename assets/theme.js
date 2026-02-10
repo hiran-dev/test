@@ -28149,3 +28149,27 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const COLOR_GROUPS = {
+    pink: ['pink'],
+    red: ['red'],
+    blue: ['blue'],
+    black: ['black'],
+    white: ['white'],
+    green: ['green']
+  };
+
+  document.querySelectorAll('[data-filter-value]').forEach(item => {
+    const label = item.innerText.toLowerCase().trim();
+
+    Object.keys(COLOR_GROUPS).forEach(mainColor => {
+      COLOR_GROUPS[mainColor].forEach(keyword => {
+        if (label.includes(keyword) && label !== mainColor) {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+});
+</script>
