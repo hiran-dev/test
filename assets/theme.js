@@ -28152,20 +28152,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
   document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
-    // Shopify text span (Dawn + OS 2.0 safe)
-    const textSpan =
-      item.querySelector('.facet-checkbox__text') ||
-      item.querySelector('label span') ||
-      item.querySelector('label');
+    // Label ya text container dhundho
+    const label = 
+      item.querySelector('label') ||
+      item.closest('label');
 
-    if (!textSpan) return;
+    if (!label) return;
 
-    const originalText = textSpan.textContent.trim();
-    const cleanedText = originalText.replace(prefixRegex, '');
-
-    if (cleanedText !== originalText) {
-      textSpan.textContent = cleanedText;
-    }
+    // Label ke andar har element check karo
+    label.childNodes.forEach(node => {
+      // Sirf text nodes ko target karo (HTML elements nahi)
+      if (node.nodeType === Node.TEXT_NODE) {
+        const originalText = node.textContent.trim();
+        const cleanedText = originalText.replace(prefixRegex, '');
+        
+        if (cleanedText !== originalText) {
+          node.textContent = cleanedText;
+        }
+      }
+    });
   });
 });
 
