@@ -617,3 +617,17 @@ p.footer__title.footer__accordion__head {
   justify-content: center;
   line-height: 1;
 }
+.header__mobile__button {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.header__mobile__button .svg-wrapper {
+  display: block;
+  line-height: 0;
+}
+
+.header__mobile__button svg {
+  display: block;
+}
