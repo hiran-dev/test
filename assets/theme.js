@@ -28071,28 +28071,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // MSSD 
 // Collection product grid to use 2 columns by default on page load
-document.addEventListener('DOMContentLoaded', function () {
-  const gridWrapper = document.querySelector('.js-grid');
-  const gridButtons = document.querySelectorAll('[data-toggle-grid]');
+// document.addEventListener('DOMContentLoaded', function () {
+//   const gridWrapper = document.querySelector('.js-grid');
+//   const gridButtons = document.querySelectorAll('[data-toggle-grid]');
 
-  if (!gridWrapper) return;
+//   if (!gridWrapper) return;
 
-  // FORCE DEFAULT = 2
-  gridWrapper.setAttribute('data-grid-large', '2');
+//   gridWrapper.setAttribute('data-grid-large', '2');
 
-  // clear any saved layout
-  localStorage.removeItem('collectionGrid');
-  localStorage.removeItem('grid-layout');
-  localStorage.removeItem('grid');
+//   localStorage.removeItem('collectionGrid');
+//   localStorage.removeItem('grid-layout');
+//   localStorage.removeItem('grid');
 
-  // activate first (2-column) button
-  gridButtons.forEach(btn => {
-    btn.classList.remove('is-active');
-    if (btn.getAttribute('data-toggle-grid') === '2') {
-      btn.classList.add('is-active');
-    }
-  });
-});
+//   gridButtons.forEach(btn => {
+//     btn.classList.remove('is-active');
+//     if (btn.getAttribute('data-toggle-grid') === '2') {
+//       btn.classList.add('is-active');
+//     }
+//   });
+// });
 
 // MSSD Cart count 
 (function () {
@@ -28150,71 +28147,18 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-(function () {
-  const PREFIX_REGEX = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
+document.addEventListener('DOMContentLoaded', () => {
+  const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
-  function getBaseColor(value) {
-    return value.replace(PREFIX_REGEX, '').trim();
-  }
+  document.querySelectorAll('.facets__item').forEach(item => {
+    const textEl = item.querySelector('.facet-checkbox__label-text');
+    if (!textEl) return;
 
-  function normalizeFacets() {
-    const seen = new Set();
+    const original = textEl.textContent.trim();
+    const cleaned = original.replace(prefixRegex, '');
 
-    document.querySelectorAll('.facets__item').forEach(item => {
-      const labelEl = item.querySelector('.facet-checkbox__label-text');
-      const inputEl = item.querySelector('input[type="checkbox"]');
-
-      if (!labelEl || !inputEl) return;
-
-      // store original once
-      if (!labelEl.dataset.original) {
-        labelEl.dataset.original = labelEl.textContent.trim();
-      }
-
-      const original = labelEl.dataset.original;
-      const base = getBaseColor(original);
-
-      // duplicate base → hide
-      if (seen.has(base.toUpperCase())) {
-        item.style.display = 'none';
-      } else {
-        seen.add(base.toUpperCase());
-        labelEl.textContent = base;
-        item.style.display = '';
-      }
-
-      // override click
-      item.onclick = function (e) {
-        e.preventDefault();
-
-        const params = new URLSearchParams(window.location.search);
-        params.delete(inputEl.name);
-
-        document.querySelectorAll('.facet-checkbox__label-text').forEach(el => {
-          const orig = el.dataset.original;
-          if (!orig) return;
-
-          if (getBaseColor(orig).toUpperCase() === base.toUpperCase()) {
-            params.append(inputEl.name, orig);
-          }
-        });
-
-        window.location.search = params.toString();
-      };
-    });
-  }
-
-  // run initially
-  normalizeFacets();
-
-  // Shopify AJAX re-render fix
-  const observer = new MutationObserver(() => {
-    normalizeFacets();
+    if (cleaned !== original) {
+      textEl.textContent = cleaned;
+    }
   });
-
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true
-  });
-})();
-
+});
