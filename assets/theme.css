@@ -26465,3 +26465,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   z-index: 1900 !important;
 }
 
+.js-grid[data-grid-large="2"] img {
+  max-width: 100%;
+  image-rendering: auto;
+}
