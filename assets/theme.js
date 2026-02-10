@@ -28153,20 +28153,20 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', () => {
   const prefixRegex = /^(D|DARK|DEEP|LIGHT|L|OFF|PALE)\s+/i;
 
-  document.querySelectorAll('.filter__button, .facets__item').forEach(item => {
-    const labelEl =
-      item.querySelector('label') ||
+  document.querySelectorAll('.facets__item, .filter__button').forEach(item => {
+    // Shopify text span (Dawn + OS 2.0 safe)
+    const textSpan =
       item.querySelector('.facet-checkbox__text') ||
-      item;
+      item.querySelector('label span') ||
+      item.querySelector('label');
 
-    if (!labelEl) return;
+    if (!textSpan) return;
 
-    const originalText = labelEl.innerText.trim();
-
+    const originalText = textSpan.textContent.trim();
     const cleanedText = originalText.replace(prefixRegex, '');
 
     if (cleanedText !== originalText) {
-      labelEl.innerText = cleanedText;
+      textSpan.textContent = cleanedText;
     }
   });
 });
