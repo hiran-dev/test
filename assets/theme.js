@@ -28149,25 +28149,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  function hideOutOfStockFilter() {
-    // Count sold out products on current page
-    const soldOutProducts = document.querySelectorAll('.spf-product-card.spf-soldout').length;
-
-    // Loop through filter options
+  function toggleOutOfStockFilter() {
+    // Loop through all Out of Stock filter options
     document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option').forEach(option => {
       const text = option.innerText.toLowerCase();
+
       if (text.includes('out of stock')) {
-        if (soldOutProducts === 0) {
-          option.style.display = 'none';  // hide
+        // Scope: closest filter group / sidebar section
+        const parentSidebar = option.closest('.sidebar__filter__group');
+        if (!parentSidebar) return;
+
+        // Count only strike-through / sold-out products in this section
+        const soldOutProducts = parentSidebar.querySelectorAll('.spf-product-card.spf-soldout').length;
+
+        // Hide tab only if strike-through products exist in this section
+        if (soldOutProducts > 0) {
+          option.style.display = 'none';
         } else {
-          option.style.display = '';      // show if products exist
+          option.style.display = ''; // show tab if no strike-through
         }
       }
     });
   }
 
-  hideOutOfStockFilter();
+  // Initial run
+  toggleOutOfStockFilter();
 
-  // Run after every SPF AJAX render
-  document.addEventListener("spf:render", hideOutOfStockFilter);
+  // Run after every SPF AJAX update
+  document.addEventListener("spf:render", toggleOutOfStockFilter);
 });
