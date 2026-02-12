@@ -28147,27 +28147,30 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-document.addEventListener("DOMContentLoaded", function () {
+function toggleOutOfStockFilter() {
+  // Step 1: Select all filter options that could be "Out of Stock"
+  const outOfStockFilters = document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option');
 
-  function hideOutOfStockFilter() {
-    // Count sold out products on current page
-    const soldOutProducts = document.querySelectorAll('.spf-product-card.spf-soldout').length;
+  // Step 2: Loop through each filter option
+  outOfStockFilters.forEach(option => {
+    const text = option.innerText.toLowerCase();
 
-    // Loop through filter options
-    document.querySelectorAll('.sidebar_navigationlist .filter_button, .spf-filter-option').forEach(option => {
-      const text = option.innerText.toLowerCase();
-      if (text.includes('out of stock')) {
-        if (soldOutProducts === 0) {
-          option.style.display = 'none';  // hide
-        } else {
-          option.style.display = '';      // show if products exist
-        }
+    // Step 3: Check if this filter is labeled "Out of Stock"
+    if (text.includes('out of stock')) {
+
+      // Step 4: Find the parent sidebar / filter group for this option
+      const parentSidebar = option.closest('.sidebar__filter__group');
+      if (!parentSidebar) return; // if not found, skip
+
+      // Step 5: Count products in this section that are sold-out
+      const soldOutProducts = parentSidebar.querySelectorAll('.spf-product-card.spf-soldout').length;
+
+      // Step 6: Conditional logic
+      if (soldOutProducts === 0) {
+        option.style.display = 'none'; // hide the "Out of Stock" filter tab if no strike-through products
+      } else {
+        option.style.display = '';     // show the filter tab if there are strike-through products
       }
-    });
-  }
-
-  hideOutOfStockFilter();
-
-  // Run after every SPF AJAX render
-  document.addEventListener("spf:render", hideOutOfStockFilter);
-});
+    }
+  });
+}
