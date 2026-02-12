@@ -28147,3 +28147,20 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
+document.addEventListener("DOMContentLoaded", function () {
+
+  function hideOutOfStockFilter() {
+    const soldOutProducts = document.querySelectorAll('.spf-soldout');
+
+    if (soldOutProducts.length === 0) {
+      document.querySelectorAll('.spf-filter-option').forEach(option => {
+        if (option.innerText.toLowerCase().includes('out of stock')) {
+          option.style.display = 'none';
+        }
+      });
+    }
+  }
+
+  hideOutOfStockFilter();
+  document.addEventListener('spf:render', hideOutOfStockFilter);
+});
