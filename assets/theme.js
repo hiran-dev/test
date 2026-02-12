@@ -28149,31 +28149,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  function toggleOutOfStockFilter() {
-    // Find the sidebar filter section for "Out of Stock"
-    const outOfStockFilters = document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option');
-
-    outOfStockFilters.forEach(option => {
+  function handleOutOfStockTab() {
+    // Loop through all filter options (Out of Stock)
+    document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option').forEach(option => {
       const text = option.innerText.toLowerCase();
       if (text.includes('out of stock')) {
-        // Find the corresponding products in this collection / section
+        // Find products in the same section / collection
         const parentSidebar = option.closest('.sidebar__filter__group');
         if (!parentSidebar) return;
 
-        // Check if there is any product in this section that has strike-through (sold-out)
-        const soldOutProducts = parentSidebar.querySelectorAll('.spf-product-card.spf-soldout').length;
+        // Count strike-through products (sold-out)
+        const soldOutCount = parentSidebar.querySelectorAll('.spf-product-card.spf-soldout').length;
 
-        if (soldOutProducts === 0) {
-          option.style.display = 'none'; // hide Out of Stock filter
+        if (soldOutCount > 0) {
+          option.style.display = 'none'; // Hide Out of Stock tab
         } else {
-          option.style.display = '';     // show Out of Stock filter
+          option.style.display = '';     // Show tab as usual
         }
       }
     });
   }
 
-  toggleOutOfStockFilter();
+  // Run on page load
+  handleOutOfStockTab();
 
-  // Run again after SPF AJAX render
-  document.addEventListener("spf:render", toggleOutOfStockFilter);
+  // Run again after SPF AJAX updates
+  document.addEventListener("spf:render", handleOutOfStockTab);
 });
