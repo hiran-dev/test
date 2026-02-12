@@ -28150,23 +28150,21 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener("DOMContentLoaded", function () {
 
   function toggleOutOfStockFilter() {
-    // Find the sidebar filter section for "Out of Stock"
     const outOfStockFilters = document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option');
 
     outOfStockFilters.forEach(option => {
       const text = option.innerText.toLowerCase();
       if (text.includes('out of stock')) {
-        // Find the corresponding products in this collection / section
         const parentSidebar = option.closest('.sidebar__filter__group');
         if (!parentSidebar) return;
 
-        // Check if there is any product in this section that has strike-through (sold-out)
         const soldOutProducts = parentSidebar.querySelectorAll('.spf-product-card.spf-soldout').length;
 
-        if (soldOutProducts === 0) {
-          option.style.display = 'none'; // hide Out of Stock filter
+        // ✅ Corrected logic
+        if (soldOutProducts > 0) {
+          option.style.display = 'none'; // hide tab when strike-through exists
         } else {
-          option.style.display = '';     // show Out of Stock filter
+          option.style.display = '';     // show tab when no strike-through
         }
       }
     });
@@ -28174,6 +28172,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleOutOfStockFilter();
 
-  // Run again after SPF AJAX render
   document.addEventListener("spf:render", toggleOutOfStockFilter);
 });
