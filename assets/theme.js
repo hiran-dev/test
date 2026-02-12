@@ -28147,9 +28147,25 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-document.addEventListener('spf:render', function() {
-    const soldOut = document.querySelectorAll('.spf-product-card.spf-soldout').length;
-    const filter = document.querySelector('.spf-filter-option:contains("Out of Stock")');
+function hideOutOfStockFilter() {
+  // Count out-of-stock products
+  const soldOutCount = document.querySelectorAll('.spf-product-card.spf-soldout').length;
 
-    if (soldOut === 0 && filter) filter.style.display = 'none';
-});
+  // Find all filter options
+  document.querySelectorAll('.spf-filter-option').forEach(option => {
+    const text = option.innerText.toLowerCase();
+    if (text.includes('out of stock')) {
+      if (soldOutCount === 0) {
+        option.style.display = 'none'; // hide
+      } else {
+        option.style.display = ''; // show
+      }
+    }
+  });
+}
+
+// Run on page load
+document.addEventListener("DOMContentLoaded", hideOutOfStockFilter);
+
+// Run after SPF AJAX render
+document.addEventListener("spf:render", hideOutOfStockFilter);
