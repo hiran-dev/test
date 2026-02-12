@@ -28147,27 +28147,3 @@ document.addEventListener('DOMContentLoaded', function () {
   };
 })();
 
-document.addEventListener("DOMContentLoaded", function () {
-
-  function hideOutOfStockFilter() {
-    // Count sold out products on current page
-    const soldOutProducts = document.querySelectorAll('.spf-product-card.spf-soldout').length;
-
-    // Loop through filter options
-    document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option').forEach(option => {
-      const text = option.innerText.toLowerCase();
-      if (text.includes('out of stock')) {
-        if (soldOutProducts === 0) {
-          option.style.display = 'none';  // hide
-        } else {
-          option.style.display = '';      // show if products exist
-        }
-      }
-    });
-  }
-
-  hideOutOfStockFilter();
-
-  // Run after every SPF AJAX render
-  document.addEventListener("spf:render", hideOutOfStockFilter);
-});
