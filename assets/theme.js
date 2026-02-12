@@ -28149,30 +28149,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener("DOMContentLoaded", function () {
 
-  function handleOutOfStockTab() {
-    // Loop through all filter options (Out of Stock)
-    document.querySelectorAll('.sidebar__navigation__list .filter__button, .spf-filter-option').forEach(option => {
-      const text = option.innerText.toLowerCase();
-      if (text.includes('out of stock')) {
-        // Find products in the same section / collection
-        const parentSidebar = option.closest('.sidebar__filter__group');
-        if (!parentSidebar) return;
-
-        // Count strike-through products (sold-out)
-        const soldOutCount = parentSidebar.querySelectorAll('.spf-product-card.spf-soldout').length;
-
-        if (soldOutCount > 0) {
-          option.style.display = 'none'; // Hide Out of Stock tab
-        } else {
-          option.style.display = '';     // Show tab as usual
-        }
+  function adjustStrikeThroughProducts() {
+    // Select all product cards
+    document.querySelectorAll('.spf-product-card').forEach(card => {
+      if (card.classList.contains('spf-soldout')) {
+        // Only add strike-through effect if you want
+        card.style.display = 'block'; // or keep visible
+      } else {
+        // Make sure in-stock products never get strike-through
+        card.style.textDecoration = 'none';
       }
     });
   }
 
-  // Run on page load
-  handleOutOfStockTab();
+  adjustStrikeThroughProducts();
 
-  // Run again after SPF AJAX updates
-  document.addEventListener("spf:render", handleOutOfStockTab);
+  // Run again after AJAX filter update
+  document.addEventListener("spf:render", adjustStrikeThroughProducts);
 });
