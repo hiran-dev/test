@@ -28069,14 +28069,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Collection product grid to use 2 columns by default on page load
+//  Collection product grid to use 3 columns 
 document.addEventListener('DOMContentLoaded', function () {
   const gridWrapper = document.querySelector('.js-grid');
   const gridButtons = document.querySelectorAll('[data-toggle-grid]');
 
   if (!gridWrapper) return;
 
-  gridWrapper.setAttribute('data-grid-large', '2');
+  gridWrapper.setAttribute('data-grid-large', '3');
 
   localStorage.removeItem('collectionGrid');
   localStorage.removeItem('grid-layout');
@@ -28084,7 +28084,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   gridButtons.forEach(btn => {
     btn.classList.remove('is-active');
-    if (btn.getAttribute('data-toggle-grid') === '2') {
+    if (btn.getAttribute('data-toggle-grid') === '3') {
       btn.classList.add('is-active');
     }
   });
