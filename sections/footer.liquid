@@ -444,6 +444,104 @@
 }
 {% endschema %}
 <style>
+    {% comment %} MSSD whatsapp footer {% endcomment %}
+  .footer-unified-subscribe {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+.subscribe-heading {
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* SAME FORM STRUCTURE */
+.unified-form,
+.footer__form form {
+  width: 100%;
+}
+
+/* SAME INPUT */
+.unified-form input,
+.footer__form input[type="email"] {
+  flex: 1;
+  height: 48px;
+  padding: 0 14px;
+  font-size: 14px;
+  border: 1px solid #e5e5e5;
+  border-right: 0;
+  border-radius: 6px 0 0 6px;
+  outline: none;
+  background_color: white;
+}
+
+/* SAME BUTTON */
+.unified-form button,
+.footer__form button {
+  height: 48px;
+  padding: 0 18px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.unified-form button:hover,
+.footer__form button:hover {
+  background: #222;
+}
+
+.footer-unified-subscribe .input-group-field,
+.footer-unified-subscribe .field__input {
+  height: 48px;
+}
+
+.footer-unified-subscribe .input-group-button,
+.footer-unified-subscribe .input-group-button button {
+  height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+/* FORCE SAME HEIGHT FOR BOTH FORMS */
+.footer-unified-subscribe .input-group {
+  display: flex;
+  align-items: stretch;
+  width:50%; /* MSSD */
+}
+
+.footer-unified-subscribe .input-group-field,
+.footer-unified-subscribe .field__input {
+  height: 48px;
+}
+.footer-unified-subscribe .form-success,
+.footer-unified-subscribe .errors,
+.footer-unified-subscribe .newsletter__message {
+  position: absolute;
+  bottom: -22px;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+/* MOBILE SAFE */
+@media (max-width: 767px) {
+  .unified-form input,
+  .footer__form input {
+    font-size: 13px;
+    width: 100%
+  }
+}
+{% comment %} MSSD end footer whatsapp {% endcomment %}
   @media only screen and (max-width: 767px) {
     /* Target the container for the mobile-only Store Locations */
     .footer__block.medium-up--hide {
