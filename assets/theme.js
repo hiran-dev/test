@@ -28069,15 +28069,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// MSSD 
-// Collection product grid to use 3 columns by default on page load
+// Collection product grid to use 2 columns by default on page load
 document.addEventListener('DOMContentLoaded', function () {
   const gridWrapper = document.querySelector('.js-grid');
   const gridButtons = document.querySelectorAll('[data-toggle-grid]');
 
   if (!gridWrapper) return;
 
-  gridWrapper.setAttribute('data-grid-large', '3');
+  gridWrapper.setAttribute('data-grid-large', '2');
 
   localStorage.removeItem('collectionGrid');
   localStorage.removeItem('grid-layout');
@@ -28085,13 +28084,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   gridButtons.forEach(btn => {
     btn.classList.remove('is-active');
-    if (btn.getAttribute('data-toggle-grid') === '3') {
+    if (btn.getAttribute('data-toggle-grid') === '2') {
       btn.classList.add('is-active');
     }
   });
 });
 
-// MSSD Cart count 
+  /* Cart Count */
 (function () {
   const badge = document.querySelector('[data-cart-count]');
   if (!badge) return;
