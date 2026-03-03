@@ -233,7 +233,90 @@
         {%- assign newsletter_logo_show = false -%}
         {%- if block.settings.show_image != true and section.settings.menu_position == 'right' -%}{%- assign newsletter_logo_show = true -%}{%- endif -%}
         {%- if block.settings.show_image or newsletter_logo_show or block.settings.kicker != blank or block.settings.heading != blank or block.settings.richtext != blank or block.settings.newsletter_enable -%}
+        {% comment %} Whatsapp footer {% endcomment %}
           <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value | color_modify: 'alpha', 0.90 }}; --text-dark: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
+            <div class="footer__newsletter{% if section.settings.width == 'wrapper' %} footer__newsletter--offset{% endif %}">
+              {%- if block.settings.show_image -%}
+                <div class="footer__newsletter__image">
+                  {%- render 'image', cover: true, img_object: block.settings.image, wh_ratio: block.settings.wh_ratio, sizes: "(min-width: 768px) 40vw, 100vw", loading: 'lazy' -%}
+                </div>
+              {%- endif -%}
+              <div class="footer__newsletter__body">
+                {%- if newsletter_logo_show -%}@@@@footer-logo-placeholder@@@@{%- endif -%}
+                {%- if block.settings.kicker != blank -%}<p class="footer__title">{{ block.settings.kicker }}</p>{%- endif -%}
+                {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading }}</h3>{%- endif -%}
+                {%- if block.settings.richtext != blank -%}
+                  {% assign font_size_class = block.settings.text_size | prepend: 'body-size-' %}
+                  <div class="rte {{ font_size_class }}">{{ block.settings.richtext }}</div>
+                {%- endif -%}
+                {% comment %} {%- if block.settings.newsletter_enable -%}
+                  {% render 'newsletter-form' unique: 'footer-newsletter', show_icon: true, class_modifier: 'newsletter-block footer__form', terms: block.settings.recaptcha_enabled %}
+                {%- endif -%} {% endcomment %}
+                <div class="footer-unified-subscribe">
+                <!-- EMAIL -->
+                {% if block.settings.newsletter_enable %}
+                  <div class="subscribe-item subscribe-email">
+                    {% render 'newsletter-form'
+                      unique: 'footer-newsletter'
+                      show_icon: true
+                      class_modifier: 'newsletter-block footer__form unified-form'
+                      terms: block.settings.recaptcha_enabled
+                    %}
+                  </div>
+                {% endif %}
+
+                {% comment %} MSSD  {% endcomment %}
+                <!-- WHATSAPP -->
+                <div class="subscribe-item subscribe-whatsapp">
+                  <h3 class="subscribe-heading">
+                    Stay Updated On WhatsApp
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+                        width="18"
+                        height="18"
+                        alt="WhatsApp">
+                    </h3>
+
+                  <form class="newsletter-block footer__form unified-form whatsapp-form">
+                    
+                    <input type="hidden" name="contact[tags]" value="whatsapp">
+                    <input type="hidden" name="contact[accepts_marketing]" value="true">
+
+            <div class="input-group float__wrapper">                      
+                      <label for="whatsapp-number">Phone Number</label>
+
+                      <input
+                        class="input-group-field field__input"
+                        type="tel"
+                        id="whatsapp-number"
+                        placeholder="Phone Number"
+                        aria-label="Phone Number"
+                        required
+                      >
+
+                      <span class="input-group-button">
+                        <button
+                          type="submit"
+                          id="subscribe-footer-newsletter"
+                          style="color:#fff;">
+                          Subscribe Now
+                        </button>
+                      </span>
+
+                    </div>
+                  </form>
+                </div>
+              </div>
+                <ul class="listblock">
+                  <li class="i-1">45-50 Gulberg III Industrial Area Lahore, Pakistan<br>Sheikhupura Textile Mills Ltd</li>
+                  <li class="i-2">042-111-111-009<br> (10AM to 5.30PM) Mon to Sat</li>
+                  <li class="i-4"><a href="https://api.whatsapp.com/send?phone=923028141555&amp;text=Hi! I have a question">+92 302 8141555 <br>(10AM to 5.30PM) Mon to Sat</a></li>
+                  <li class="i-3">sales@crossstitch.pk</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          {% comment %} whatsapp footer end {% endcomment %}
+          {% comment %} <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value | color_modify: 'alpha', 0.90 }}; --text-dark: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
             <div class="footer__newsletter{% if section.settings.width == 'wrapper' %} footer__newsletter--offset{% endif %}">
               {%- if block.settings.show_image -%}
                 <div class="footer__newsletter__image">
@@ -259,7 +342,7 @@
                 </ul>
               </div>
             </div>
-          </div>
+          </div> {% endcomment %}
         {%- endif -%}
       {%- endcapture -%}
     {% when 'social' %}
