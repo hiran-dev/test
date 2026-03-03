@@ -112,10 +112,158 @@
       "settings": {
         "custom_liquid": "<style>\n.fp-viewing-0 .HD-icons, .fp-viewing-3 .HD-icons, .fp-viewing-4 .HD-icons {\n    filter: invert(1);\n  }\n</style>"
       }
+    },
+    "section_pair_showcase_accordion_AFxYnr": {
+      "type": "section-pair-showcase-accordion",
+      "blocks": {
+        "showcase": {
+          "type": "_pair-showcase",
+          "static": true,
+          "settings": {
+            "products": [],
+            "align_text": "text-center",
+            "text_color": "text--neutral",
+            "bg_color": "#f7f7f7",
+            "bg_accent": "#ffffff"
+          },
+          "blocks": {
+            "title": {
+              "type": "_pair-title",
+              "static": true,
+              "settings": {
+                "alignment": "center",
+                "gap": "sm"
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": []
+        },
+        "accordion": {
+          "type": "_pair-accordion",
+          "static": true,
+          "settings": {
+            "text_color": "text--neutral",
+            "bg_color": "",
+            "font_family": "accent",
+            "font_weight": "normal",
+            "text_size": 4
+          },
+          "blocks": {
+            "pair_accordion_item_dWe6EE": {
+              "type": "_pair-accordion-item",
+              "settings": {
+                "title": "Our top seller",
+                "gap": "sm"
+              },
+              "blocks": {
+                "theme_text_A9Mnkm": {
+                  "type": "theme-text",
+                  "settings": {
+                    "text": "A proven favorite, this product stands out for its exceptional quality and widespread appeal. Trusted and loved by many, it's a reliable choice that continues to deliver satisfaction.",
+                    "font_family": "body",
+                    "text_size": 4,
+                    "max_width": 550
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "theme_text_A9Mnkm"
+              ]
+            },
+            "pair_accordion_item_BN6A6q": {
+              "type": "_pair-accordion-item",
+              "settings": {
+                "title": "Our latest creation",
+                "gap": "sm"
+              },
+              "blocks": {
+                "theme_text_GNbPpb": {
+                  "type": "theme-text",
+                  "settings": {
+                    "text": "Designed with care and innovation, this is our newest addition. Fresh and thoughtfully crafted, it embodies the perfect balance of modern design and functionality.",
+                    "font_family": "body",
+                    "text_size": 4,
+                    "max_width": 550
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "theme_text_GNbPpb"
+              ]
+            },
+            "pair_accordion_item_LCWfHY": {
+              "type": "_pair-accordion-item",
+              "settings": {
+                "title": "Our current favorite",
+                "gap": "sm"
+              },
+              "blocks": {
+                "theme_text_LfLEPx": {
+                  "type": "theme-text",
+                  "settings": {
+                    "text": "Chosen for its standout features and timeless appeal, this one holds a special place with us. An embodiment of quality and attention to detail, this is one we're proud to recommend.",
+                    "font_family": "body",
+                    "text_size": 4,
+                    "max_width": 550
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "theme_text_LfLEPx"
+              ]
+            },
+            "title": {
+              "type": "_pair-title",
+              "static": true,
+              "settings": {
+                "alignment": "center",
+                "gap": "sm"
+              },
+              "blocks": {
+                "theme_kicker_c4eH8K": {
+                  "type": "theme-kicker",
+                  "settings": {
+                    "kicker": "Featured Picks",
+                    "enable_line": true,
+                    "text_size": 4
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "theme_kicker_c4eH8K"
+              ]
+            }
+          },
+          "block_order": [
+            "pair_accordion_item_dWe6EE",
+            "pair_accordion_item_BN6A6q",
+            "pair_accordion_item_LCWfHY"
+          ]
+        }
+      },
+      "name": "Pair: Showcase & Text",
+      "settings": {
+        "order": "showcase-first",
+        "duration": 5,
+        "dot_color": "palette--dark bg--invert",
+        "height": "use_screen_one_half",
+        "brick_gutter": 0,
+        "borders": false,
+        "bg_color": "",
+        "width": "wrapper",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
     }
   },
   "order": [
     "mainslideshow_g7B7xE",
-    "section_liquid_CGiFDB"
+    "section_liquid_CGiFDB",
+    "section_pair_showcase_accordion_AFxYnr"
   ]
 }
