@@ -26380,10 +26380,10 @@ a.siblings__more-link {
       display: none !important;
   }
 
-[data-value="UNSTITCH" i], 
+/* [data-value="UNSTITCH" i], 
 input[value="UNSTITCH" i] + label {
     display: none !important;
-}
+} */
 
 .selector-wrapper:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])),
 .product__block__variants:not(:has(input[value="XS"], input[value="S"], input[value="M"], input[value="L"], input[value="XL"])) {
