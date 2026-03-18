@@ -346,12 +346,12 @@
 </script>
 
 <style>
-  /* 1. PERMANENTLY HIDE THE 'UNSTITCH' OPTION BUTTON ITSELF */
+  {% comment %} /* 1. PERMANENTLY HIDE THE 'UNSTITCH' OPTION BUTTON ITSELF */
   [data-value*="UNSTITCH" i], 
   input[value*="UNSTITCH" i], 
   input[value*="UNSTITCH" i] + label {
     display: none !important;
-  }
+  } {% endcomment %}
 </style>
 </body>
 </html>
