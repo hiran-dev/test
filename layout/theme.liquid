@@ -353,5 +353,40 @@
     display: none !important;
   } {% endcomment %}
 </style>
+<script>
+(function() {
+  const isDrawerActive = () => !!document.querySelector('.drawer--visible, .is-open');
+
+  // 1. Block Keyboard Navigation (Arrows)
+  window.addEventListener('keydown', (e) => {
+    if (isDrawerActive()) {
+      const blockedKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' '];
+      if (blockedKeys.includes(e.key)) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+      }
+    }
+  }, true); // The 'true' here is key—it catches the event before the slider does.
+
+  // 2. Block Touch Swiping (Mobile)
+  window.addEventListener('touchmove', (e) => {
+    if (isDrawerActive()) {
+      // Allow scrolling INSIDE the cart, but block it if touching the background
+      if (!e.target.closest('.drawer__content, .cart-drawer')) {
+        e.preventDefault();
+      }
+    }
+  }, { passive: false });
+
+  // 3. Block Mouse Wheel (Desktop)
+  window.addEventListener('wheel', (e) => {
+    if (isDrawerActive()) {
+      if (!e.target.closest('.drawer__content, .cart-drawer')) {
+        e.preventDefault();
+      }
+    }
+  }, { passive: false });
+})();
+</script>
 </body>
 </html>
