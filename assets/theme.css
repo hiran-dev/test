@@ -26481,3 +26481,19 @@ body:has(.is-open) [id^="zoko-"],
     pointer-events: none !important;
 }
 
+/* Scale down the quick add-to-cart button on mobile devices */
+@media screen and (max-width: 767px) {
+    button.stain-button-canvas.group\/quick-action-button {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        padding: 4px !important;
+    }
+
+    /* Adjust the icon size inside the button if needed */
+    button.stain-button-canvas.group\/quick-action-button svg {
+        width: 16px !important;
+        height: 16px !important;
+    }
+}
