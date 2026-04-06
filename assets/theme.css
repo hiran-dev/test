@@ -26490,7 +26490,7 @@ body:has(.is-open) [id^="zoko-"],
     max-width: 38px !important;
     padding: 0 !important;
     margin: 0 !important;
-    border-radius: 50% !important;
+    border-radius: 4px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -26499,8 +26499,6 @@ body:has(.is-open) [id^="zoko-"],
     bottom: 10px !important;
     right: 10px !important;
   }
-
-  /* Scale the icon to fit the smaller circle */
   button.stain-button-canvas.group\/quick-action-button svg {
     width: 18px !important;
     height: 18px !important;
