@@ -26469,3 +26469,10 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   max-width: 100%;
   image-rendering: auto;
 }
+
+/* Hide Zoko WhatsApp widget when the Shopify cart drawer is open */
+.js-drawer-open [id^="zoko-"],
+.cart-drawer--active [id^="zoko-"],
+body:has(.drawer--active) [id^="zoko-"] {
+    display: none !important;
+}
