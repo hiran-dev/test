@@ -26490,7 +26490,7 @@ body:has(.is-open) [id^="zoko-"],
     max-width: 38px !important;
     padding: 0 !important;
     margin: 0 !important;
-    border-radius: 4px !important;
+    border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -26500,8 +26500,8 @@ body:has(.is-open) [id^="zoko-"],
     right: 10px !important;
   }
   button.stain-button-canvas.group\/quick-action-button svg {
-    width: 14px !important;
-    height: 14px !important;
+    width: 16px !important;
+    height: 16px !important;
     margin: 0 !important;
   }
 }
