@@ -26470,3 +26470,13 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   image-rendering: auto;
 }
 
+/* Target the Zoko container specifically when any drawer is active */
+body.js-drawer-open [id^="zoko-"],
+body.cart-drawer--active [id^="zoko-"],
+body.menu-drawer--active [id^="zoko-"],
+body.drawer--active [id^="zoko-"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
