@@ -357,43 +357,29 @@
 {% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
   function toggleFullPageScroll() {
-    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open, .drawer--active');
-    
+    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
     if (typeof fullpage_api !== 'undefined') {
       if (isDrawerOpen) {
-        // 1. Freeze the background banner
         fullpage_api.setAllowScrolling(false);
         fullpage_api.setKeyboardScrolling(false);
-        
-        // 2. Allow the drawer to handle its own scroll
-        const drawer = document.querySelector('.drawer__content, .drawer__inner, .drawer_menu, .cart-drawer');
-        if (drawer) {
-          drawer.style.pointerEvents = 'auto';
-          drawer.style.overflowY = 'auto';
-          drawer.style.webkitOverflowScrolling = 'touch';
-        }
       } else {
-        // 3. Restore background movement when drawer is closed
         fullpage_api.setAllowScrolling(true);
         fullpage_api.setKeyboardScrolling(true);
       }
     }
   }
-
-  // Watch for the drawer opening
   const fpObserver = new MutationObserver(toggleFullPageScroll);
   fpObserver.observe(document.body, { 
     attributes: true, 
     subtree: true, 
     attributeFilter: ['class'] 
   });
-
-  // Fallback for clicks
   document.addEventListener('click', function(e) {
-    if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open, .menu-drawer-trigger, .icon-hamburger')) {
-      setTimeout(toggleFullPageScroll, 400);
+    if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open')) {
+      setTimeout(toggleFullPageScroll, 200);
     }
   });
 </script>
+
 </body>
 </html>
