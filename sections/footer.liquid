@@ -1,4 +1,4 @@
- <!-- /sections/footer.liquid -->
+ {% comment %} <!-- /sections/footer.liquid -->
 {%- assign socials_html = '' -%}
 {%- assign socials_title_html = '' -%}
 {%- assign content_html = '' -%}
@@ -571,4 +571,247 @@
 </style> 
 
 
+ {% endcomment %}
 
+
+ {%- assign socials_html = '' -%}
+{%- assign socials_title_html = '' -%}
+{%- assign content_html = '' -%}
+{%- assign newsletter_html = '' -%}
+{%- assign footer_logo_html = '' -%}
+{%- assign show_social_block = false -%}
+{%- assign logo_in_content = false -%}
+{%- assign content_counter = 0 -%}
+
+{%- capture footer_logo_html -%}
+  {% if section.settings.footer_image %}
+    <div class="footer__logo__wrapper">
+      <a href="{{ routes.root_url }}"
+        class="footer__logo"
+        style="width: {{ section.settings.logo_max_limit }}px;"
+        data-footer-logo>
+        {%- assign alt = section.settings.footer_image.alt | default: shop.name | strip_html | escape -%}
+        {%- assign logo_width = section.settings.logo_max_limit -%}
+        {%- assign logo_width_2x = logo_width | times: 2 | at_most: section.settings.footer_image.width -%}
+        {% capture sizes %}{{ section.settings.logo_max_limit }}px{% endcapture %}
+        {% capture srcset %}
+          {{ section.settings.footer_image | image_url: width: logo_width_2x }} 2x,
+          {{ section.settings.footer_image | image_url: width: logo_width }}
+        {% endcapture %}
+        {{ section.settings.footer_image
+          | image_url: width: section.settings.logo_max_limit
+          | image_tag: alt: alt, loading: 'lazy', sizes: sizes, srcset: srcset }}
+      </a>
+    </div>
+  {% endif %}
+{%- endcapture -%}
+
+{%- capture socials_html -%}
+  {%- assign social_accounts = 'Facebook, X, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
+  {%- for social in social_accounts -%}
+    {%- assign social_handle = social | handleize -%}
+    {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+
+    {%- if settings[social_link] != blank -%}
+      <a class="footer__icon footer__icon--social" href="{{ settings[social_link] }}" title="{{ social }}" target="_blank">
+        {% render 'social-icon' handle: social_handle %}
+        <span class="visually-hidden">{{ social }}</span>
+      </a>
+    {%- endif -%}
+  {% endfor -%}
+{%- endcapture -%}
+
+{% for block in section.blocks %}
+  {%- assign accordion_index = 'accordion-' | append: block.id | append: '-' | append: forloop.index -%}
+
+  {% case block.type %}
+    {% when 'linklist' %}
+      {%- assign content_counter = content_counter | plus: 1 -%}
+      {%- capture content_html -%}
+        {{ content_html }}
+        {% assign linklist = linklists[block.settings.linklist] %}
+        <div class="grid__item @@@@footer-column-width-placeholder@@@@ footer__block" {{ block.shopify_attributes }}>
+          <p class="footer__title footer__accordion__head js {{ block.settings.accordion_default }}"
+            data-accordion-trigger="{{ accordion_index }}"
+            aria-controls="{{ accordion_index }}"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="{% if block.settings.accordion_default == 'accordion-is-open' %}true{% else %}false{% endif %}">
+              {{ block.settings.title | default: linklist.title }}
+              {% render 'icon-core-chevron-right' %}
+          </p>
+          <ul class="footer__quicklinks footer__accordion__body no-js-accordion" id="{{ accordion_index }}">
+            {% for link in linklist.links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {%- endcapture -%}
+
+    {% when 'newsletter' %}
+      {%- capture newsletter_html -%}
+        <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value | color_modify: 'alpha', 0.90 }}; --text-dark: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
+          <div class="footer__newsletter">
+            <div class="footer__newsletter__body">
+              <div class="footer-unified-subscribe">
+                {% if block.settings.newsletter_enable %}
+                  <div class="subscribe-item subscribe-email">
+                    {% render 'newsletter-form', unique: 'footer-newsletter', show_icon: true, class_modifier: 'newsletter-block footer__form unified-form' %}
+                  </div>
+                {% endif %}
+
+                <div class="subscribe-item subscribe-whatsapp">
+                  <h3 class="subscribe-heading">
+                    Stay Updated On WhatsApp
+                    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" width="24" height="24" alt="WhatsApp">
+                  </h3>
+
+                  <form class="newsletter-block footer__form unified-form whatsapp-form">
+                    <div class="input-group float__wrapper">                      
+                      <input class="input-group-field field__input" type="tel" id="whatsapp-number" placeholder="Phone Number" required>
+                      <span class="input-group-button">
+                        <button type="submit" style="color:#fff;">Subscribe Now</button>
+                      </span>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <ul class="listblock">
+                <li class="i-1">
+                  <span class="icon-wrap">{% render 'icon-location' %}</span>
+                  <span>45-50 Gulberg III Industrial Area Lahore, Pakistan<br>Sheikhupura Textile Mills Ltd</span>
+                </li>
+                <li class="i-2">
+                  <span class="icon-wrap">{% render 'icon-phone' %}</span>
+                  <span>042-111-111-009<br>(10AM to 5.30PM) Mon to Sat</span>
+                </li>
+                <li class="i-4">
+                  <span class="icon-wrap">{% render 'icon-whatsapp' %}</span>
+                  <a href="https://api.whatsapp.com/send?phone=923028141555">+92 302 8141555 <br>(10AM to 5.30PM) Mon to Sat</a>
+                </li>
+                <li class="i-3">
+                  <span class="icon-wrap">{% render 'icon-email' %}</span>
+                  <span>sales@crossstitch.pk</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {%- endcapture -%}
+  {% endcase %}
+{% endfor %}
+
+<footer class="footer" data-section-id="{{ section.id }}">
+  <div class="footer__holder">
+    <div class="{{ section.settings.width }} section-padding-custom">
+      <div class="footer-shipped">
+        <ul class="shipment-gurranty">
+          <li><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/truck.svg?v=1766728614" width="50" height="50"> Worldwide shipping</li>
+          <li><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/exchange.svg?v=1766728614" width="50" height="50"> Easy Exchange</li>
+          <li><img src="https://cdn.shopify.com/s/files/1/0178/4492/8612/files/payment.svg?v=1766728614" width="50" height="50"> Safe Payment</li>
+        </ul>
+      </div>
+      <div class="footer__container">
+        {{ newsletter_html }}
+        <div class="footer__content">
+          <div class="float-grid grid--uniform">
+            {{ content_html | replace: '@@@@footer-column-width-placeholder@@@@', footer_column_width }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-unified-subscribe {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Moves icon UNDER the heading */
+  .subscribe-heading {
+    font-size: 14px;
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .unified-form .input-group {
+    display: flex;
+    width: 100%;
+    max-width: 350px;
+  }
+
+  .unified-form input {
+    flex: 1;
+    height: 48px;
+    padding: 0 14px;
+    border: 1px solid #e5e5e5;
+    border-right: 0;
+  }
+
+  .unified-form button {
+    height: 48px;
+    padding: 0 20px;
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Fixes the Contact Icon alignment */
+  .listblock {
+    list-style: none;
+    padding: 0;
+    margin: 30px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .listblock li {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #656565;
+  }
+
+  .icon-wrap {
+    flex-shrink: 0;
+    width: 20px;
+    display: flex;
+    justify-content: center;
+    margin-top: 3px;
+  }
+
+  .icon-wrap svg, .icon-wrap img {
+    width: 18px;
+    height: auto;
+  }
+
+  @media (max-width: 767px) {
+    .unified-form .input-group { width: 100%; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "select", "id": "width", "label": "Width", "default": "wrapper--full", "options": [{"value":"wrapper--full","label":"Full width"}] }
+  ],
+  "blocks": [
+    { "type": "linklist", "name": "Link list", "settings": [ { "type": "link_list", "id": "linklist", "label": "Link list" }, { "type": "text", "id": "title", "label": "Title" } ] },
+    { "type": "newsletter", "name": "Newsletter", "limit": 1, "settings": [ { "type": "checkbox", "id": "newsletter_enable", "label": "Show newsletter", "default": true }, { "type": "color", "id": "background_color", "label": "Background", "default": "#f7f7f7" }, { "type": "color", "id": "text_color_value", "label": "Text color", "default": "#656565" } ] }
+  ]
+}
+{% endschema %}
