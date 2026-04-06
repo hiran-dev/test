@@ -357,32 +357,52 @@
 {% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
 (function() {
-  // 1. Helper to see if a drawer (Cart or Nav) is open
-  const isAnyDrawerActive = () => !!document.querySelector('.drawer--visible, .is-open, .menu-drawer--active');
+  // 1. Identify if any drawer is open (Menu or Cart)
+  const isDrawerOpen = () => !!document.querySelector('.drawer--visible, .is-open, .menu-drawer--active');
 
-  // 2. Updated Wheel/Scroll Block
-  window.addEventListener('wheel', (e) => {
-    if (isAnyDrawerActive()) {
-      // Look for the Nav bar or Cart drawer container
-      const isOverDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer, #NavDrawer');
-      
-      // If the mouse is NOT over the drawer, block the scroll (stops background)
-      // If the mouse IS over the drawer, do nothing (allows scrolling inside)
-      if (!isOverDrawer) {
+  const handleScrollLock = (e) => {
+    if (isDrawerOpen()) {
+      // 2. Check if the mouse is specifically over the side nav or cart
+      const overDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer, #NavDrawer');
+
+      if (overDrawer) {
+        // If over the drawer: Stop FullPage from moving, but allow the drawer to scroll
+        if (typeof fullpage_api !== 'undefined') {
+          fullpage_api.setAllowScrolling(false);
+        }
+        // Don't e.preventDefault() here, so the drawer can actually scroll
+      } else {
+        // If NOT over the drawer (clicking the blurred background): Block everything
         e.preventDefault();
       }
-    }
-  }, { passive: false });
-
-  // 3. Updated Touch/Swipe Block (Mobile)
-  window.addEventListener('touchmove', (e) => {
-    if (isAnyDrawerActive()) {
-      const isOverDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer, #NavDrawer');
-      if (!isOverDrawer) {
-        e.preventDefault();
+    } else {
+      // 3. If no drawer is open, make sure FullPage is back to normal
+      if (typeof fullpage_api !== 'undefined') {
+        fullpage_api.setAllowScrolling(true);
       }
     }
-  }, { passive: false });
+  };
+
+  // Attach the listeners
+  window.addEventListener('wheel', handleScrollLock, { passive: false });
+  window.addEventListener('touchmove', handleScrollLock, { passive: false });
+
+  // 4. Force-fix for Keyboard Arrows
+  window.addEventListener('keydown', (e) => {
+    if (isDrawerOpen()) {
+      const isOverDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer');
+      // If we are in the drawer, only allow Up/Down arrows to scroll the drawer, not the BG
+      if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
+        if (typeof fullpage_api !== 'undefined') {
+            fullpage_api.setKeyboardScrolling(false);
+        }
+      }
+    } else {
+      if (typeof fullpage_api !== 'undefined') {
+          fullpage_api.setKeyboardScrolling(true);
+      }
+    }
+  }, true);
 })();
 </script>
 </body>
