@@ -26480,31 +26480,3 @@ body:has(.is-open) [id^="zoko-"],
     opacity: 0 !important;
     pointer-events: none !important;
 }
-
-/* Fix for Quick Add button on Mobile */
-@media screen and (max-width: 767px) {
-    /* Target the button and its container to force a small circle */
-    button.stain-button-canvas.group\/quick-action-button,
-    .group\/product-grid-item button[data-add-to-cart] {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        min-height: 36px !important;
-        max-width: 36px !important;
-        padding: 0 !important;
-        border-radius: 50% !important; /* Forces the circle shape */
-        background-color: rgba(255, 255, 255, 0.9) !important; /* Slightly transparent white */
-        bottom: 8px !important;
-        right: 8px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    /* Shrink the cart icon inside the button */
-    button.stain-button-canvas.group\/quick-action-button svg,
-    .group\/product-grid-item button[data-add-to-cart] svg {
-        width: 18px !important;
-        height: 18px !important;
-    }
-}
