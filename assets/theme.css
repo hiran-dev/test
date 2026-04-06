@@ -26482,7 +26482,6 @@ body:has(.is-open) [id^="zoko-"],
 }
 /* Final fix for Mobile Quick-Add Button Circle */
 @media screen and (max-width: 767px) {
-  /* Use the specific class combination from your inspector */
   button.stain-button-canvas.group\/quick-action-button {
     width: 38px !important;
     height: 38px !important;
@@ -26491,7 +26490,7 @@ body:has(.is-open) [id^="zoko-"],
     max-width: 38px !important;
     padding: 0 !important;
     margin: 0 !important;
-    border-radius: 50% !important;
+    border-radius: 4px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
