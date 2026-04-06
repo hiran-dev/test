@@ -26500,8 +26500,8 @@ body:has(.is-open) [id^="zoko-"],
     right: 10px !important;
   }
   button.stain-button-canvas.group\/quick-action-button svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 14px !important;
+    height: 14px !important;
     margin: 0 !important;
   }
 }
