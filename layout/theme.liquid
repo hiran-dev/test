@@ -357,52 +357,51 @@
 {% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
 (function() {
-  // 1. Identify if any drawer is open (Menu or Cart)
-  const isDrawerOpen = () => !!document.querySelector('.drawer--visible, .is-open, .menu-drawer--active');
+  // 1. Identify if ANY drawer is open (Cart or Nav Menu)
+  const isDrawerOpen = () => !!document.querySelector('.drawer--visible, .is-open, .drawer--active');
 
   const handleScrollLock = (e) => {
     if (isDrawerOpen()) {
-      // 2. Check if the mouse is specifically over the side nav or cart
-      const overDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer, #NavDrawer');
+      // 2. Check if the mouse is specifically over the side navigation or cart drawer
+      // We are using your theme's exact classes: .drawer_menu, .drawer__inner, .drawer__content
+      const overDrawer = e.target.closest('.drawer_menu, .drawer__menu, .drawer__inner, .drawer__content, .cart-drawer');
 
       if (overDrawer) {
-        // If over the drawer: Stop FullPage from moving, but allow the drawer to scroll
+        // If your mouse is OVER the menu:
+        // Stop the background (FullPage.js) from moving
         if (typeof fullpage_api !== 'undefined') {
           fullpage_api.setAllowScrolling(false);
+          fullpage_api.setKeyboardScrolling(false);
         }
-        // Don't e.preventDefault() here, so the drawer can actually scroll
+        // DO NOT e.preventDefault() here! This allows the menu itself to scroll.
       } else {
-        // If NOT over the drawer (clicking the blurred background): Block everything
+        // If your mouse is NOT over the menu (on the background):
+        // Block everything so the background doesn't move
         e.preventDefault();
       }
     } else {
-      // 3. If no drawer is open, make sure FullPage is back to normal
+      // 3. If everything is closed, make sure FullPage.js is active again
       if (typeof fullpage_api !== 'undefined') {
         fullpage_api.setAllowScrolling(true);
+        fullpage_api.setKeyboardScrolling(true);
       }
     }
   };
 
-  // Attach the listeners
+  // Attach the listeners to the window
   window.addEventListener('wheel', handleScrollLock, { passive: false });
   window.addEventListener('touchmove', handleScrollLock, { passive: false });
 
-  // 4. Force-fix for Keyboard Arrows
-  window.addEventListener('keydown', (e) => {
-    if (isDrawerOpen()) {
-      const isOverDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer');
-      // If we are in the drawer, only allow Up/Down arrows to scroll the drawer, not the BG
-      if (['ArrowUp', 'ArrowDown'].includes(e.key)) {
-        if (typeof fullpage_api !== 'undefined') {
-            fullpage_api.setKeyboardScrolling(false);
+  // 4. Fallback: If you open the menu, immediately tell FullPage to wait
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.menu-drawer-trigger, .icon-hamburger, .cart-link')) {
+      setTimeout(() => {
+        if (isDrawerOpen() && typeof fullpage_api !== 'undefined') {
+          fullpage_api.setAllowScrolling(false);
         }
-      }
-    } else {
-      if (typeof fullpage_api !== 'undefined') {
-          fullpage_api.setKeyboardScrolling(true);
-      }
+      }, 300);
     }
-  }, true);
+  });
 })();
 </script>
 </body>
