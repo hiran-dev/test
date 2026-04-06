@@ -26480,7 +26480,7 @@ body:has(.is-open) [id^="zoko-"],
     opacity: 0 !important;
     pointer-events: none !important;
 }
-/* Final fix for Mobile Quick-Add Button Circle
+/* Final fix for Mobile Quick-Add Button Circle */
 @media screen and (max-width: 767px) {
   button.stain-button-canvas.group\/quick-action-button {
     width: 38px !important;
@@ -26506,4 +26506,4 @@ body:has(.is-open) [id^="zoko-"],
     height: 18px !important;
     margin: 0 !important;
   }
-} */
+}
