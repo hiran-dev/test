@@ -353,12 +353,11 @@
     display: none !important;
   } {% endcomment %}
 </style> {% endcomment %}
+
+{% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
   function toggleFullPageScroll() {
-    // Check if the drawer is visible
     const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
-
-    // fullpage_api is the global object created by the library
     if (typeof fullpage_api !== 'undefined') {
       if (isDrawerOpen) {
         fullpage_api.setAllowScrolling(false);
@@ -369,21 +368,18 @@
       }
     }
   }
-
-  // 1. Watch for class changes on the body/drawer
   const fpObserver = new MutationObserver(toggleFullPageScroll);
   fpObserver.observe(document.body, { 
     attributes: true, 
     subtree: true, 
     attributeFilter: ['class'] 
   });
-
-  // 2. Fallback: Run it whenever the cart icon or close button is clicked
   document.addEventListener('click', function(e) {
     if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open')) {
       setTimeout(toggleFullPageScroll, 200);
     }
   });
 </script>
+
 </body>
 </html>
