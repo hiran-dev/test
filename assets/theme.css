@@ -20912,7 +20912,7 @@ a.product__form__link:after {
   content-visibility: visible;
   transform: translate3d(0, 0, 0);
   transition: transform 0.3s ease;
-  max-width: 350px; /* /sidedrawer Width  */
+  max-width: 350px; /* /sidedrawer width  */
 }
 @media only screen and (max-width: 479px) {
   .drawer__content {
@@ -26470,3 +26470,13 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   image-rendering: auto;
 }
 
+/* Force hide Zoko WhatsApp widget when cart drawer is active */
+body:has(.drawer--visible) [id^="zoko-"],
+body:has(.is-open) [id^="zoko-"],
+.drawer--visible ~ [id^="zoko-"],
+.is-open ~ [id^="zoko-"] {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
