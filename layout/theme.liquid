@@ -353,5 +353,41 @@
     display: none !important;
   } {% endcomment %}
 </style> {% endcomment %}
+<script>
+(function() {
+  const toggleBackgroundLock = () => {
+    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
+    const mainContent = document.querySelector('#MainContent, #shopify-section-template--index__main, .main-content');
+    const slideshow = document.querySelector('.slideshow, [data-section-type="slideshow"], .flexslider');
+
+    if (isDrawerOpen) {
+      // 1. Physically disable the slider/main area from receiving any input
+      if (mainContent) mainContent.style.pointerEvents = 'none';
+      if (slideshow) slideshow.style.pointerEvents = 'none';
+      
+      // 2. Prevent body from scrolling the background
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restore everything
+      if (mainContent) mainContent.style.pointerEvents = 'auto';
+      if (slideshow) slideshow.style.pointerEvents = 'auto';
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+  };
+
+  // Watch for the drawer opening/closing
+  const observer = new MutationObserver(toggleBackgroundLock);
+  observer.observe(document.body, { 
+    attributes: true, 
+    subtree: true, 
+    attributeFilter: ['class'] 
+  });
+
+  // Fallback for click-based triggers
+  document.addEventListener('click', () => setTimeout(toggleBackgroundLock, 150));
+})();
+</script>
 </body>
 </html>
