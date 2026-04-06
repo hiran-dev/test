@@ -354,13 +354,11 @@
   } {% endcomment %}
 </style> {% endcomment %}
 
-{% comment %} To stop background bannner from scroll on active state
+{% comment %} To stop background bannner from scroll on active state {% endcomment %}
 <script>
   function toggleFullPageScroll() {
     // Check if the drawer is visible
     const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
-
-    // fullpage_api is the global object created by the library
     if (typeof fullpage_api !== 'undefined') {
       if (isDrawerOpen) {
         fullpage_api.setAllowScrolling(false);
@@ -371,55 +369,16 @@
       }
     }
   }
-
-  // 1. Watch for class changes on the body/drawer
   const fpObserver = new MutationObserver(toggleFullPageScroll);
   fpObserver.observe(document.body, { 
     attributes: true, 
     subtree: true, 
     attributeFilter: ['class'] 
   });
-
-  // 2. Fallback: Run it whenever the cart icon or close button is clicked
   document.addEventListener('click', function(e) {
     if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open')) {
       setTimeout(toggleFullPageScroll, 200);
     }
-  });
-</script> {% endcomment %}
-<script>
-  function toggleFullPageScroll() {
-    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open, .drawer--active');
-    
-    if (typeof fullpage_api !== 'undefined') {
-      if (isDrawerOpen) {
-        // 1. Destroy FullPage temporarily to let the browser scroll normally
-        fullpage_api.destroy('all');
-        
-        // 2. Force the drawer to be scrollable
-        const drawer = document.querySelector('.drawer__content, .drawer__inner, .drawer_menu');
-        if (drawer) {
-          drawer.style.overflowY = 'auto';
-          drawer.style.height = '100vh';
-        }
-      } else {
-        // 3. Re-initialize FullPage when the drawer is closed
-        // Make sure to use your original initialization settings here
-        $('#fullpage').fullpage({
-          // Add your theme's specific fullpage settings here
-          scrollBar: true,
-          navigation: true,
-          // etc...
-        });
-      }
-    }
-  }
-
-  const fpObserver = new MutationObserver(toggleFullPageScroll);
-  fpObserver.observe(document.body, { 
-    attributes: true, 
-    subtree: true, 
-    attributeFilter: ['class'] 
   });
 </script>
 </body>
