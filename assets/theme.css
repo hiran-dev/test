@@ -26480,3 +26480,31 @@ body:has(.is-open) [id^="zoko-"],
     opacity: 0 !important;
     pointer-events: none !important;
 }
+/* Final fix for Mobile Quick-Add Button Circle */
+@media screen and (max-width: 767px) {
+  /* Use the specific class combination from your inspector */
+  button.stain-button-canvas.group\/quick-action-button {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important; 
+    min-height: 38px !important;
+    max-width: 38px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    /* Ensure it floats correctly on the image */
+    position: absolute !important;
+    bottom: 10px !important;
+    right: 10px !important;
+  }
+
+  /* Scale the icon to fit the smaller circle */
+  button.stain-button-canvas.group\/quick-action-button svg {
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+  }
+}
