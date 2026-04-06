@@ -106,13 +106,6 @@
       "name": "Main Slide Show",
       "settings": {}
     },
-    "section_liquid_CGiFDB": {
-      "type": "section-liquid",
-      "name": "Custom Liquid",
-      "settings": {
-        "custom_liquid": "<style>\n.fp-viewing-0 .HD-icons, .fp-viewing-3 .HD-icons, .fp-viewing-4 .HD-icons {\n    filter: invert(1);\n  }\n</style>"
-      }
-    },
     "section_pair_showcase_accordion_AFxYnr": {
       "type": "section-pair-showcase-accordion",
       "blocks": {
@@ -246,6 +239,7 @@
           ]
         }
       },
+      "disabled": true,
       "name": "Pair: Showcase & Text",
       "settings": {
         "order": "showcase-first",
@@ -263,7 +257,6 @@
   },
   "order": [
     "mainslideshow_g7B7xE",
-    "section_liquid_CGiFDB",
     "section_pair_showcase_accordion_AFxYnr"
   ]
 }
