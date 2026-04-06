@@ -357,33 +357,30 @@
 {% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
   function toggleFullPageScroll() {
-    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
+    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open, .drawer--active');
     
     if (typeof fullpage_api !== 'undefined') {
       if (isDrawerOpen) {
-        // 1. Stop the auto-sliding background
+        // 1. Freeze the background banner
         fullpage_api.setAllowScrolling(false);
         fullpage_api.setKeyboardScrolling(false);
         
-        // 2. THIS IS THE FIX: Turn on "Responsive" mode so 
-        // the browser recovers its natural scroll for the side bar.
-        fullpage_api.setResponsive(true);
-        
-        // 3. Ensure the drawer itself is allowed to scroll
-        const drawerContent = document.querySelector('.drawer__content, .drawer__inner, .drawer_menu');
-        if (drawerContent) {
-          drawerContent.style.overflowY = 'auto';
-          drawerContent.style.webkitOverflowScrolling = 'touch';
+        // 2. Allow the drawer to handle its own scroll
+        const drawer = document.querySelector('.drawer__content, .drawer__inner, .drawer_menu, .cart-drawer');
+        if (drawer) {
+          drawer.style.pointerEvents = 'auto';
+          drawer.style.overflowY = 'auto';
+          drawer.style.webkitOverflowScrolling = 'touch';
         }
       } else {
-        // Restore everything when closed
+        // 3. Restore background movement when drawer is closed
         fullpage_api.setAllowScrolling(true);
         fullpage_api.setKeyboardScrolling(true);
-        fullpage_api.setResponsive(false);
       }
     }
   }
 
+  // Watch for the drawer opening
   const fpObserver = new MutationObserver(toggleFullPageScroll);
   fpObserver.observe(document.body, { 
     attributes: true, 
@@ -391,9 +388,10 @@
     attributeFilter: ['class'] 
   });
 
+  // Fallback for clicks
   document.addEventListener('click', function(e) {
     if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open, .menu-drawer-trigger, .icon-hamburger')) {
-      setTimeout(toggleFullPageScroll, 300);
+      setTimeout(toggleFullPageScroll, 400);
     }
   });
 </script>
