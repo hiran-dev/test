@@ -356,30 +356,34 @@
 
 {% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
-  function toggleFullPageScroll() {
-    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
-    if (typeof fullpage_api !== 'undefined') {
-      if (isDrawerOpen) {
-        fullpage_api.setAllowScrolling(false);
-        fullpage_api.setKeyboardScrolling(false);
-      } else {
-        fullpage_api.setAllowScrolling(true);
-        fullpage_api.setKeyboardScrolling(true);
+(function() {
+  // 1. Helper to see if a drawer (Cart or Nav) is open
+  const isAnyDrawerActive = () => !!document.querySelector('.drawer--visible, .is-open, .menu-drawer--active');
+
+  // 2. Updated Wheel/Scroll Block
+  window.addEventListener('wheel', (e) => {
+    if (isAnyDrawerActive()) {
+      // Look for the Nav bar or Cart drawer container
+      const isOverDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer, #NavDrawer');
+      
+      // If the mouse is NOT over the drawer, block the scroll (stops background)
+      // If the mouse IS over the drawer, do nothing (allows scrolling inside)
+      if (!isOverDrawer) {
+        e.preventDefault();
       }
     }
-  }
-  const fpObserver = new MutationObserver(toggleFullPageScroll);
-  fpObserver.observe(document.body, { 
-    attributes: true, 
-    subtree: true, 
-    attributeFilter: ['class'] 
-  });
-  document.addEventListener('click', function(e) {
-    if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open')) {
-      setTimeout(toggleFullPageScroll, 200);
-    }
-  });
-</script>
+  }, { passive: false });
 
+  // 3. Updated Touch/Swipe Block (Mobile)
+  window.addEventListener('touchmove', (e) => {
+    if (isAnyDrawerActive()) {
+      const isOverDrawer = e.target.closest('.drawer__content, .menu-drawer, .cart-drawer, #NavDrawer');
+      if (!isOverDrawer) {
+        e.preventDefault();
+      }
+    }
+  }, { passive: false });
+})();
+</script>
 </body>
 </html>
