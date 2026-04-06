@@ -356,53 +356,30 @@
 
 {% comment %} To stop background bannner from scroll on active drawer state {% endcomment %}
 <script>
-(function() {
-  // 1. Identify if ANY drawer is open (Cart or Nav Menu)
-  const isDrawerOpen = () => !!document.querySelector('.drawer--visible, .is-open, .drawer--active');
-
-  const handleScrollLock = (e) => {
-    if (isDrawerOpen()) {
-      // 2. Check if the mouse is specifically over the side navigation or cart drawer
-      // We are using your theme's exact classes: .drawer_menu, .drawer__inner, .drawer__content
-      const overDrawer = e.target.closest('.drawer_menu, .drawer__menu, .drawer__inner, .drawer__content, .cart-drawer');
-
-      if (overDrawer) {
-        // If your mouse is OVER the menu:
-        // Stop the background (FullPage.js) from moving
-        if (typeof fullpage_api !== 'undefined') {
-          fullpage_api.setAllowScrolling(false);
-          fullpage_api.setKeyboardScrolling(false);
-        }
-        // DO NOT e.preventDefault() here! This allows the menu itself to scroll.
+  function toggleFullPageScroll() {
+    const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
+    if (typeof fullpage_api !== 'undefined') {
+      if (isDrawerOpen) {
+        fullpage_api.setAllowScrolling(false);
+        fullpage_api.setKeyboardScrolling(false);
       } else {
-        // If your mouse is NOT over the menu (on the background):
-        // Block everything so the background doesn't move
-        e.preventDefault();
-      }
-    } else {
-      // 3. If everything is closed, make sure FullPage.js is active again
-      if (typeof fullpage_api !== 'undefined') {
         fullpage_api.setAllowScrolling(true);
         fullpage_api.setKeyboardScrolling(true);
       }
     }
-  };
-
-  // Attach the listeners to the window
-  window.addEventListener('wheel', handleScrollLock, { passive: false });
-  window.addEventListener('touchmove', handleScrollLock, { passive: false });
-
-  // 4. Fallback: If you open the menu, immediately tell FullPage to wait
-  document.addEventListener('click', (e) => {
-    if (e.target.closest('.menu-drawer-trigger, .icon-hamburger, .cart-link')) {
-      setTimeout(() => {
-        if (isDrawerOpen() && typeof fullpage_api !== 'undefined') {
-          fullpage_api.setAllowScrolling(false);
-        }
-      }, 300);
+  }
+  const fpObserver = new MutationObserver(toggleFullPageScroll);
+  fpObserver.observe(document.body, { 
+    attributes: true, 
+    subtree: true, 
+    attributeFilter: ['class'] 
+  });
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.cart-link, .drawer__close, .js-drawer-open')) {
+      setTimeout(toggleFullPageScroll, 200);
     }
   });
-})();
 </script>
+
 </body>
 </html>
