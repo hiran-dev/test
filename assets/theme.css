@@ -26470,7 +26470,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   image-rendering: auto;
 }
 
-/* Force hide Zoko WhatsApp widget when cart drawer is active */
+/* Hide Zoko WhatsApp widget when cart drawer is active */
 body:has(.drawer--visible) [id^="zoko-"],
 body:has(.is-open) [id^="zoko-"],
 .drawer--visible ~ [id^="zoko-"],
