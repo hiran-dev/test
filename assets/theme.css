@@ -26531,30 +26531,51 @@ span[style*="color: #D72828"] + br
 
 
 /* header to white */
+/* 1. Logo - White Invert (Slide 0 & 2) */
 .fp-viewing-0 .header_logo_link img,
 .fp-viewing-0 .logo_img,
 .fp-viewing-0 .logo_img--color,
 .fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 img[alt*="Cross Stitch"] {
+.fp-viewing-2 .header_logo_link img,
+.fp-viewing-2 .logo_img,
+.fp-viewing-2 .logo_img--color,
+.fp-viewing-2 .header_logo_header_logo--image img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
-.fp-viewing-0 .header_mobile_button .icon-hamburger,
+/* 2. Menu Lines (Hamburger) - Fill & Stroke (Slide 0 & 2) */
 .fp-viewing-0 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_left svg,
+.fp-viewing-0 .header_mobile_button svg path,
+.fp-viewing-0 .header_mobile_button svg line,
+.fp-viewing-0 .header_mobile_button svg rect,
+.fp-viewing-2 .header_mobile_button svg,
+.fp-viewing-2 .header_mobile_button svg path,
+.fp-viewing-2 .header_mobile_button svg line,
+.fp-viewing-2 .header_mobile_button svg rect {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    stroke-width: 1.2px !important;
+}
+
+/* 3. Search, Account, and Cart Icons (Slide 0 & 2) */
 .fp-viewing-0 .header_mobile_right svg,
+.fp-viewing-0 .header_mobile_right .navlink,
 .fp-viewing-0 .HD-icons,
-.fp-viewing-0 .header-icons svg {
+.fp-viewing-2 .header_mobile_right svg,
+.fp-viewing-2 .header_mobile_right .navlink,
+.fp-viewing-2 .HD-icons {
     fill: #ffffff !important;
     stroke: #ffffff !important;
     color: #ffffff !important;
-    stroke-width: 2.5px !important;
 }
 
+/* 4. CSS-Based Lines (The 'Fill' fix for spans) (Slide 0 & 2) */
 .fp-viewing-0 .header_mobile_button span,
-.fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
+.fp-viewing-0 .menu-toggle-HD-icons span,
+.fp-viewing-2 .header_mobile_button span,
+.fp-viewing-2 .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
+    opacity: 1 !important;
+    display: block !important;
 }
