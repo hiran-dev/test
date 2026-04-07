@@ -26558,35 +26558,3 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
 }
-/* 1. Make the Mobile Header Transparent */
-.fp-viewing-0 .site-header,
-.fp-viewing-0 .header_wrapper {
-    background-color: transparent !important;
-    border-bottom: none !important;
-    position: absolute !important;
-    width: 100% !important;
-    top: 0 !important;
-    z-index: 10 !important;
-}
-
-/* 2. Turn Mobile Logo White */
-.fp-viewing-0 .site-header .logo_img,
-.fp-viewing-0 .site-header .header_logo_link img {
-    filter: brightness(0) invert(1) !important;
-    -webkit-filter: brightness(0) invert(1) !important;
-}
-
-/* 3. Turn Mobile Icons (Hamburger, Search, Cart) White */
-.fp-viewing-0 .site-header .header_mobile_button svg,
-.fp-viewing-0 .site-header .header_mobile_right svg,
-.fp-viewing-0 .site-header .icon-hamburger,
-.fp-viewing-0 .site-header .HD-icons {
-    fill: #ffffff !important;
-    stroke: #ffffff !important;
-    color: #ffffff !important;
-}
-
-/* 4. Fix for Mobile Hamburger Lines (Spans) */
-.fp-viewing-0 .site-header .header_mobile_button span {
-    background-color: #ffffff !important;
-}
