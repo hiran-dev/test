@@ -26550,8 +26550,7 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .header_mobile_right svg,
 .fp-viewing-0 .HD-icons,
 .fp-viewing-0 .header-icons svg {
-
-    stroke: #ffffff !important;
+    fill: #ffffff !important;
     color: #ffffff !important;
     stroke-width: 2.5px !important;
 }
