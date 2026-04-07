@@ -26524,19 +26524,22 @@ span[style*="color: #FF2A00"] + br
 
 /* WHITE header for specific banner (e.g., Slide X) */
 
-/* 1. Turn the Logo White */
-.fp-viewing-1 .custom-header .header-logo img {
+/* 1. Turn the Logo White - Fixed Spelling to .custom-headre */
+.fp-viewing-1 .custom-headre .header-logo img,
+.fp-viewing-1 .header_logo_img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
 }
 
 /* 2. Turn Icons, Lines, and Text White */
-.fp-viewing-1 .custom-header .menu-toggle-HD-icons,
-.fp-viewing-1 .custom-header .menu-toggle-HD-icons span,
-.fp-viewing-1 .custom-header .HD-icons,
-.fp-viewing-1 .custom-header .header-icons svg {
+.fp-viewing-1 .custom-headre .menu-toggle-HD-icons,
+.fp-viewing-1 .custom-headre .menu-toggle-HD-icons span,
+.fp-viewing-1 .custom-headre .HD-icons,
+.fp-viewing-1 .custom-headre .header-icons svg,
+.fp-viewing-1 .header_mobile_button span,
+.fp-viewing-1 .header_mobile_button svg {
     color: #ffffff !important;
     fill: #ffffff !important;
     stroke: #ffffff !important;
-    background-color: #ffffff !important; /* Forces hamburger lines to white */
+    background-color: #ffffff !important;
 }
