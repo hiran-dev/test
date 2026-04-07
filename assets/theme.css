@@ -26558,23 +26558,3 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
 }
-/* 1. Force the Header to start after the announcement bar */
-#shopify-section-header, 
-.shopify-section-group-header-group {
-    position: relative !important;
-    top: auto !important;
-}
-
-/* 2. Remove the 'floating' effect that causes the overlap */
-.header-wrapper, 
-.div.wrapper--full {
-    margin-top: 0 !important;
-    position: relative !important;
-}
-
-/* 3. Ensure the announcement bar stays at the very top */
-#shopify-section-announcement-bar,
-.announcement-bar-section {
-    position: relative !important;
-    z-index: 999 !important;
-}
