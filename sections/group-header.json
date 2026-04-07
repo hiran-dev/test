@@ -16,7 +16,6 @@
       "blocks": {
         "announce_text": {
           "type": "text",
-          "disabled": true,
           "settings": {
             "text": "<p><strong>Make an announcement</strong> | More info</p>",
             "target_url_enabled": false,
@@ -49,8 +48,8 @@
         "text_size": 3,
         "layout": "slider",
         "speed": 5,
-        "padding_top": 4,
-        "padding_bottom": 4
+        "padding_top": 10,
+        "padding_bottom": 10
       }
     },
     "header": {
