@@ -52,21 +52,21 @@
             "addcustomclass": "noclass"
           }
         },
-        "main_home_slider_3fQW6X": {
+        "main_home_slider_FmYK8a": {
+          "type": "main-home-slider",
+          "settings": {
+            "link": "shopify://collections/chikankari-lawn",
+            "img": "shopify://shop_images/Chikankari_-_Desktop_Banner_-_B_125f329a-8d7f-4fb5-b89c-7dbfa0515cf4.jpg",
+            "img_mobile": "shopify://shop_images/Chikankari_-_Mobile_Banner_-_A_a3d678c6-7a1c-40a6-8cc5-1ed930adaee2.jpg",
+            "txt": "Shop Now",
+            "addcustomclass": "noclass"
+          }
+        },
+        "main_home_slider_7JHcYR": {
           "type": "main-home-slider",
           "settings": {
             "link": "",
             "txt": "",
-            "addcustomclass": "noclass"
-          }
-        },
-        "main_home_slider_FmYK8a": {
-          "type": "main-home-slider",
-          "settings": {
-            "link": "shopify://collections/unstitched-wedding",
-            "img": "shopify://shop_images/Wedding_Edit_1_-_Desktop_Banner_-_D_fa11c06a-8c74-4d63-8ee0-c1c4291b5dfa.jpg",
-            "img_mobile": "shopify://shop_images/Wedding_Edit_1_-_Mobile_-_D_4f4dc1cc-d5dc-4666-beee-7df010e29d25.jpg",
-            "txt": "Shop Now",
             "addcustomclass": "noclass"
           }
         },
@@ -106,8 +106,8 @@
         "main_home_slider_ARXipz",
         "main_home_slider_DAyFBc",
         "main_home_slider_3fNxkL",
-        "main_home_slider_3fQW6X",
         "main_home_slider_FmYK8a",
+        "main_home_slider_7JHcYR",
         "main_home_slider_CHYFLz",
         "main_home_slider_X8npaU",
         "main_home_slider_iGNYFe"
