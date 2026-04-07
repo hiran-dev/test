@@ -26558,3 +26558,6 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
 }
+.header-wrapper { 
+    margin-top: 40px; /* Adjust this value to match the height of your announcement bar */
+}
