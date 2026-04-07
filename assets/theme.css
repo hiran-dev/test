@@ -26530,23 +26530,30 @@ span[style*="color: #D72828"] + br
 
 
 
-/* WHITE header for specific banner (e.g., Slide X) */
-/* 1. Turn the Logo White - Fixed Spelling to .custom-headre */
-.fp-viewing-1 .custom-headre .header-logo img,
-.fp-viewing-1 .header_logo_img {
-    filter: brightness(0) invert(1) !important;
-    -webkit-filter: brightness(0) invert(1) !important;
+/* Target BOTH potential slide numbers (0 and 1) */
+.fp-viewing-0 .custom-headre,
+.fp-viewing-1 .custom-headre {
+    /* 1. Turn the Logo White */
+    --logo-filter: brightness(0) invert(1) !important;
 }
 
-/* 2. Turn Icons, Lines, and Text White */
+.fp-viewing-0 .custom-headre .header-logo img,
+.fp-viewing-1 .custom-headre .header-logo img {
+    filter: var(--logo-filter);
+    -webkit-filter: var(--logo-filter);
+}
+
+/* 2. Turn All Icons and Menu Lines White */
+.fp-viewing-0 .custom-headre .menu-toggle-HD-icons,
+.fp-viewing-0 .custom-headre .menu-toggle-HD-icons span,
+.fp-viewing-0 .custom-headre .HD-icons,
+.fp-viewing-0 .custom-headre .header-icons svg,
 .fp-viewing-1 .custom-headre .menu-toggle-HD-icons,
 .fp-viewing-1 .custom-headre .menu-toggle-HD-icons span,
 .fp-viewing-1 .custom-headre .HD-icons,
-.fp-viewing-1 .custom-headre .header-icons svg,
-.fp-viewing-1 .header_mobile_button span,
-.fp-viewing-1 .header_mobile_button svg {
+.fp-viewing-1 .custom-headre .header-icons svg {
     color: #ffffff !important;
     fill: #ffffff !important;
     stroke: #ffffff !important;
-    background-color: #ffffff !important;
+    background-color: #ffffff !important; /* Fixes the hamburger lines */
 }
