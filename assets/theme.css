@@ -26508,15 +26508,15 @@ body:has(.is-open) [id^="zoko-"],
 
 
 
-/* Target only the specific red spans and hide them */
+/* Target get its stitched red spans and hide them */
 span[style*="color: rgb(255, 42, 0)"], 
 span[style*="color: #FF2A00"],
-span[style*="color:rgb(255,42,0)"] {
+span[style*="color:rgb(255,42,0)"] 
+{
     display: none !important;
 }
-
-/* Hide the line breaks immediately following the red text so there isn't a big gap */
 span[style*="color: rgb(255, 42, 0)"] + br,
-span[style*="color: #FF2A00"] + br {
+span[style*="color: #FF2A00"] + br 
+{
     display: none !important;
 }
