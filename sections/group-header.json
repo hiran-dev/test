@@ -16,6 +16,7 @@
       "blocks": {
         "announce_text": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "<p><strong>Make an announcement</strong> | More info</p>",
             "target_url_enabled": false,
@@ -28,6 +29,7 @@
         },
         "announce_shipping": {
           "type": "message",
+          "disabled": true,
           "settings": {
             "message": "Spend ||amount|| more for free shipping",
             "target_url_enabled": false,
