@@ -26530,7 +26530,7 @@ span[style*="color: #D72828"] + br
 
 
 
-/* header to white
+/* header to white */
 .fp-viewing-0 .header_logo_link img,
 .fp-viewing-0 .logo_img,
 .fp-viewing-0 .logo_img--color,
@@ -26557,40 +26557,5 @@ span[style*="color: #D72828"] + br
 
 .fp-viewing-0 .header_mobile_button span,
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
-    background-color: #ffffff !important;
-} */
-
-
-
-/* 1. APPLY TO LOGO (Slides 0, 1, and 2) */
-.fp-viewing-0 .logo_img, 
-.fp-viewing-1 .logo_img, 
-.fp-viewing-2 .logo_img,
-.fp-viewing-0 .header_logo_link img,
-.fp-viewing-1 .header_logo_link img,
-.fp-viewing-2 .header_logo_link img {
-    filter: brightness(0) invert(1) !important;
-    -webkit-filter: brightness(0) invert(1) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-/* 2. APPLY TO ICONS & HAMBURGER (Slides 0, 1, and 2) */
-.fp-viewing-0 .header_mobile_button svg, 
-.fp-viewing-1 .header_mobile_button svg, 
-.fp-viewing-2 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_right svg,
-.fp-viewing-1 .header_mobile_right svg,
-.fp-viewing-2 .header_mobile_right svg {
-    fill: #ffffff !important;
-    stroke: #ffffff !important;
-    color: #ffffff !important;
-    stroke-width: 2.5px !important;
-}
-
-/* 3. APPLY TO MENU LINES (Slides 0, 1, and 2) */
-.fp-viewing-0 .header_mobile_button span, 
-.fp-viewing-1 .header_mobile_button span, 
-.fp-viewing-2 .header_mobile_button span {
     background-color: #ffffff !important;
 }
