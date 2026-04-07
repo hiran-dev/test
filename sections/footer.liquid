@@ -32,7 +32,7 @@
 {%- endcapture -%}
 
 {%- capture socials_html -%}
-  {%- assign social_accounts = 'Facebook, X, Tiktok, Pinterest, Instagram, Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
+  {%- assign social_accounts = ' Instagram, Facebook, X, Tiktok, Pinterest,  Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
   {%- for social in social_accounts -%}
     {%- assign social_handle = social | handleize -%}
     {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
@@ -233,7 +233,7 @@
         {%- assign newsletter_logo_show = false -%}
         {%- if block.settings.show_image != true and section.settings.menu_position == 'right' -%}{%- assign newsletter_logo_show = true -%}{%- endif -%}
         {%- if block.settings.show_image or newsletter_logo_show or block.settings.kicker != blank or block.settings.heading != blank or block.settings.richtext != blank or block.settings.newsletter_enable -%}
-        {% comment %} Whatsapp footer {% endcomment %}
+          {% comment %} MSSD whatsapp footer {% endcomment %}
           <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value | color_modify: 'alpha', 0.90 }}; --text-dark: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
             <div class="footer__newsletter{% if section.settings.width == 'wrapper' %} footer__newsletter--offset{% endif %}">
               {%- if block.settings.show_image -%}
@@ -308,41 +308,14 @@
               </div>
                 <ul class="listblock">
                   <li class="i-1">45-50 Gulberg III Industrial Area Lahore, Pakistan<br>Sheikhupura Textile Mills Ltd</li>
-                  <li class="i-2">042-111-111-009<br> (10AM to 5.30PM) Mon to Sat</li>
-                  <li class="i-4"><a href="https://api.whatsapp.com/send?phone=923028141555&amp;text=Hi! I have a question">+92 302 8141555 <br>(10AM to 5.30PM) Mon to Sat</a></li>
-                  <li class="i-3">sales@crossstitch.pk</li>
+                  {% comment %} <li class="i-2">042-111-111-009<br> (10AM to 5.30PM) Mon to Sat</li> {% endcomment %}
+                  <li class="i-2"><a href="https://api.whatsapp.com/send?phone=923028141555&amp;text=Hi! I have a question">+92 302 8141555 <br>(10AM to 5.30PM) Mon to Sat</a></li>
+                  <li class="i-4">sales@crossstitch.pk</li>
                 </ul>
               </div>
             </div>
           </div>
-          {% comment %} whatsapp footer end {% endcomment %}
-          {% comment %} <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value | color_modify: 'alpha', 0.90 }}; --text-dark: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
-            <div class="footer__newsletter{% if section.settings.width == 'wrapper' %} footer__newsletter--offset{% endif %}">
-              {%- if block.settings.show_image -%}
-                <div class="footer__newsletter__image">
-                  {%- render 'image', cover: true, img_object: block.settings.image, wh_ratio: block.settings.wh_ratio, sizes: "(min-width: 768px) 40vw, 100vw", loading: 'lazy' -%}
-                </div>
-              {%- endif -%}
-              <div class="footer__newsletter__body">
-                {%- if newsletter_logo_show -%}@@@@footer-logo-placeholder@@@@{%- endif -%}
-                {%- if block.settings.kicker != blank -%}<p class="footer__title">{{ block.settings.kicker }}</p>{%- endif -%}
-                {%- if block.settings.heading != blank -%}<h3>{{ block.settings.heading }}</h3>{%- endif -%}
-                {%- if block.settings.richtext != blank -%}
-                  {% assign font_size_class = block.settings.text_size | prepend: 'body-size-' %}
-                  <div class="rte {{ font_size_class }}">{{ block.settings.richtext }}</div>
-                {%- endif -%}
-                {%- if block.settings.newsletter_enable -%}
-                  {% render 'newsletter-form' unique: 'footer-newsletter', show_icon: true, class_modifier: 'newsletter-block footer__form', terms: block.settings.recaptcha_enabled %}
-                {%- endif -%}
-                <ul class="listblock">
-                  <li class="i-1">45-50 Gulberg III Industrial Area Lahore, Pakistan<br>Sheikhupura Textile Mills Ltd</li>
-                  <li class="i-2">042-111-111-009<br> (10AM to 5.30PM) Mon to Sat</li>
-                  <li class="i-4"><a href="https://api.whatsapp.com/send?phone=923028141555&amp;text=Hi! I have a question">+92 302 8141555 <br>(10AM to 5.30PM) Mon to Sat</a></li>
-                  <li class="i-3">sales@crossstitch.pk</li>
-                </ul>
-              </div>
-            </div>
-          </div> {% endcomment %}
+          {% comment %} MSSD whatsapp footer end {% endcomment %}
         {%- endif -%}
       {%- endcapture -%}
     {% when 'social' %}
@@ -381,7 +354,7 @@
   {% when 6 %}{% assign footer_column_width = 'medium-up--one-sixth' %}
 {% endcase %}
 
-<footer class="footer" id="removed" data-section-id="{{ section.id }}" data-section-type="footer" style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
+<footer class="footer custom-footer" id="removed" data-section-id="{{ section.id }}" data-section-type="footer" style="--PT: {{ section.settings.padding_top }}px; --PB: {{ section.settings.padding_bottom }}px;">
   <div class="footer__holder">
     <div class="{{ section.settings.width }} section-padding-custom">
       <div class="footer-shipped">
@@ -410,7 +383,16 @@
           {%- if show_social_block -%}
             <div class="footer__block footer__block--socials">
               {%- if socials_title_html != '' -%}{{ socials_title_html }}{%- endif -%}
-              {%- if socials_html != '' -%}<div class="footer__socials">{{ socials_html }}</div>{%- endif -%}
+              {%- if socials_html != '' -%}<div class="footer__socials">
+                <!-- WhatsApp Icon -->
+                <a class="footer__icon footer__icon--social" href="https://whatsapp.com/channel/0029Vb73DjNId7nP51Sjqd0m" title="WhatsApp" target="_blank">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                  </svg>
+                  <span class="visually-hidden">WhatsApp</span>
+                </a>
+                {{ socials_html }}
+            </div>{%- endif -%}
             </div>
           {%- endif -%}
         </div>
@@ -444,13 +426,19 @@
 }
 {% endschema %}
 <style>
-    {% comment %} MSSD Whatsapp footer CSS {% endcomment %}
+
+  {% comment %} MSSD whatsapp footer {% endcomment %}
   .footer-unified-subscribe {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 24px; /*mssd*/
   }
-
+.custom-footer #subscribe-footer-newsletter {
+  height: 42px; /*mssd*/
+  border-top-right-radius: 5px !important; /*mssd*/
+  border-bottom-right-radius: 5px !important; /*mssd*/
+  border-radius: 0px; /*mssd*/
+}
 .subscribe-heading {
   font-size: 14px;
   margin-bottom: 6px;
@@ -472,7 +460,7 @@
   height: 48px;
   padding: 0 14px;
   font-size: 14px;
-  border: 1px solid #e5e5e5;
+  {% comment %} border: 1px solid #e5e5e5; {% endcomment %} /*mssd*/ 
   border-right: 0;
   border-radius: 6px 0 0 6px;
   outline: none;
@@ -499,14 +487,9 @@
   background: #222;
 }
 
-.footer-unified-subscribe .input-group-field,
-.footer-unified-subscribe .field__input {
-  height: 48px;
-}
-
 .footer-unified-subscribe .input-group-button,
 .footer-unified-subscribe .input-group-button button {
-  height: 48px;
+  height: 42px;/*mssd*/
   display: flex;
   align-items: center;
 }
@@ -515,7 +498,7 @@
 .footer-unified-subscribe .input-group {
   display: flex;
   align-items: stretch;
-  width:50%; /* MSSD */
+  width:67%; /* MSSD */
 }
 
 .footer-unified-subscribe .input-group-field,
@@ -533,6 +516,21 @@
   line-height: 1.3;
 }
 
+.i-3 {
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding-left: 30px; /* icon ke liye space */
+  display: inline-block;
+}
+
+.footer__socials .i-3 {
+  width: 24px;
+  height: 36px;
+  padding-left: 0; /* yahan text nahi hai */
+  display: inline-block;
+  background-size: 33px;
+}
+
 /* MOBILE SAFE */
 @media (max-width: 767px) {
   .unified-form input,
@@ -542,6 +540,7 @@
   }
 }
 {% comment %} MSSD end footer whatsapp {% endcomment %}
+
   @media only screen and (max-width: 767px) {
     /* Target the container for the mobile-only Store Locations */
     .footer__block.medium-up--hide {
