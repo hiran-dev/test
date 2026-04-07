@@ -26567,3 +26567,35 @@ span[style*="color: #D72828"] + br
 .fp-viewing-3 .custom-headre .menu-toggle-HD-icons span, .fp-viewing-5 .custom-headre .menu-toggle-HD-icons span, .fp-viewing-6 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
 }
+
+
+
+/* Force Mobile Header to White Background and Black Icons */
+@media screen and (max-width: 767px) {
+  .header_wrapper, 
+  .theme_header, 
+  #myHeader.header-section {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+  }
+
+  /* Target logo, menu icons, and cart icons */
+  .header_logo_link img,
+  .header_mobile_left .icon,
+  .header_mobile_right .icon,
+  .header_icons .icon,
+  .header_mobile_button span {
+    filter: none !important;
+    color: #000000 !important;
+  }
+
+  /* If the logo uses a filter to appear white on scroll/hover */
+  .logo_img, .header_logo_image {
+    filter: brightness(0) !important; /* Forces image/SVG to black */
+  }
+
+  /* Remove any absolute positioning that causes the banner to slide under the header */
+  .header_wrapper {
+    position: relative !important;
+  }
+}
