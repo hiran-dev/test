@@ -26543,8 +26543,7 @@ span[style*="color: #D72828"] + br
     visibility: visible !important;
 }
 
-/* KEEP THE REST OF YOUR CODE BELOW UNCHANGED */
-/* Icons, Hamburger Lines, and Search/Cart */
+
 .fp-viewing-0 .header_mobile_button .icon-hamburger,
 .fp-viewing-0 .header_mobile_button svg,
 .fp-viewing-0 .header_mobile_left svg,
@@ -26556,7 +26555,6 @@ span[style*="color: #D72828"] + br
     color: #ffffff !important;
 }
 
-/* Fix for CSS-based hamburger lines (spans) */
 .fp-viewing-0 .header_mobile_button span,
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
