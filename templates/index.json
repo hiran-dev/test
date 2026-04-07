@@ -62,14 +62,6 @@
             "addcustomclass": "noclass"
           }
         },
-        "main_home_slider_7JHcYR": {
-          "type": "main-home-slider",
-          "settings": {
-            "link": "",
-            "txt": "",
-            "addcustomclass": "noclass"
-          }
-        },
         "main_home_slider_CHYFLz": {
           "type": "main-home-slider",
           "settings": {
@@ -82,6 +74,7 @@
         },
         "main_home_slider_X8npaU": {
           "type": "main-home-slider",
+          "disabled": true,
           "settings": {
             "link": "shopify://collections/basic-pret",
             "img": "shopify://shop_images/Basic_Edit_2_-_Desktop_Banner.jpg",
@@ -93,9 +86,9 @@
         "main_home_slider_iGNYFe": {
           "type": "main-home-slider",
           "settings": {
-            "link": "shopify://collections/accessories",
-            "img": "shopify://shop_images/Footwear_Bags_2025_-_Desktop_Banner.jpg",
-            "img_mobile": "shopify://shop_images/Footwear_Bags_2025_-_Mobile_Banner_bf32480d-9edd-4139-bd40-ddf4f1718f0a.jpg",
+            "link": "shopify://collections/rtw-winter-26",
+            "img": "shopify://shop_images/Khaddar_Linen_Marina_-_Desktop_Banner_aa211ebc-d100-46a1-af95-b36784daf42a.jpg",
+            "img_mobile": "shopify://shop_images/Khaddar_Linen_Marina_-_Mobile_Banner_d1addcb3-4f01-402c-af6c-a2687ccf6080.jpg",
             "txt": "Shop Now",
             "addcustomclass": "noclass"
           }
@@ -107,7 +100,6 @@
         "main_home_slider_DAyFBc",
         "main_home_slider_3fNxkL",
         "main_home_slider_FmYK8a",
-        "main_home_slider_7JHcYR",
         "main_home_slider_CHYFLz",
         "main_home_slider_X8npaU",
         "main_home_slider_iGNYFe"
