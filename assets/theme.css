@@ -26530,29 +26530,31 @@ span[style*="color: #D72828"] + br
 
 
 
-/* FINAL MERGED WHITE HEADER FOR BANNER 1 */
+/* 1. FORCE THE LOGO TO WHITE */
+/* Target the image, the picture source, and the anchor tag specifically */
 .fp-viewing-0 .header_logo_link img,
+.fp-viewing-0 .header_logo--image img,
 .fp-viewing-0 .logo_img,
-.fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 .custom-headre .header-logo img {
+.fp-viewing-0 [class*="header_logo"] img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
+    opacity: 1 !important;
 }
 
-/* Icons, Hamburger Lines, and Search/Cart */
+/* 2. FILL THE LINES (HAMBURGER) COMPLETELY */
+/* This targets the actual paths inside the SVG to ensure they "fill" white */
 .fp-viewing-0 .header_mobile_button .icon-hamburger,
 .fp-viewing-0 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_left svg,
-.fp-viewing-0 .header_mobile_right svg,
-.fp-viewing-0 .HD-icons,
-.fp-viewing-0 .header-icons svg {
+.fp-viewing-0 .header_mobile_button svg path,
+.fp-viewing-0 .header_mobile_button svg rect {
     fill: #ffffff !important;
     stroke: #ffffff !important;
-    color: #ffffff !important;
 }
 
-/* Fix for CSS-based hamburger lines (spans) */
+/* 3. FALLBACK FOR THE LINES (If they are spans) */
 .fp-viewing-0 .header_mobile_button span,
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
+    height: 2px; /* Ensures the lines have a visible thickness */
+    display: block;
 }
