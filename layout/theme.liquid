@@ -355,7 +355,7 @@
 </style> {% endcomment %}
 
 {% comment %} To stop background bannner from scroll on active state {% endcomment %}
-<script>
+{% comment %} <script>
   function toggleFullPageScroll() {
     // Check if the drawer is visible
     const isDrawerOpen = !!document.querySelector('.drawer--visible, .is-open');
@@ -380,6 +380,33 @@
       setTimeout(toggleFullPageScroll, 200);
     }
   });
+</script> {% endcomment %}
+<script>
+  // Monitor the body for class changes (Shopify themes usually add classes to the body when drawers open)
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === 'class') {
+        const bodyClass = document.body.className;
+        
+        // Check if the drawer is open based on common Shopify classes
+        if (bodyClass.includes('drawer--is-open') || bodyClass.includes('menu-opening')) {
+          // Freeze background scrolling
+          if (typeof fullpage_api !== 'undefined') {
+            fullpage_api.setAllowScrolling(false);
+            fullpage_api.setKeyboardScrolling(false);
+          }
+        } else {
+          // Unfreeze background scrolling
+          if (typeof fullpage_api !== 'undefined') {
+            fullpage_api.setAllowScrolling(true);
+            fullpage_api.setKeyboardScrolling(true);
+          }
+        }
+      }
+    });
+  });
+
+  observer.observe(document.body, { attributes: true });
 </script>
 </body>
 </html>
