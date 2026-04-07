@@ -26530,33 +26530,44 @@ span[style*="color: #D72828"] + br
 
 
 
-/* UPDATED LOGO BLOCK TO ENSURE WHITE INVERT */
+/* 1. Logo - White Invert (Verified Working) */
 .fp-viewing-0 .header_logo_link img,
 .fp-viewing-0 .logo_img,
 .fp-viewing-0 .logo_img--color,
 .fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 img[alt*="Cross Stitch"] {
+.fp-viewing-0 .custom-headre .header-logo img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
-    /* Extra force to ensure the filter isn't ignored */
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
-
+/* 2. Menu Lines (Hamburger) - Fill & Stroke */
+/* This targets the internal parts of the SVG to ensure they are solid white */
 .fp-viewing-0 .header_mobile_button .icon-hamburger,
 .fp-viewing-0 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_left svg,
+.fp-viewing-0 .header_mobile_button svg path,
+.fp-viewing-0 .header_mobile_button svg line,
+.fp-viewing-0 .header_mobile_button svg rect {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    stroke-width: 1.2px !important; /* Adjust thickness if needed */
+}
+
+/* 3. Search, Account, and Cart Icons */
 .fp-viewing-0 .header_mobile_right svg,
+.fp-viewing-0 .header_mobile_right .navlink,
 .fp-viewing-0 .HD-icons,
 .fp-viewing-0 .header-icons svg {
     fill: #ffffff !important;
     stroke: #ffffff !important;
     color: #ffffff !important;
-    stroke-width: 1.5px !important;
 }
 
+/* 4. CSS-Based Lines (The 'Fill' fix for spans) */
+/* This ensures that if the lines are drawn with CSS boxes, they turn white */
 .fp-viewing-0 .header_mobile_button span,
+.fp-viewing-0 .menu-toggle-HD-icons span,
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
+    opacity: 1 !important;
+    display: block !important;
 }
