@@ -26553,6 +26553,7 @@ span[style*="color: #D72828"] + br
     fill: #ffffff !important;
     stroke: #ffffff !important;
     color: #ffffff !important;
+    stroke-width: 1.5px !important;
 }
 
 .fp-viewing-0 .header_mobile_button span,
