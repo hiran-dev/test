@@ -26530,23 +26530,29 @@ span[style*="color: #D72828"] + br
 
 
 
-/* WHITE header for specific banner (e.g., Slide X) */
-/* 1. Turn the Logo White - Fixed Spelling to .custom-headre */
-.fp-viewing-1 .custom-headre .header-logo img,
-.fp-viewing-1 .header_logo_img {
+/* FINAL MERGED WHITE HEADER FOR BANNER 1 */
+.fp-viewing-0 .header_logo_link img,
+.fp-viewing-0 .logo_img,
+.fp-viewing-0 .header_logo_header_logo--image img,
+.fp-viewing-0 .custom-headre .header-logo img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
 }
 
-/* 2. Turn Icons, Lines, and Text White */
-.fp-viewing-1 .custom-headre .menu-toggle-HD-icons,
-.fp-viewing-1 .custom-headre .menu-toggle-HD-icons span,
-.fp-viewing-1 .custom-headre .HD-icons,
-.fp-viewing-1 .custom-headre .header-icons svg,
-.fp-viewing-1 .header_mobile_button span,
-.fp-viewing-1 .header_mobile_button svg {
-    color: #ffffff !important;
+/* Icons, Hamburger Lines, and Search/Cart */
+.fp-viewing-0 .header_mobile_button .icon-hamburger,
+.fp-viewing-0 .header_mobile_button svg,
+.fp-viewing-0 .header_mobile_left svg,
+.fp-viewing-0 .header_mobile_right svg,
+.fp-viewing-0 .HD-icons,
+.fp-viewing-0 .header-icons svg {
     fill: #ffffff !important;
     stroke: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Fix for CSS-based hamburger lines (spans) */
+.fp-viewing-0 .header_mobile_button span,
+.fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
 }
