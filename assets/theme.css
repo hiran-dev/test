@@ -26529,38 +26529,7 @@ span[style*="color: #D72828"] + br
 }
 
 
-
-/* header
-.fp-viewing-0 .header_logo_link img,
-.fp-viewing-0 .logo_img,
-.fp-viewing-0 .logo_img--color,
-.fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 img[alt*="Cross Stitch"] {
-    filter: brightness(0) invert(1) !important;
-    -webkit-filter: brightness(0) invert(1) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-
-.fp-viewing-0 .header_mobile_button .icon-hamburger,
-.fp-viewing-0 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_left svg,
-.fp-viewing-0 .header_mobile_right svg,
-.fp-viewing-0 .HD-icons,
-.fp-viewing-0 .header-icons svg {
-    fill: #ffffff !important;
-    stroke: #ffffff !important;
-    color: #ffffff !important;
-    stroke-width: 2.5px !important;
-}
-
-.fp-viewing-0 .header_mobile_button span,
-.fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
-    background-color: #ffffff !important;
-} */
-
-
+/* Header to white */
 /* 1. The Logo */
 .fp-viewing-0 .logo_img, .fp-viewing-1 .logo_img, .fp-viewing-2 .logo_img, 
 .fp-viewing-3 .logo_img, .fp-viewing-5 .logo_img, .fp-viewing-6 .logo_img,
