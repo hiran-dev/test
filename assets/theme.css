@@ -26508,22 +26508,29 @@ body:has(.is-open) [id^="zoko-"],
 
 
 
-/* Target get its stitched red spans and hide them */
+/* Target all variations of the red 'Stitched' spans and hide them */
 span[style*="color: rgb(255, 42, 0)"], 
+span[style*="color: rgb(255,42,0)"],
 span[style*="color: #FF2A00"],
-span[style*="color:rgb(255,42,0)"] 
+span[style*="color: rgb(215, 40, 40)"],
+span[style*="color: rgb(215,40,40)"],
+span[style*="color: #D72828"] 
 {
     display: none !important;
 }
 span[style*="color: rgb(255, 42, 0)"] + br,
-span[style*="color: #FF2A00"] + br 
+span[style*="color: rgb(255,42,0)"] + br,
+span[style*="color: #FF2A00"] + br,
+span[style*="color: rgb(215, 40, 40)"] + br,
+span[style*="color: rgb(215,40,40)"] + br,
+span[style*="color: #D72828"] + br 
 {
     display: none !important;
 }
 
 
-/* WHITE header for specific banner (e.g., Slide X) */
 
+/* WHITE header for specific banner (e.g., Slide X) */
 /* 1. Turn the Logo White - Fixed Spelling to .custom-headre */
 .fp-viewing-1 .custom-headre .header-logo img,
 .fp-viewing-1 .header_logo_img {
