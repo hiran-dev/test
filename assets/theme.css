@@ -26530,29 +26530,25 @@ span[style*="color: #D72828"] + br
 
 
 
-/* FINAL MERGED WHITE HEADER FOR BANNER 1 */
-.fp-viewing-0 .header_logo_link img,
+/* 1. Force THE LOGO to white using a filter */
+.fp-viewing-0 .header_logo_link img, 
 .fp-viewing-0 .logo_img,
-.fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 .custom-headre .header-logo img {
+.fp-viewing-0 .header_logo_header_logo--image img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
 }
 
-/* Icons, Hamburger Lines, and Search/Cart */
-.fp-viewing-0 .header_mobile_button .icon-hamburger,
-.fp-viewing-0 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_left svg,
-.fp-viewing-0 .header_mobile_right svg,
-.fp-viewing-0 .HD-icons,
-.fp-viewing-0 .header-icons svg {
-    fill: #ffffff !important;
-    stroke: #ffffff !important;
-    color: #ffffff !important;
+/* 2. Fill the MENU LINES (Hamburger) with white */
+.fp-viewing-0 .header_mobile_button span,
+.fp-viewing-0 .menu-toggle-HD-icons span,
+.fp-viewing-0 .icon-hamburger span {
+    background-color: #ffffff !important;
+    display: block; /* Ensures the lines have dimensions to show color */
 }
 
-/* Fix for CSS-based hamburger lines (spans) */
-.fp-viewing-0 .header_mobile_button span,
-.fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
-    background-color: #ffffff !important;
+/* 3. If the lines are an SVG instead of spans */
+.fp-viewing-0 .header_mobile_button svg,
+.fp-viewing-0 .icon-hamburger {
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
 }
