@@ -26530,7 +26530,7 @@ span[style*="color: #D72828"] + br
 
 
 
-/* UPDATED LOGO BLOCK TO ENSURE WHITE INVERT */
+/* header to white */
 .fp-viewing-0 .header_logo_link img,
 .fp-viewing-0 .logo_img,
 .fp-viewing-0 .logo_img--color,
@@ -26538,7 +26538,6 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 img[alt*="Cross Stitch"] {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
-    /* Extra force to ensure the filter isn't ignored */
     opacity: 1 !important;
     visibility: visible !important;
 }
