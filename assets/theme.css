@@ -26522,14 +26522,3 @@ span[style*="color: #FF2A00"] + br
 }
 
 
-/* Allow the drawer to scroll independently */
-.drawer__inner, .menu-drawer, .drawer-menu 
-{
-  overflow-y: auto !important;
-  max-height: 100vh;
-  -webkit-overflow-scrolling: touch;
-}
-.drawer--is-open .fp-section, 
-.menu-opening .fp-section {
-  pointer-events: none;
-}

@@ -32,7 +32,7 @@
 {%- endcapture -%}
 
 {%- capture socials_html -%}
-  {%- assign social_accounts = ' Instagram, Facebook, X, Tiktok, Pinterest,  Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
+  {%- assign social_accounts = 'Instagram, Facebook, X, Tiktok, Pinterest,  Snapchat, Tumblr, Linkedin, YouTube, Vimeo, Medium, ' | split: ', ' -%}
   {%- for social in social_accounts -%}
     {%- assign social_handle = social | handleize -%}
     {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
@@ -233,7 +233,7 @@
         {%- assign newsletter_logo_show = false -%}
         {%- if block.settings.show_image != true and section.settings.menu_position == 'right' -%}{%- assign newsletter_logo_show = true -%}{%- endif -%}
         {%- if block.settings.show_image or newsletter_logo_show or block.settings.kicker != blank or block.settings.heading != blank or block.settings.richtext != blank or block.settings.newsletter_enable -%}
-          {% comment %} MSSD whatsapp footer {% endcomment %}
+        {% comment %} Whatsapp footer {% endcomment %}
           <div class="footer__block footer__aside" style="--text: {{ block.settings.text_color_value | color_modify: 'alpha', 0.90 }}; --text-dark: {{ block.settings.text_color_value }}; --bg: {{ block.settings.background_color }};">
             <div class="footer__newsletter{% if section.settings.width == 'wrapper' %} footer__newsletter--offset{% endif %}">
               {%- if block.settings.show_image -%}
@@ -315,7 +315,7 @@
               </div>
             </div>
           </div>
-          {% comment %} MSSD whatsapp footer end {% endcomment %}
+          {% comment %} whatsapp footer end {% endcomment %}
         {%- endif -%}
       {%- endcapture -%}
     {% when 'social' %}
@@ -426,8 +426,7 @@
 }
 {% endschema %}
 <style>
-
-  {% comment %} MSSD whatsapp footer {% endcomment %}
+    {% comment %} MSSD Whatsapp footer CSS {% endcomment %}
   .footer-unified-subscribe {
     display: flex;
     flex-direction: column;
