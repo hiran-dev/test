@@ -534,7 +534,7 @@ p.footer__title.footer__accordion__head {
 @media only screen and (min-width: 1024px) {
   .footer__content {
     display: inline-table;
-    padding-top: 40px;
+    padding-top: 30px; /* mssd */
     position: relative;
   }
   .footer__block--socials {
