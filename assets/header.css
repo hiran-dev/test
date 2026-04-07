@@ -518,6 +518,8 @@ p.footer__title.footer__accordion__head {
   font-size: 18px;
   color: #000;
   letter-spacing: 0;
+  margin-bottom:10px; /*mssd*/
+
 }
 .footer__quicklinks li {
   margin: 0 0 10px;
