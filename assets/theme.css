@@ -26522,3 +26522,12 @@ span[style*="color: #FF2A00"] + br
 }
 
 
+/* Change header elements to white only on the Eid Lawn collection page */
+.template-collection[data-handle="eid-lawn-2026"] .header_inner a,
+.template-collection[data-handle="eid-lawn-2026"] .header_mobile_button svg,
+.template-collection[data-handle="eid-lawn-2026"] .header_mobile_button span {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    stroke: #ffffff !important;
+    background-color: #ffffff; /* For hamburger menu lines */
+}
