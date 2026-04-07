@@ -26,8 +26,8 @@
           "type": "main-home-slider",
           "settings": {
             "link": "shopify://collections/exclusive-pret",
-            "img": "shopify://shop_images/FW_DP_Silk_-_Desktop_Banner_-_A_cfa45059-715f-4716-8c72-2678eba25a26.jpg",
-            "img_mobile": "shopify://shop_images/FW_DP_Silk_-_Mobile_Banner_-_A.jpg",
+            "img": "shopify://shop_images/EML_Net_Edit_3_-_Desktop_Banner_-_4_fb32d328-61d8-4290-bf6b-22575b26df09.jpg",
+            "img_mobile": "shopify://shop_images/EML_Net_Edit_3_-_Mobile_Banner_-_4_3729c8a8-e3b6-45a7-8d9b-19f5a052352f.jpg",
             "txt": "Shop Now",
             "addcustomclass": "noclass"
           }
