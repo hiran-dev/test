@@ -26507,20 +26507,23 @@ body:has(.is-open) [id^="zoko-"],
 }
 
 
-/* text for get it stitched*/
-.fulldescription span[style*="rgb(255, 42, 0)"],
-.fulldescription span[style*="rgb(215, 40, 40)"],
-.fulldescription span[style*="rgb(232, 9, 9)"],
-.fulldescription li:has(span[style*="rgb(255, 42, 0)"]),
-.fulldescription li:has(span[style*="rgb(215, 40, 40)"]),
-.fulldescription li:has(span[style*="rgb(232, 9, 9)"]),
-.fulldescription p:has(span[style*="rgb(255, 42, 0)"]),
-.fulldescription p:has(span[style*="rgb(215, 40, 40)"]),
-.fulldescription p:has(span[style*="rgb(232, 9, 9)"])
-{
+/* Hide red "Get it Stitched" or "Notes" text globally in product descriptions */
+.product_block_description span[style*="rgb(255, 42, 0)"],
+.product_block_description span[style*="rgb(215, 40, 40)"],
+.product_block_description span[style*="rgb(232, 9, 9)"],
+.product_block_description span[style*="#FF2A00"],
+.rte span[style*="rgb(255, 42, 0)"],
+.rte span[style*="rgb(215, 40, 40)"],
+.rte span[style*="rgb(232, 9, 9)"],
+.rte span[style*="#FF2A00"],
+/* Target parent paragraphs or list items containing these spans */
+.rte p:has(span[style*="rgb(255, 42, 0)"]),
+.rte p:has(span[style*="#FF2A00"]),
+.rte li:has(span[style*="rgb(255, 42, 0)"]) {
     display: none !important;
     margin: 0 !important;
     padding: 0 !important;
     height: 0 !important;
     line-height: 0 !important;
+    visibility: hidden !important;
 }
