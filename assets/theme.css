@@ -26535,7 +26535,13 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .logo_img,
 .fp-viewing-0 .logo_img--color,
 .fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 img[alt*="Cross Stitch"] {
+.fp-viewing-0 img[alt*="Cross Stitch"],
+.fp-viewing-2 .header_logo_link img,
+.fp-viewing-2 .logo_img,
+.fp-viewing-2 .logo_img--color,
+.fp-viewing-2 .header_logo_header_logo--image img,
+.fp-viewing-2 img[alt*="Cross Stitch"]
+ {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
     opacity: 1 !important;
