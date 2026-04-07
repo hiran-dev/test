@@ -26522,12 +26522,21 @@ span[style*="color: #FF2A00"] + br
 }
 
 
-/* Change header elements to white only on the Eid Lawn collection page */
-.template-collection[data-handle="eid-lawn-2026"] .header_inner a,
-.template-collection[data-handle="eid-lawn-2026"] .header_mobile_button svg,
-.template-collection[data-handle="eid-lawn-2026"] .header_mobile_button span {
+/* Target header elements ONLY when this specific section is active */
+.section.active .header_inner .header_mobile_button,
+.section.active .header_inner .header_logo_link,
+.section.active .header_inner svg {
     color: #ffffff !important;
     fill: #ffffff !important;
     stroke: #ffffff !important;
-    background-color: #ffffff; /* For hamburger menu lines */
+}
+
+/* Ensure the hamburger menu lines turn white */
+.section.active .header_inner .header_mobile_button span {
+    background-color: #ffffff !important;
+}
+
+/* If you need the logo to change, you must target the logo image specifically */
+.section.active .header_inner .header_logo_img {
+    filter: brightness(0) invert(1);
 }
