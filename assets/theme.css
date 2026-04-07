@@ -26530,7 +26530,7 @@ span[style*="color: #D72828"] + br
 
 
 
-/* header to white */
+/* header
 .fp-viewing-0 .header_logo_link img,
 .fp-viewing-0 .logo_img,
 .fp-viewing-0 .logo_img--color,
@@ -26558,33 +26558,41 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .header_mobile_button span,
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
-}
+} */
 
+
+/* ALL-IN-ONE WHITE HEADER FOR SLIDES 0, 1, AND 2 */
+
+/* 1. The Logo */
+.fp-viewing-0 .logo_img, 
+.fp-viewing-1 .logo_img, 
+.fp-viewing-2 .logo_img,
+.fp-viewing-0 .header_logo_link img,
 .fp-viewing-1 .header_logo_link img,
-.fp-viewing-1 .logo_img,
-.fp-viewing-1 .logo_img--color,
-.fp-viewing-1 .header_logo_header_logo--image img,
-.fp-viewing-1 img[alt*="Cross Stitch"] {
+.fp-viewing-2 .header_logo_link img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
-    opacity: 1 !important;
-    visibility: visible !important;
 }
 
-
-.fp-viewing-1 .header_mobile_button .icon-hamburger,
-.fp-viewing-1 .header_mobile_button svg,
-.fp-viewing-1 .header_mobile_left svg,
+/* 2. The Icons (Search, Cart, etc.) */
+.fp-viewing-0 .header_mobile_button svg, 
+.fp-viewing-1 .header_mobile_button svg, 
+.fp-viewing-2 .header_mobile_button svg,
+.fp-viewing-0 .header_mobile_right svg,
 .fp-viewing-1 .header_mobile_right svg,
+.fp-viewing-2 .header_mobile_right svg,
+.fp-viewing-0 .HD-icons,
 .fp-viewing-1 .HD-icons,
-.fp-viewing-1 .header-icons svg {
+.fp-viewing-2 .HD-icons {
     fill: #ffffff !important;
     stroke: #ffffff !important;
     color: #ffffff !important;
     stroke-width: 2.5px !important;
 }
 
-.fp-viewing-1 .header_mobile_button span,
-.fp-viewing-1 .custom-headre .menu-toggle-HD-icons span {
+/* 3. The Hamburger Menu Lines */
+.fp-viewing-0 .header_mobile_button span, 
+.fp-viewing-1 .header_mobile_button span, 
+.fp-viewing-2 .header_mobile_button span {
     background-color: #ffffff !important;
 }
