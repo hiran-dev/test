@@ -62,12 +62,22 @@
             "addcustomclass": "noclass"
           }
         },
+        "main_home_slider_iGNYFe": {
+          "type": "main-home-slider",
+          "settings": {
+            "link": "shopify://collections/rtw-winter-26",
+            "img": "shopify://shop_images/Khaddar_Linen_Marina_-_Desktop_Banner_aa211ebc-d100-46a1-af95-b36784daf42a.jpg",
+            "img_mobile": "shopify://shop_images/Khaddar_Linen_Marina_-_Mobile_Banner_d1addcb3-4f01-402c-af6c-a2687ccf6080.jpg",
+            "txt": "Shop Now",
+            "addcustomclass": "noclass"
+          }
+        },
         "main_home_slider_CHYFLz": {
           "type": "main-home-slider",
           "settings": {
-            "link": "shopify://collections/luxe-atelier-26",
-            "img": "shopify://shop_images/Chiffon_Edit_2_-_Desktop_Banner_-_B.jpg",
-            "img_mobile": "shopify://shop_images/Chiffon_Edit_2_-_Mobile_Banner_-_B.jpg",
+            "link": "shopify://collections/sale",
+            "img": "shopify://shop_images/Sale_-_Desktop_Banner.jpg",
+            "img_mobile": "shopify://shop_images/Sale_-_Mobile_Banner.jpg",
             "txt": "Shop Now",
             "addcustomclass": "noclass"
           }
@@ -82,16 +92,6 @@
             "txt": "Shop Now",
             "addcustomclass": "noclass"
           }
-        },
-        "main_home_slider_iGNYFe": {
-          "type": "main-home-slider",
-          "settings": {
-            "link": "shopify://collections/rtw-winter-26",
-            "img": "shopify://shop_images/Khaddar_Linen_Marina_-_Desktop_Banner_aa211ebc-d100-46a1-af95-b36784daf42a.jpg",
-            "img_mobile": "shopify://shop_images/Khaddar_Linen_Marina_-_Mobile_Banner_d1addcb3-4f01-402c-af6c-a2687ccf6080.jpg",
-            "txt": "Shop Now",
-            "addcustomclass": "noclass"
-          }
         }
       },
       "block_order": [
@@ -100,9 +100,9 @@
         "main_home_slider_DAyFBc",
         "main_home_slider_3fNxkL",
         "main_home_slider_FmYK8a",
+        "main_home_slider_iGNYFe",
         "main_home_slider_CHYFLz",
-        "main_home_slider_X8npaU",
-        "main_home_slider_iGNYFe"
+        "main_home_slider_X8npaU"
       ],
       "name": "Main Slide Show",
       "settings": {}
