@@ -381,5 +381,33 @@
     }
   });
 </script> {% endcomment %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const drawer = document.querySelector('.drawer__inner') || document.querySelector('.menu-drawer');
+
+    if (drawer) {
+        // When mouse enters the drawer, kill fullPage scrolling
+        drawer.addEventListener('mouseenter', function() {
+            if (typeof fullpage_api !== 'undefined') {
+                fullpage_api.setAllowScrolling(false);
+            }
+        });
+
+        // When mouse leaves the drawer, bring fullPage scrolling back
+        drawer.addEventListener('mouseleave', function() {
+            if (typeof fullpage_api !== 'undefined') {
+                fullpage_api.setAllowScrolling(true);
+            }
+        });
+
+        // For touch devices (Mobile)
+        drawer.addEventListener('touchstart', function() {
+            if (typeof fullpage_api !== 'undefined') {
+                fullpage_api.setAllowScrolling(false);
+            }
+        }, {passive: true});
+    }
+});
+</script>
 </body>
 </html>
