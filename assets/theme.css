@@ -26570,3 +26570,33 @@ span[style*="color: #D72828"] + br
 
 
 
+/* Force White Background on Mobile Header */
+@media screen and (max-width: 767px) {
+  /* This targets the specific custom containers in your theme */
+  header.site-header, 
+  .custom-headre, 
+  #myHeader, 
+  .header_wrapper {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+    opacity: 1 !important;
+    position: relative !important;
+  }
+
+  /* Force Icons and Text to Black */
+  .custom-headre .icon,
+  .custom-headre a,
+  .custom-headre i,
+  .header-icons span,
+  .header_mobile_button span {
+    color: #000000 !important;
+    fill: #000000 !important;
+  }
+
+  /* Target the Logo specifically */
+  .header-logo img, 
+  .logo_img {
+    filter: brightness(0) !important;
+    -webkit-filter: brightness(0) !important;
+  }
+}
