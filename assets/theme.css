@@ -26530,15 +26530,20 @@ span[style*="color: #D72828"] + br
 
 
 
-/* FINAL MERGED WHITE HEADER FOR BANNER 1 */
+/* UPDATED LOGO BLOCK TO ENSURE WHITE INVERT */
 .fp-viewing-0 .header_logo_link img,
 .fp-viewing-0 .logo_img,
+.fp-viewing-0 .logo_img--color,
 .fp-viewing-0 .header_logo_header_logo--image img,
-.fp-viewing-0 .custom-headre .header-logo img {
+.fp-viewing-0 img[alt*="Cross Stitch"] {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
+    /* Extra force to ensure the filter isn't ignored */
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
+/* KEEP THE REST OF YOUR CODE BELOW UNCHANGED */
 /* Icons, Hamburger Lines, and Search/Cart */
 .fp-viewing-0 .header_mobile_button .icon-hamburger,
 .fp-viewing-0 .header_mobile_button svg,
@@ -26555,5 +26560,4 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .header_mobile_button span,
 .fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
-    fill:#ffffff;
 }
