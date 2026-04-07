@@ -45,10 +45,18 @@
         "main_home_slider_3fNxkL": {
           "type": "main-home-slider",
           "settings": {
-            "link": "shopify://collections/rtw-wedding-collection",
-            "img": "shopify://shop_images/Wedding_Pret_-_Desktop_Banner.jpg",
-            "img_mobile": "shopify://shop_images/Wedding_Pret_-_Mobile_Banner.jpg",
+            "link": "shopify://collections/luxury-pret",
+            "img": "shopify://shop_images/Luxe_Pret_Edit_2_-_Desktop_Banner_-_3.jpg",
+            "img_mobile": "shopify://shop_images/Luxe_Pret_Edit_2_-_Mobile_Banner_-_3.jpg",
             "txt": "Shop Now",
+            "addcustomclass": "noclass"
+          }
+        },
+        "main_home_slider_3fQW6X": {
+          "type": "main-home-slider",
+          "settings": {
+            "link": "",
+            "txt": "",
             "addcustomclass": "noclass"
           }
         },
@@ -98,6 +106,7 @@
         "main_home_slider_ARXipz",
         "main_home_slider_DAyFBc",
         "main_home_slider_3fNxkL",
+        "main_home_slider_3fQW6X",
         "main_home_slider_FmYK8a",
         "main_home_slider_CHYFLz",
         "main_home_slider_X8npaU",
