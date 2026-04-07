@@ -21586,7 +21586,7 @@ a.product__form__link:after {
 .input-group-button {
   position: relative;
   white-space: nowrap;
-  width: 3%;
+  width: 3%;  /* mssd */
   padding: 0;
 }
 .input-group--inner-button {
