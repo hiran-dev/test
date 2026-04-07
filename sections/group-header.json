@@ -148,7 +148,7 @@
         "use_icons": false,
         "icons_type": "classic",
         "cart_icon": "bag",
-        "header_sticky": "directional",
+        "header_sticky": "static",
         "transparent_home": false,
         "transparent_collection": false,
         "transparent_blog": false,
