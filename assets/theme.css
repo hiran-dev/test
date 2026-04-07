@@ -26530,23 +26530,18 @@ span[style*="color: #D72828"] + br
 
 
 
-/* Target the first slide (fp-viewing-0) */
-
-/* 1. Turn the Logo White */
-.fp-viewing-0 .header_logo_link img.logo_img {
+/* Test: Force EVERYTHING in the header to white globally */
+.header_logo_link img.logo_img, 
+.header_logo_img,
+.logo_img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
 }
 
-/* 2. Turn the Hamburger Menu White */
-.fp-viewing-0 .header_mobile_left .icon-hamburger {
-    fill: #ffffff !important;
-    stroke: #ffffff !important;
-}
-
-/* 3. Turn Search, Account, and Cart Icons White */
-.fp-viewing-0 .header_mobile_right svg,
-.fp-viewing-0 .header_mobile_right .navlink {
+.header_mobile_left svg, 
+.header_mobile_right svg,
+.icon-hamburger,
+.HD-icons {
     fill: #ffffff !important;
     stroke: #ffffff !important;
     color: #ffffff !important;
