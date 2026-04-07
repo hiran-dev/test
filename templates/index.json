@@ -35,9 +35,9 @@
         "main_home_slider_DAyFBc": {
           "type": "main-home-slider",
           "settings": {
-            "link": "shopify://collections/winter-collection25",
-            "img": "shopify://shop_images/Khaddar_Linen_-_Desktop_Banner_5ffe5d4c-3cb5-45a0-9a95-b671d7aed75f.jpg",
-            "img_mobile": "shopify://shop_images/Khaddar_Linen_-_Mobile_Banner_3866d51a-0942-4382-862a-4937b711877b.jpg",
+            "link": "shopify://collections/premium-lawn",
+            "img": "shopify://shop_images/Eid_Lawn_Edit_-_Desktop_Banner_-_C_a414e2b3-c65d-4173-aa95-60fda011d8c2.jpg",
+            "img_mobile": "shopify://shop_images/Eid_Lawn_Edit_-_Mobile_Banner_-_C_83973360-20ae-4b6e-884e-ecdc7a910fa3.jpg",
             "txt": "Shop Now",
             "addcustomclass": "noclass"
           }
