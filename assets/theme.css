@@ -26530,31 +26530,23 @@ span[style*="color: #D72828"] + br
 
 
 
-/* 1. FORCE THE LOGO TO WHITE */
-/* Target the image, the picture source, and the anchor tag specifically */
-.fp-viewing-0 .header_logo_link img,
-.fp-viewing-0 .header_logo--image img,
-.fp-viewing-0 .logo_img,
-.fp-viewing-0 [class*="header_logo"] img {
+/* WHITE header for specific banner (e.g., Slide X) */
+/* 1. Turn the Logo White - Fixed Spelling to .custom-headre */
+.fp-viewing-1 .custom-headre .header-logo img,
+.fp-viewing-1 .header_logo_img {
     filter: brightness(0) invert(1) !important;
     -webkit-filter: brightness(0) invert(1) !important;
-    opacity: 1 !important;
 }
 
-/* 2. FILL THE LINES (HAMBURGER) COMPLETELY */
-/* This targets the actual paths inside the SVG to ensure they "fill" white */
-.fp-viewing-0 .header_mobile_button .icon-hamburger,
-.fp-viewing-0 .header_mobile_button svg,
-.fp-viewing-0 .header_mobile_button svg path,
-.fp-viewing-0 .header_mobile_button svg rect {
+/* 2. Turn Icons, Lines, and Text White */
+.fp-viewing-1 .custom-headre .menu-toggle-HD-icons,
+.fp-viewing-1 .custom-headre .menu-toggle-HD-icons span,
+.fp-viewing-1 .custom-headre .HD-icons,
+.fp-viewing-1 .custom-headre .header-icons svg,
+.fp-viewing-1 .header_mobile_button span,
+.fp-viewing-1 .header_mobile_button svg {
+    color: #ffffff !important;
     fill: #ffffff !important;
     stroke: #ffffff !important;
-}
-
-/* 3. FALLBACK FOR THE LINES (If they are spans) */
-.fp-viewing-0 .header_mobile_button span,
-.fp-viewing-0 .custom-headre .menu-toggle-HD-icons span {
     background-color: #ffffff !important;
-    height: 2px; /* Ensures the lines have a visible thickness */
-    display: block;
 }
