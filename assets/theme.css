@@ -26551,6 +26551,7 @@ span[style*="color: #D72828"] + br
 .fp-viewing-0 .HD-icons,
 .fp-viewing-0 .header-icons svg {
     fill: #ffffff !important;
+    stroke: #ffffff !important;
     color: #ffffff !important;
     stroke-width: 2.5px !important;
 }
