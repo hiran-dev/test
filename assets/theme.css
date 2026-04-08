@@ -26580,3 +26580,10 @@ span[style*="color: #D72828"] + br
 
 
 
+@media only screen and (max-width: 767px) {
+  [data-header-wrapper][data-header-transparent="true"],
+  [data-header-wrapper][data-header-transparent="true"] header {
+    background-color: #fff !important;
+    border-bottom: 1px solid #eee !important;
+  }
+}
