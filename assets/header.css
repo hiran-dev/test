@@ -164,12 +164,12 @@ svg.HD-icons {
 }
 
 /* mssd for white background of header in mobile */
-/* @media only screen and (max-width: 767px) {
+@media only screen and (max-width: 767px) {
   .template-index .theme__header {
     background-color: #fff; 
     height:50%  /* mssd */
   }
-} */
+}
 
 
 .flex-buttons {
