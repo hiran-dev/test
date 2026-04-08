@@ -162,6 +162,13 @@ svg.HD-icons {
   background-color: transparent;
   border: 0;
 }
+
+/* mssd for white background of header in mobile */
+@media only screen and (max-width: 767px) {
+  .template-index .theme__header {
+    background-color: #fff;
+  }
+}
 .flex-buttons {
   display: flex;
   justify-items: center;
