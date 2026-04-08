@@ -26580,15 +26580,3 @@ span[style*="color: #D72828"] + br
 
 
 
-@media screen and (min-width: 990px) {
-  .collection-list {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px; /* Optional: adds space between the circles */
-  }
-
-  .collection-list__item {
-    margin: 0 !important; /* Removes any default left margins */
-  }
-}
