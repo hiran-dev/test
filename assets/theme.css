@@ -26581,12 +26581,27 @@ span[style*="color: #D72828"] + br
 
 
 @media screen and (min-width: 990px) {
-  /* This targets the actual list of items */
+  /* 1. Target the outer wrapper to stop it from centering */
+  .collection-list-wrapper, 
+  .section-collection-list .page-width {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  /* 2. Add the specific space to the slider itself */
   .collection-list {
-    margin-left: 50px !important; /* Forces a gap on the left */
-    width: calc(100% - 50px) !important; /* Keeps the total width correct */
+    padding-left: 80px !important; /* This is your left space */
     display: flex !important;
+    flex-wrap: nowrap !important;
     overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+  }
+
+  /* 3. Ensure the items don't shrink */
+  .collection-list__item {
+    flex: 0 0 auto !important;
+    width: 160px !important; /* Adjust based on your circle size */
   }
 }
