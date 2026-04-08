@@ -420,27 +420,6 @@ document.addEventListener('click', function(e) {
   });
 }, true); 
 </script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  function adjustFullpage() {
-    var helloBar = document.querySelector('.header-upper');
-    var header = document.querySelector('.theme__header');
-    var fullpageWrapper = document.querySelector('#fullpage, .fullpage-wrapper');
-
-    if (fullpageWrapper) {
-      var totalHeight = 0;
-      if (helloBar) totalHeight += helloBar.offsetHeight;
-      if (header) totalHeight += header.offsetHeight;
-
-      fullpageWrapper.style.marginTop = totalHeight + 'px';
-      fullpageWrapper.style.height = 'calc(100vh - ' + totalHeight + 'px)';
-    }
-  }
-
-  adjustFullpage();
-  window.addEventListener('resize', adjustFullpage);
-});
-</script>
 
 
 </body>
