@@ -26580,33 +26580,3 @@ span[style*="color: #D72828"] + br
 }
 }
 
-/* Hello Bar + Header ki combined height ke barabar top space do */
-.fullpage-wrapper {
-  margin-top: 120px !important; /* apni height yahan set karo */
-}
-
-/* Height bhi adjust karo taake scroll sahi rahe */
-#fullpage {
-  height: calc(100vh - 120px) !important;
-}
-
-/* Mobile pe alag height */
-@media (max-width: 768px) {
-  .fullpage-wrapper {
-    margin-top: 90px !important; /* mobile pe kam height */
-  }
-
-  #fullpage {
-    height: calc(100vh - 90px) !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .fullpage-wrapper {
-    margin-top: 75px !important;
-  }
-
-  #fullpage {
-    height: calc(100vh - 75px) !important;
-  }
-}
