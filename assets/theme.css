@@ -14403,6 +14403,8 @@ body .shopify-email-marketing-confirmation__container {
 @media only screen and (max-width: 479px) {
   .header__logo {
     padding: calc(var(--LOGO-PADDING) * 0.7) 0;
+            height: 66%;
+
   }
 }
 .header__logo__link {
