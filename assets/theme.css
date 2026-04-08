@@ -19298,7 +19298,7 @@ label.quatity-selector {
   }
   .collection--compact-mobile .collection__nav {
     margin-bottom: 15px;
-    position: sticky;
+    /* position: sticky;  mssd */
     top: var(--menu-height-sticky);
     z-index: 450;
     background: var(--bg);
