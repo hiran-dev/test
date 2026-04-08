@@ -38,11 +38,7 @@
       <div class="cart__items__grid cart__heading__wrapper">
         <div class="cart__heading__back">
           {% comment %} <a href="{{ settings.cart_continue_browsing | default: routes.all_products_collection_url }}" class="cart__heading cart__return"> {% endcomment %}
-         <a href="javascript:history.back();" class="cart__heading cart__return">
-  {% render 'icon-core-chevron-left' %}
-  &nbsp;
-  {{ 'cart.general.continue_browsing' | t }}
-</a> 
+         <a href="javascript:history.back();" class="cart__heading cart__return">   
 		  {% render 'icon-core-chevron-left' %}
             &nbsp;
             {{ 'cart.general.continue_browsing' | t }}
