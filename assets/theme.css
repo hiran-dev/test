@@ -26580,3 +26580,13 @@ span[style*="color: #D72828"] + br
 
 
 
+@media screen and (min-width: 990px) {
+  /* This targets the actual list of items */
+  .collection-list {
+    margin-left: 50px !important; /* Forces a gap on the left */
+    width: calc(100% - 50px) !important; /* Keeps the total width correct */
+    display: flex !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+}
