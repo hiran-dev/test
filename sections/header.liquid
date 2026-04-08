@@ -133,6 +133,46 @@
   }
 {% endstyle %}
 
+{% comment %} ============================================================
+  SLIDER HELLO BAR — Doc 1 se liya gaya (Bilkul sabse upar)
+  Yeh section.blocks mein se 'hellobar' type ke blocks loop karta hai
+============================================================ {% endcomment %}
+{% assign hellobar_blocks = section.blocks | where: 'type', 'hellobar' %}
+{% if hellobar_blocks.size > 0 %}
+  <style>
+    .header-upper {
+      background-color:rgb(17, 17, 17);
+      width: 100%;
+      text-align: center;
+      padding: 10px 0;
+    }
+    .sliderhellobar {
+      background-color:rgb(18, 17, 17);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sliderhellobar li {
+      display: block;
+      text-align: center;
+    }
+    .sliderhellobar li a {
+      color:rgb(244, 241, 241);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+  </style>
+  <div class="header-upper">
+    <ul class="sliderhellobar">
+      {% for block in hellobar_blocks %}
+        <li><a href="{{ block.settings.link }}">{{ block.settings.textbar }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
 {% capture logos %}
   {%- if transparent_header and section.settings.transparent_logo != blank -%}
     {%- assign has_transparent_logo = true -%}
@@ -347,7 +387,7 @@
         href="{{ routes.cart_url }}">
         <span class="svg-wrapper"><svg class="HD-icons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208.955 208.955"><path d="M190.85 200.227L178.135 58.626a7.5 7.5 0 00-7.47-6.829h-26.221V39.971c0-22.04-17.93-39.971-39.969-39.971-22.038 0-39.966 17.931-39.966 39.971v11.826H38.27a7.5 7.5 0 00-7.47 6.829L18.035 200.784a7.5 7.5 0 007.47 8.17h157.946a7.5 7.5 0 007.399-8.727zM79.509 39.971c0-13.769 11.2-24.971 24.967-24.971 13.768 0 24.969 11.202 24.969 24.971v11.826H79.509V39.971zm-45.8 153.984L45.127 66.797h19.382v13.412a7.5 7.5 0 007.5 7.5 7.5 7.5 0 007.5-7.5V66.797h49.936v13.412a7.5 7.5 0 007.5 7.5 7.5 7.5 0 007.5-7.5V66.797h19.364l11.418 127.158H33.709z"></path></svg></span>
         <span class="visually-hidden">{{ 'layout.cart.title' | t }}</span>
-		{% comment %} Cart count  {% endcomment %}
+		{% comment %} MSSD Cart count batch {% endcomment %}
 		<span class="cart-count-badge" data-cart-count>{{ cart.item_count }}</span>
         {{ cart_status }}
       </a>
@@ -886,9 +926,65 @@
 			"unit": ":1",
 			"label": "Collection image height",
 			"default": 2.5
+		},
+		{
+			"type": "header",
+			"content": "Announcement Bar"
+		},
+		{
+			"type": "checkbox",
+			"id": "message",
+			"label": "Show announcement",
+			"default": false
+		},
+		{
+			"type": "checkbox",
+			"id": "home_page_only",
+			"label": "Home page only",
+			"default": true
+		},
+		{
+			"type": "text",
+			"id": "message_text",
+			"label": "Text",
+			"default": "Announce something here"
+		},
+		{
+			"type": "url",
+			"id": "message_link",
+			"label": "Link",
+			"info": "Optional"
+		},
+		{
+			"type": "color",
+			"id": "color_bg",
+			"label": "Bar background color",
+			"default": "#7796a8"
+		},
+		{
+			"type": "color",
+			"id": "color_text",
+			"label": "Bar text color",
+			"default": "#ffffff"
 		}
 	],
 	"blocks": [
+		{
+			"name": "Hello Bar Item",
+			"type": "hellobar",
+			"settings": [
+				{
+					"id": "link",
+					"type": "url",
+					"label": "URL"
+				},
+				{
+					"id": "textbar",
+					"type": "textarea",
+					"label": "Hello Bar Text"
+				}
+			]
+		},
 		{
 			"name": "Toolbar",
 			"type": "toolbar",
