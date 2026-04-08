@@ -14463,10 +14463,14 @@ body .shopify-email-marketing-confirmation__container {
   display: flex;
   justify-content: flex-start;
   padding-left: 0;
+  height : 66%  /* mssd */
+
 }
 .header__mobile__right {
   display: flex;
   justify-content: flex-end;
+  height : 66%  /* mssd */
+
 }
 .header__mobile__right .header__mobile__button {
   display: flex;
