@@ -26580,23 +26580,15 @@ span[style*="color: #D72828"] + br
 
 
 
-/* Target only Laptop/Medium screens */
-@media screen and (min-width: 1025px) and (max-width: 1366px) {
-    /* 1. Ensure the row wraps so items don't push off-screen */
-    .section-header + .grid, 
-    .collection-list, 
-    ul.list-unstyled { 
-        display: flex !important;
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-    }
+@media screen and (min-width: 990px) {
+  .collection-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Optional: adds space between the circles */
+  }
 
-    /* 2. Slightly shrink the circles so they all fit in one view */
-    .collection-list__item, 
-    .grid__item {
-        max-width: 12% !important; /* Adjust this % until "Embroidered Lawn" snaps into place */
-        min-width: 100px !important;
-    }
+  .collection-list__item {
+    margin: 0 !important; /* Removes any default left margins */
+  }
 }
