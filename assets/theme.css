@@ -14218,7 +14218,7 @@ body .shopify-email-marketing-confirmation__container {
   --text-light: var(--COLOR-NAV-TEXT-LIGHT);
   --text-transparent: var(--COLOR-NAV-TEXT-TRANSPARENT);
   --underline: var(--COLOR-NAV-A10);
-   margin-top: 50px;
+   /* margin-top: 50px; */
 }
 .theme__header {
   position: absolute;
