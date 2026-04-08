@@ -381,35 +381,28 @@
     }
   });
 </script> {% endcomment %}
+
+{% comment %} added to bag modal for rtw {% endcomment %}
 <script>
 document.addEventListener('click', function(e) {
-  // 1. Check if the clicked element is one of your size buttons
   const sizeBtn = e.target.closest('.js-direct-add-size');
   if (!sizeBtn) return;
-
-  // 2. Stop theme hijacking immediately
   e.preventDefault();
   e.stopImmediatePropagation();
-
-  // 3. Prevent double-clicks while loading
   if (sizeBtn.classList.contains('is-loading')) return;
   sizeBtn.classList.add('is-loading');
-
   const variantId = sizeBtn.getAttribute('data-variant-id');
   const sizeValue = sizeBtn.getAttribute('data-variant-size');
-  
-  // Find the product container to locate the correct modal
   const productContainer = sizeBtn.closest('[data-item-id]');
   const productId = productContainer ? productContainer.getAttribute('data-item-id') : null;
-
   fetch('/cart/add.js', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id: Number(variantId), quantity: 1 })
   })
   .then(res => res.json())
-  .then(data => {
-    // 4. Update and show the modal
+  .then(data => 
+    {
     if (productId) {
       const modal = document.getElementById(`pret-modal-${productId}`);
       const sizeDisplay = document.getElementById(`modal-size-${productId}`);
@@ -419,15 +412,14 @@ document.addEventListener('click', function(e) {
       if (data.image && imgDisplay) imgDisplay.src = data.image;
       if (modal) modal.style.display = 'flex';
     }
-
-    // 5. Tell the theme the cart has changed
     document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
   })
   .catch(err => console.error('Add to cart error:', err))
   .finally(() => {
     sizeBtn.classList.remove('is-loading');
   });
-}, true); // The "true" here is critical—it captures the click before other scripts
+}, true); 
 </script>
+
 </body>
 </html>
