@@ -238,7 +238,7 @@ endif
     </div>
   </div>
 
-  <script>
+  {% comment %} <script>
     (function() {
       const scope = document.querySelector('[data-item-id="{{ product.id }}"]');
       if (!scope) return;
@@ -293,5 +293,5 @@ endif
         }
       }, true);
     })();
-  </script>
+  </script> {% endcomment %}
 </product-grid-item>
