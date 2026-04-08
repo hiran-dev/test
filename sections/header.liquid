@@ -140,11 +140,16 @@
 {% assign hellobar_blocks = section.blocks | where: 'type', 'hellobar' %}
 {% if hellobar_blocks.size > 0 %}
   <style>
-    .header-upper {
-      background-color:rgb(17, 17, 17);
-      width: 100%;
-      text-align: center;
-      padding: 10px 0;
+.header-upper {
+  background-color: rgb(17, 17, 17);
+  width: 100%;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+}
     }
     .sliderhellobar {
       background-color:rgb(18, 17, 17);
