@@ -26538,6 +26538,7 @@ span[style*="color: #D72828"] + br
 
 /* Header to white */
 /* 1. The Logo */
+@media (min-width: 1025px) {
 .fp-viewing-0 .logo_img, .fp-viewing-1 .logo_img, .fp-viewing-2 .logo_img, 
 .fp-viewing-3 .logo_img, .fp-viewing-5 .logo_img, .fp-viewing-6 .logo_img,
 .fp-viewing-0 .logo_img--color, .fp-viewing-1 .logo_img--color, .fp-viewing-2 .logo_img--color, 
@@ -26577,6 +26578,4 @@ span[style*="color: #D72828"] + br
 {
     background-color: #ffffff !important;
 }
-
-
-
+}
