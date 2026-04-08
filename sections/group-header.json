@@ -44,6 +44,7 @@
         "announce_text",
         "announce_shipping"
       ],
+      "disabled": true,
       "settings": {
         "text_size": 3,
         "layout": "slider",
@@ -55,6 +56,13 @@
     "header": {
       "type": "header",
       "blocks": {
+        "hellobar_dxjJnh": {
+          "type": "hellobar",
+          "settings": {
+            "link": "https://homewarmth.co/",
+            "textbar": "HOME ESSENTIALS | HOMEWARMTHCO"
+          }
+        },
         "header-block-toolbar": {
           "type": "toolbar",
           "disabled": true,
@@ -128,6 +136,7 @@
         }
       },
       "block_order": [
+        "hellobar_dxjJnh",
         "header-block-toolbar",
         "header-block-image-1",
         "header-block-image-2",
@@ -156,7 +165,13 @@
         "transparent_page": false,
         "transparent_text_color": "#ffffff",
         "show_collection_images": false,
-        "collection_wh_ratio": 2.5
+        "collection_wh_ratio": 2.5,
+        "message": false,
+        "home_page_only": true,
+        "message_text": "Announce something here",
+        "message_link": "",
+        "color_bg": "#7796a8",
+        "color_text": "#ffffff"
       }
     }
   },
