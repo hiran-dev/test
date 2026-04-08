@@ -617,7 +617,7 @@ p.footer__title.footer__accordion__head {
 
 .cart-count-badge {
   position: absolute;
-  top: 16px;
+  top: 5px;
   right: -5px;
   background: black;
   color: white;
