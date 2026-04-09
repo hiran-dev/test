@@ -567,7 +567,6 @@ p.footer__title.footer__accordion__head {
   .header__logo__link {
     max-width: 140px;
     padding: 10px 0;
-    top:-11px; /* mssd */
   }
 }
 @media all and (max-width: 767px) {
