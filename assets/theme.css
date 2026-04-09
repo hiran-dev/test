@@ -14417,7 +14417,7 @@ body .shopify-email-marketing-confirmation__container {
 
 }
 
-@media only screen and (max-width: 479px) {
+@media only screen and (max-width: 767px) {
   .header__logo__link {
   display: block;
   text-decoration: none;
