@@ -14414,9 +14414,22 @@ body .shopify-email-marketing-confirmation__container {
   position: relative;
   max-width: 50vw;
   width: var(--LOGO-WIDTH, auto);
-  top:-11px; /* mssd */
 
 }
+
+@media only screen and (max-width: 479px) {
+  .header__logo__link {
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  position: relative;
+  max-width: 50vw;
+  width: var(--LOGO-WIDTH, auto);
+  top:-11px; /* mssd */
+
+}}
+
+
 .header__logo__link img {
   height: auto;
 }
