@@ -513,9 +513,7 @@
   data-section-id="{{ section.id }}"
   data-section-type="header">
 
-  {% comment %} ============================================================
-  SLIDER HELLO BAR
-============================================================ {% endcomment %}
+  {% comment %} SLIDER HELLO BAR {% endcomment %}
 {% assign hellobar_blocks = section.blocks | where: 'type', 'hellobar' %}
 {% if hellobar_blocks.size > 0 %}
   <style>
