@@ -14418,15 +14418,19 @@ body .shopify-email-marketing-confirmation__container {
 
 }
 
+/* Desktop specific */
+@media only screen and (min-width: 768px) {
+  .header__logo__link {
+    top: -11px;
+  }
+}
+
+/* Mobile specific - top property remove */
 @media only screen and (max-width: 767px) {
   .header__logo__link {
-  display: block;
-  text-decoration: none;
-  color: var(--text);
-  position: relative;
-  max-width: 50vw;
-  width: var(--LOGO-WIDTH, auto);
-}}
+    top: auto; /* Ya top: 0; */
+  }
+}
 
 
 .header__logo__link img {
