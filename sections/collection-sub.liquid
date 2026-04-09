@@ -4,7 +4,7 @@
 {%- assign sub_collections = collection.metafields.custom.sub_collection.value -%}
 
 {%- if sub_collections != blank -%}
-<section class="subcollection-circles-section"
+<section class="subcollection-circles-section custom-desktop-padding"
          style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; background-color: transparent;">
   <div class="{{ section.settings.width }}">
     
@@ -39,13 +39,14 @@
     </div>
 
   </div>
+  
 </section>
 
 <style>
   .circle-nav-container {
     display: flex;
     justify-content: start;
-    gap: 15px;
+    gap: 25px;
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -100,6 +101,18 @@
     font-weight: 500;
     text-transform: capitalize;
     letter-spacing: 0.5px;
+  }
+
+  /* Default: no left padding for mobile */
+  .custom-desktop-padding {
+    padding-left: 0;
+  }
+
+  /* Desktop only */
+  @media (min-width: 1024px) { /* or your theme's desktop breakpoint */
+    .custom-desktop-padding {
+      padding-left: 48px;
+    }
   }
 
   @media only screen and (max-width: 767px) {
