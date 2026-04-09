@@ -14414,6 +14414,7 @@ body .shopify-email-marketing-confirmation__container {
   position: relative;
   max-width: 50vw;
   width: var(--LOGO-WIDTH, auto);
+  top:-11px; /* mssd */
 
 }
 
@@ -14425,7 +14426,6 @@ body .shopify-email-marketing-confirmation__container {
   position: relative;
   max-width: 50vw;
   width: var(--LOGO-WIDTH, auto);
-  top:-11px; /* mssd */
 
 }}
 
