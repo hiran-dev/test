@@ -133,45 +133,6 @@
   }
 {% endstyle %}
 
-{% comment %} ============================================================
-  SLIDER HELLO BAR — Doc 1 se liya gaya (Bilkul sabse upar)
-  Yeh section.blocks mein se 'hellobar' type ke blocks loop karta hai
-============================================================ {% endcomment %}
-{% assign hellobar_blocks = section.blocks | where: 'type', 'hellobar' %}
-{% if hellobar_blocks.size > 0 %}
-  <style>
-    .header-upper {
-      background-color:rgb(17, 17, 17);
-      width: 100%;
-      text-align: center;
-      padding: 10px 0;
-    }
-    .sliderhellobar {
-      background-color:rgb(18, 17, 17);
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-    .sliderhellobar li {
-      display: block;
-      text-align: center;
-    }
-    .sliderhellobar li a {
-      color:rgb(244, 241, 241);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 1px;
-    }
-  </style>
-  <div class="header-upper">
-    <ul class="sliderhellobar">
-      {% for block in hellobar_blocks %}
-        <li><a href="{{ block.settings.link }}">{{ block.settings.textbar }}</a></li>
-      {% endfor %}
-    </ul>
-  </div>
-{% endif %}
 
 {% capture logos %}
   {%- if transparent_header and section.settings.transparent_logo != blank -%}
@@ -551,6 +512,51 @@
   data-header-style="{{ section.settings.header_style }}"
   data-section-id="{{ section.id }}"
   data-section-type="header">
+
+  {% comment %} ============================================================
+  SLIDER HELLO BAR
+============================================================ {% endcomment %}
+{% assign hellobar_blocks = section.blocks | where: 'type', 'hellobar' %}
+{% if hellobar_blocks.size > 0 %}
+  <style>
+    .header-upper {
+  background-color: rgb(17, 17, 17);
+  width: 100%;
+  text-align: center;
+  padding: 6px 0;
+  
+  /* Yeh lines add karein */
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+    .sliderhellobar {
+      background-color:rgb(18, 17, 17);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .sliderhellobar li {
+      display: block;
+      text-align: center;
+    }
+    .sliderhellobar li a {
+      color:rgb(244, 241, 241);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+	
+  </style>
+  <div class="header-upper">
+    <ul class="sliderhellobar">
+      {% for block in hellobar_blocks %}
+        <li><a href="{{ block.settings.link }}">{{ block.settings.textbar }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
   <header class="theme__header" data-header-height>
     {% if has_toolbar %}
       <div class="header__inner header__inner--bar{% unless has_toolbar_text %} header__inner--bar-nav{% endunless %}">
