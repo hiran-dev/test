@@ -4,6 +4,18 @@
   top: 0;
   z-index: 6000;
 }
+
+/* Sticky for mobile */
+@media (max-width: 767px) {
+  .template-index .shopify-section-group-group-header {
+    position: sticky;
+    min-height: 75px;
+    width: 100%;
+    top: 0;
+    z-index: 6000;
+  }
+}
+
 ul li {
   list-style: none;
 }
