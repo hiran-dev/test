@@ -5990,3 +5990,39 @@
     return fullpage;
 
 }));
+
+// mssd function to scroll the drawer inner not the whole bg
+const navDrawer = document.querySelector('nav#header-menu');
+
+const observer = new MutationObserver(() => {
+    const isOpen = navDrawer.classList.contains('drawer--visible');
+    
+    if (isOpen) {
+        // Fullpage bg band
+        window.fullpage_api.setAllowScrolling(false);
+        window.fullpage_api.setKeyboardScrolling(false);
+        
+        // drawer__inner ka scroll wapas force on karo
+        const drawerInner = navDrawer.querySelector('.drawer__inner');
+        drawerInner.addEventListener('wheel', stopPropagation);
+        drawerInner.addEventListener('touchmove', stopPropagation);
+        
+    } else {
+        window.fullpage_api.setAllowScrolling(true);
+        window.fullpage_api.setKeyboardScrolling(true);
+        
+        const drawerInner = navDrawer.querySelector('.drawer__inner');
+        drawerInner.removeEventListener('wheel', stopPropagation);
+        drawerInner.removeEventListener('touchmove', stopPropagation);
+    }
+});
+
+// Drawer inner ka scroll event bg tak jane se rokna
+function stopPropagation(e) {
+    e.stopPropagation();
+}
+
+observer.observe(navDrawer, { 
+    attributes: true, 
+    attributeFilter: ['class'] 
+});
