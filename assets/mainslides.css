@@ -387,7 +387,7 @@ Not supports in Firefox and IE */
     bottom: 120px;
   }
   .imgsize img.fullimage {
-    height: 94vh;
+    /* height: 94vh; mssd */
   }
   .desktopvds {
   display: none;
