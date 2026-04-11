@@ -179,7 +179,7 @@ svg.HD-icons {
 @media only screen and (max-width: 767px) {
   .template-index .theme__header {
     background-color: #fff; 
-    height:60%  /* mssd */
+    height:50%  /* mssd */
   }
 }
 
