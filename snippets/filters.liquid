@@ -219,22 +219,11 @@
         id="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
         data-accordion-body
         data-range-holder
-        {% if accordion_open_boolean == false %}
-          style="display: none;"
-        {% endif %}
-      >
-        {%- if shop.money_format contains 'comma_separator' -%}
-          {%- assign filter_max_money = filter.range_max
-            | money_without_currency
-            | replace: '.', ''
-            | replace: ',', '.'
-          -%}
-        {%- elsif shop.money_format contains 'space_separator' -%}
-          {%- assign filter_max_money = filter.range_max
-            | money_without_currency
-            | replace: ' ', ''
-            | replace: ',', '.'
-          -%}
+        {% if accordion_open_boolean == false %} style="display: none;" {% endif %}>
+        {%- if shop.money_format contains "comma_separator" -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' -%}
+        {%- elsif shop.money_format contains "space_separator" -%}
+          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
         {%- else -%}
           {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ',', '' -%}
         {%- endif -%}
