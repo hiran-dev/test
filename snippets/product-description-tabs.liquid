@@ -1,89 +1,94 @@
-<div class="product-tabs-wrapper">
-  <div class="tabs-header-nav" id="customTabNav">
-    <button class="tab-btn active" data-target="details">Details</button>
+<div id="cross-stitch-tabs" class="cs-tabs-container">
+  <div class="cs-tabs-nav" id="csTabNav">
+    <button class="cs-tab-btn active" data-target="cs-details">Details</button>
   </div>
   
-  <div class="tabs-content-body" id="customTabBody">
-    <div id="tab-details" class="tab-pane active">
+  <div class="cs-tabs-content">
+    <div id="cs-details" class="cs-tab-pane active">
       {{ product.description }}
     </div>
   </div>
 </div>
 
 <style>
-  .product-tabs-wrapper { margin: 30px 0; border-top: 1px solid #eee; }
-  .tabs-header-nav { display: flex; gap: 30px; border-bottom: 1px solid #eee; }
-  .tab-btn { 
+  .cs-tabs-container { margin: 30px 0; border-top: 1px solid #ddd; width: 100%; }
+  .cs-tabs-nav { display: flex; gap: 40px; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
+  .cs-tab-btn { 
     background: none; border: none; padding: 15px 0; cursor: pointer; 
-    font-size: 13px; font-weight: 600; text-transform: uppercase; 
-    letter-spacing: 1px; color: #999; position: relative;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; 
+    letter-spacing: 1.5px; color: #999; position: relative; font-family: inherit;
   }
-  .tab-btn.active { color: #000; }
-  .tab-btn.active::after { 
+  .cs-tab-btn.active { color: #000; }
+  .cs-tab-btn.active::after { 
     content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #000; 
   }
-  .tab-pane { display: none; padding: 20px 0; font-size: 14px; color: #333; line-height: 1.7; }
-  .tab-pane.active { display: block !important; }
+  .cs-tab-pane { display: none; padding-bottom: 20px; line-height: 1.8; color: #333; }
+  .cs-tab-pane.active { display: block !important; }
+  /* Hide the repetitive bold headings inside the new tabs */
+  .cs-tab-pane > p > strong:first-child { display: none; }
 </style>
 
 <script>
 (function() {
-  function initTabs() {
-    const detailsPane = document.getElementById('tab-details');
-    const nav = document.getElementById('customTabNav');
-    const body = document.getElementById('customTabBody');
-    if (!detailsPane || detailsPane.getAttribute('data-processed')) return;
+  const initCS = () => {
+    const root = document.getElementById('cross-stitch-tabs');
+    const details = document.getElementById('cs-details');
+    const nav = document.getElementById('csTabNav');
+    const bodyContainer = root.querySelector('.cs-tabs-content');
 
-    const markers = ["ATTRIBUTE", "STYLE TIP", "SIZE AND FIT"];
-    let rawHtml = detailsPane.innerHTML;
+    if (!details || details.dataset.done) return;
 
-    markers.forEach(marker => {
-      // Regex to find markers even if they are nested in tags or have extra spaces
-      const regex = new RegExp(`(<br.*?>\\s*|<div>\\s*|\\s*)?(<(strong|b|h3|h4)>\\s*${marker}\\s*</\\3>|${marker})`, 'i');
+    // Detect markers (exact match check)
+    const sections = [
+      { id: 'attribute', marker: 'ATTRIBUTE' },
+      { id: 'style', marker: 'STYLE TIP' },
+      { id: 'fit', marker: 'SIZE AND FIT' }
+    ];
+
+    let fullHTML = details.innerHTML;
+
+    sections.forEach(sec => {
+      // Find the marker regardless of tags (h3, strong, p, etc)
+      const regex = new RegExp(`(<[^>]*>\\s*${sec.marker}\\s*<\\/[^>]*>|${sec.marker})`, 'i');
       
-      if (regex.test(rawHtml)) {
-        const parts = rawHtml.split(regex);
-        if (parts.length > 3) {
-          // Add Nav Button
+      if (regex.test(fullHTML)) {
+        const parts = fullHTML.split(regex);
+        if (parts.length > 2) {
+          // 1. Add Nav Button
           const btn = document.createElement('button');
-          btn.className = 'tab-btn';
-          btn.innerText = marker;
-          btn.setAttribute('data-target', marker.replace(/\s+/g, '-').toLowerCase());
+          btn.className = 'cs-tab-btn';
+          btn.innerText = sec.marker;
+          btn.setAttribute('data-target', 'cs-' + sec.id);
           nav.appendChild(btn);
 
-          // Add Content Pane
+          // 2. Add Content Pane
           const pane = document.createElement('div');
-          pane.className = 'tab-pane';
-          pane.id = 'tab-' + marker.replace(/\s+/g, '-').toLowerCase();
-          pane.innerHTML = parts[parts.length - 1];
-          body.appendChild(pane);
+          pane.className = 'cs-tab-pane';
+          pane.id = 'cs-' + sec.id;
+          pane.innerHTML = parts[parts.length - 1]; // Content after marker
+          bodyContainer.appendChild(pane);
 
-          rawHtml = parts[0]; // Keep only the "before" part for the Details tab
+          fullHTML = parts[0]; // Retain only content BEFORE this marker for "Details"
         }
       }
     });
 
-    detailsPane.innerHTML = rawHtml;
-    detailsPane.setAttribute('data-processed', 'true');
+    details.innerHTML = fullHTML;
+    details.dataset.done = "true";
 
-    // Click Events
+    // Click Logic
     nav.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('tab-btn')) return;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      if (!e.target.classList.contains('cs-tab-btn')) return;
+      root.querySelectorAll('.cs-tab-btn').forEach(b => b.classList.remove('active'));
+      root.querySelectorAll('.cs-tab-pane').forEach(p => p.classList.remove('active'));
       e.target.classList.add('active');
-      const targetId = 'tab-' + e.target.getAttribute('data-target');
-      document.getElementById(targetId).classList.add('active');
+      document.getElementById(e.target.dataset.target).classList.add('active');
     });
-  }
+  };
 
-  // This is the key: it watches for the description to load
-  const observer = new MutationObserver((mutations) => {
-    initTabs();
-  });
-
-  observer.observe(document.body, { childList: true, subtree: true });
-  window.addEventListener('load', initTabs);
-  initTabs();
+  // Run immediately and also watch for AJAX changes (common in Cross Stitch theme)
+  setTimeout(initCS, 500); 
+  window.addEventListener('load', initCS);
+  document.addEventListener('shopify:section:load', initCS); // For theme editor
 })();
 </script>
