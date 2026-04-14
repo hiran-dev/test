@@ -196,31 +196,31 @@ document.addEventListener('DOMContentLoaded', function() {
   let rawHTML = container.innerHTML;
 
   markers.forEach(item => {
-    // Finds the marker specifically to split the content
+    // Regex catches the marker even if wrapped in tags like <strong>STYLE TIP</strong>
     const regex = new RegExp(`(<[^>]*>\\s*${item.search}\\s*<\\/[^>]*>|${item.search})`, 'i');
     
     if (regex.test(rawHTML)) {
       const parts = rawHTML.split(regex);
       
-      if (parts.length > 2) {
-        // 1. Add Nav Button
+      if (parts.length >= 2) {
+        // 1. Create the Button
         const btn = document.createElement('button');
         btn.className = 't-btn';
         btn.innerText = item.label;
         btn.setAttribute('data-target', item.id);
         nav.appendChild(btn);
 
-        // 2. Add Content Pane
+        // 2. Create the Pane
         const pane = document.createElement('div');
         pane.className = 't-pane';
         pane.id = 'tab-' + item.id;
         
-        // Remove the redundant marker from the start of the new content
-        let content = parts[parts.length - 1];
-        pane.innerHTML = content;
+        // Clean up any leading empty tags or breaks left by the split
+        let content = parts[parts.length - 1].trim();
+        pane.innerHTML = content.replace(/^(&nbsp;|<br\/?>|\s)+/i, "");
         body.appendChild(pane);
 
-        // 3. Keep content before this marker for Details
+        // 3. Keep only the part BEFORE this marker for Details
         rawHTML = parts[0];
       }
     }
@@ -243,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <style>
   .product-tabs-container { 
-    margin: 5px 0 20px 0; /* Tightened top margin to remove empty space */
+    margin: 0; /* Removed top margin completely */
     border-top: 1px solid #e1e1e1; 
     width: 100%; 
     clear: both; 
@@ -264,12 +264,13 @@ document.addEventListener('DOMContentLoaded', function() {
     content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #000; 
   }
   .t-pane { 
-    display: none; padding: 15px 0; line-height: 1.8; font-size: 14px; color: #333; 
+    display: none; padding: 10px 0; line-height: 1.8; font-size: 14px; color: #333; 
   }
   .t-pane.active { display: block !important; }
 
-  /* Removed the rule that was hiding the SHIRT title */
-  
-  /* Remove spacing from the very first element in each tab to keep it tight */
+  /* Surgical fix for empty space and rogue headings */
   .t-pane > *:first-child { margin-top: 0 !important; padding-top: 0 !important; }
+  
+  /* If the theme puts the description in a markdown-styled div, reset its margin */
+  .t-pane .markdown { margin-top: 0 !important; }
 </style>
