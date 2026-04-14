@@ -1,61 +1,70 @@
-{%- assign desc = product.description -%}
-
-{%- comment -%} Determine Tab 2 Heading {%- endcomment -%}
-{%- assign tab_2_title = "Attribute" -%}
-{%- if desc contains "STYLE TIP" -%}
-  {%- assign tab_2_title = "Style Tip" -%}
-{%- endif -%}
-
-{%- comment -%} Split into 3 parts: Details, Middle, and Fit {%- endcomment -%}
-{%- assign part1 = desc | split: "ATTRIBUTE" | first | split: "STYLE TIP" | first -%}
-
-{%- if desc contains "ATTRIBUTE" -%}
-    {%- assign part2 = desc | split: "ATTRIBUTE" | last | split: "SIZE AND FIT" | first -%}
-{%- elsif desc contains "STYLE TIP" -%}
-    {%- assign part2 = desc | split: "STYLE TIP" | last | split: "SIZE AND FIT" | first -%}
-{%- else -%}
-    {%- assign part2 = "" -%}
-{%- endif -%}
-
-{%- assign part3 = desc | split: "SIZE AND FIT" | last -%}
-{%- if desc contains "SIZE AND FIT" == false -%}{%- assign part3 = "" -%}{%- endif -%}
-
-<div class="product-tabs">
-  <input type="radio" name="tabs" id="tabone" checked="checked">
-  <label for="tabone">Details</label>
-  <div class="tab">
-    {{ part1 }}
-  </div>
-
-  {%- if part2 != blank -%}
-  <input type="radio" name="tabs" id="tabtwo">
-  <label for="tabtwo">{{ tab_2_title }}</label>
-  <div class="tab">
-    {{ part2 }}
-  </div>
+<div class="product-tabs-container">
+  {%- assign desc = product.description -%}
+  
+  {%- comment -%} Identify if we use STYLE TIP or ATTRIBUTE {%- endcomment -%}
+  {%- assign marker = "" -%}
+  {%- if desc contains "STYLE TIP" -%}
+    {%- assign marker = "STYLE TIP" -%}
+  {%- elsif desc contains "ATTRIBUTE" -%}
+    {%- assign marker = "ATTRIBUTE" -%}
   {%- endif -%}
 
-  {%- if part3 != blank -%}
-  <input type="radio" name="tabs" id="tabthree">
-  <label for="tabthree">Size & Fit</label>
-  <div class="tab">
-    {{ part3 }}
+  <div class="tabs-header">
+    <button class="t-btn active" onclick="openCsTab(event, 'details')">Details</button>
+    {% if marker != "" %}
+      <button class="t-btn" onclick="openCsTab(event, 'extra')">{% if marker == "STYLE TIP" %}Style Tip{% else %}Attribute{% endif %}</button>
+    {% endif %}
+    {% if desc contains "SIZE AND FIT" %}
+      <button class="t-btn" onclick="openCsTab(event, 'fit')">Size & Fit</button>
+    {% endif %}
   </div>
-  {%- endif -%}
+
+  <div id="details" class="t-pane active">
+    {%- if marker != "" -%}
+      {{ desc | split: marker | first }}
+    {%- elsif desc contains "SIZE AND FIT" -%}
+      {{ desc | split: "SIZE AND FIT" | first }}
+    {%- else -%}
+      {{ desc }}
+    {%- endif -%}
+  </div>
+
+  {% if marker != "" %}
+    <div id="extra" class="t-pane">
+      {%- assign extra_content = desc | split: marker | last -%}
+      {%- if extra_content contains "SIZE AND FIT" -%}
+        {{ extra_content | split: "SIZE AND FIT" | first }}
+      {%- else -%}
+        {{ extra_content }}
+      {%- endif -%}
+    </div>
+  {% endif %}
+
+  {% if desc contains "SIZE AND FIT" %}
+    <div id="fit" class="t-pane">
+      {{ desc | split: "SIZE AND FIT" | last }}
+    </div>
+  {% endif %}
 </div>
 
+<script>
+function openCsTab(evt, tabId) {
+  var i, panes, btns;
+  panes = document.getElementsByClassName("t-pane");
+  for (i = 0; i < panes.length; i++) { panes[i].classList.remove("active"); }
+  btns = document.getElementsByClassName("t-btn");
+  for (i = 0; i < btns.length; i++) { btns[i].classList.remove("active"); }
+  document.getElementById(tabId).classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+</script>
+
 <style>
-  .product-tabs { display: flex; flex-wrap: wrap; margin: 30px 0; border-top: 1px solid #e1e1e1; }
-  .product-tabs label {
-    padding: 15px 0; margin-right: 30px; cursor: pointer;
-    font-size: 13px; font-weight: 700; text-transform: uppercase;
-    color: #999; transition: color 0.3s; order: 1;
-  }
-  .product-tabs input[type="radio"] { display: none; }
-  .product-tabs .tab {
-    width: 100%; padding: 20px 0; order: 2; display: none;
-    border-top: 1px solid #e1e1e1; line-height: 1.8; font-size: 14px;
-  }
-  .product-tabs input[type="radio"]:checked + label { color: #000; border-bottom: 2px solid #000; margin-bottom: -1px; z-index: 2;}
-  .product-tabs input[type="radio"]:checked + label + .tab { display: block; }
+  .product-tabs-container { margin: 20px 0; border-top: 1px solid #e1e1e1; width: 100%; clear: both; }
+  .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid #e1e1e1; margin-bottom: 10px; }
+  .t-btn { background: none; border: none; padding: 15px 0; cursor: pointer; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #999; position: relative; }
+  .t-btn.active { color: #000; }
+  .t-btn.active::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #000; }
+  .t-pane { display: none; padding: 15px 0; line-height: 1.8; font-size: 14px; color: #333; }
+  .t-pane.active { display: block; }
 </style>
