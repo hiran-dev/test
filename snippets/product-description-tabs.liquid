@@ -1,69 +1,22 @@
-{%- assign desc = product.description -%}
-
-{%- comment -%} Define the markers to search for {%- endcomment -%}
-{%- assign marker_attribute = 'ATTRIBUTE' -%}
-{%- assign marker_style = 'STYLE TIP' -%}
-{%- assign marker_fit = 'SIZE AND FIT' -%}
-
-{%- comment -%} Find which middle tab exists {%- endcomment -%}
-{%- assign mid_marker = blank -%}
-{%- assign tab_2_label = blank -%}
-
-{%- if desc contains marker_style -%}
-  {%- assign mid_marker = marker_style -%}
-  {%- assign tab_2_label = 'Style Tip' -%}
-{%- elsif desc contains marker_attribute -%}
-  {%- assign mid_marker = marker_attribute -%}
-  {%- assign tab_2_label = 'Attribute' -%}
-{%- endif -%}
-
-{%- comment -%} Splitting Logic {%- endcomment -%}
-{%- if mid_marker != blank -%}
-  {%- assign split_1 = desc | split: mid_marker -%}
-  {%- assign details_content = split_1[0] -%}
-  
-  {%- if split_1[1] contains marker_fit -%}
-    {%- assign split_2 = split_1[1] | split: marker_fit -%}
-    {%- assign mid_content = split_2[0] -%}
-    {%- assign fit_content = split_2[1] -%}
-  {%- else -%}
-    {%- assign mid_content = split_1[1] -%}
-    {%- assign fit_content = blank -%}
-  {%- endif -%}
-{%- else -%}
-  {%- if desc contains marker_fit -%}
-    {%- assign split_f = desc | split: marker_fit -%}
-    {%- assign details_content = split_f[0] -%}
-    {%- assign mid_content = blank -%}
-    {%- assign fit_content = split_f[1] -%}
-  {%- else -%}
-    {%- assign details_content = desc -%}
-    {%- assign mid_content = blank -%}
-    {%- assign fit_content = blank -%}
-  {%- endif -%}
-{%- endif -%}
-
-<div class="product-tabs-container">
-  <div class="tabs-header">
-    <button class="tab-btn active" data-target="details">Details</button>
-    {% if mid_content != blank %}<button class="tab-btn" data-target="middle">{{ tab_2_label }}</button>{% endif %}
-    {% if fit_content != blank %}<button class="tab-btn" data-target="fit">Size & Fit</button>{% endif %}
+<div class="product-tabs-container" id="ProductTabs">
+  <div class="tabs-header" id="TabList">
+    <button class="tab-btn active" data-target="details-pane">Details</button>
   </div>
 
-  <div class="tabs-body">
-    <div id="details" class="tab-pane active">{{ details_content | remove: '<strong>' | remove: '</strong>' }}</div>
-    {% if mid_content != blank %}<div id="middle" class="tab-pane">{{ mid_content | remove: '<strong>' | remove: '</strong>' }}</div>{% endif %}
-    {% if fit_content != blank %}<div id="fit" class="tab-pane">{{ fit_content | remove: '<strong>' | remove: '</strong>' }}</div>{% endif %}
+  <div class="tabs-body" id="TabPanes">
+    <div id="details-pane" class="tab-pane active">
+      {{ product.description }}
+    </div>
   </div>
 </div>
 
 <style>
-  .product-tabs-container { margin: 20px 0; border-top: 1px solid #e1e1e1; }
-  .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid #e1e1e1; }
+  .product-tabs-container { margin: 30px 0; border-top: 1px solid #e1e1e1; }
+  .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid #e1e1e1; overflow-x: auto; }
   .tab-btn { 
     background: none; border: none; padding: 15px 0; cursor: pointer; 
     font-size: 13px; font-weight: 600; text-transform: uppercase; 
-    letter-spacing: 1px; color: #999; position: relative;
+    letter-spacing: 1px; color: #999; position: relative; white-space: nowrap;
   }
   .tab-btn.active { color: #000; }
   .tab-btn.active::after { 
@@ -71,19 +24,62 @@
   }
   .tab-pane { display: none; padding: 20px 0; font-size: 14px; color: #333; line-height: 1.6; }
   .tab-pane.active { display: block; }
+  .tab-pane strong:first-child { display: none; } /* Hides the repeated heading inside the tab */
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', function() {
-        const container = this.closest('.product-tabs-container');
-        container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        container.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        this.classList.add('active');
-        container.querySelector('#' + this.dataset.target).classList.add('active');
-      });
+document.addEventListener('DOMContentLoaded', function() {
+  const descriptionContainer = document.getElementById('details-pane');
+  const tabList = document.getElementById('TabList');
+  const tabPanes = document.getElementById('TabPanes');
+  
+  // The keywords we are looking for
+  const markers = ["ATTRIBUTE", "STYLE TIP", "SIZE AND FIT"];
+  
+  const content = descriptionContainer.innerHTML;
+  let sections = [];
+  
+  // Logic to find markers and split content
+  let lastIndex = 0;
+  markers.forEach(marker => {
+    // Check for marker in plain text or bold tags
+    if (descriptionContainer.innerText.includes(marker)) {
+      const regex = new RegExp(`(<[^>]*>)?${marker}(<[^>]*>)?`, 'i');
+      const parts = descriptionContainer.innerHTML.split(regex);
+      
+      if (parts.length > 1) {
+        // Create the Tab Button
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn';
+        btn.innerText = marker.toLowerCase();
+        btn.style.textTransform = 'capitalize';
+        btn.setAttribute('data-target', marker.replace(/\s+/g, '-').toLowerCase());
+        tabList.appendChild(btn);
+        
+        // Create the Tab Pane
+        const pane = document.createElement('div');
+        pane.className = 'tab-pane';
+        pane.id = marker.replace(/\s+/g, '-').toLowerCase();
+        pane.innerHTML = parts[parts.length - 1];
+        tabPanes.appendChild(pane);
+        
+        // Clean up the original details pane
+        descriptionContainer.innerHTML = parts[0];
+      }
+    }
+  });
+
+  // Tab Switching Logic
+  const allBtns = document.querySelectorAll('.tab-btn');
+  const allPanes = document.querySelectorAll('.tab-pane');
+
+  allBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      allBtns.forEach(b => b.classList.remove('active'));
+      allPanes.forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(this.getAttribute('data-target')).classList.add('active');
     });
   });
+});
 </script>
