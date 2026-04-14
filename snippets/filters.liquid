@@ -31,11 +31,13 @@
     {{- block.shopify_attributes -}}
   {% endif %}
 >
-  <button class="sidebar__heading js {{ accordion_initial_state }}"
+  <button
+    class="sidebar__heading js {{ accordion_initial_state }}"
     data-accordion-trigger="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
     aria-controls="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
     aria-haspopup="true"
-    aria-expanded="{{ accordion_open_boolean }}">
+    aria-expanded="{{ accordion_open_boolean }}"
+  >
     <span>{{ filter.label }}</span>
 
     {%- if is_swatch_option or is_image_option -%}
@@ -57,7 +59,9 @@
     type="checkbox"
     name="accordion-{{ filter.label | handle }}"
     id="accordion-{{ filter.label | handle }}-checkbox"
-    class="no-js no-js-checkbox" checked>
+    class="no-js no-js-checkbox"
+    checked
+  >
 
   <label for="accordion-{{ filter.label | handle }}-checkbox" class="sidebar__heading no-js">
     <span>{{ filter.label }}</span>
@@ -84,39 +88,60 @@
         id="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
         data-accordion-body
         aria-label="{{ 'collections.sidebar.filter' | t }}"
-        {% if accordion_open_boolean == false %} style="display: none;" {% endif %}
+        {% if accordion_open_boolean == false %}
+          style="display: none;"
+        {% endif %}
       >
         {%- for filter_value in filter.values -%}
           {%- capture input_id -%}filter-{{ filter.label | handleize }}-{{ forloop.index }}{%- endcapture -%}
 
           {%- if is_image_option -%}
-            {% comment %} Image display type renders the image with a checkbox using the natural ratio of the image and no cropping {% endcomment %}
-            <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
-              <input type="checkbox"
-                name="{{ filter_value.param_name }}"
-                value="{{ filter_value.value }}"
-                id="{{ input_id }}"
-                {% if filter_value.active -%}checked{%- endif %}
-                {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
-              <label
-                class="stateful-filter-icons"
-                data-swapper-hover="{{ filter_value.label | escape_once }}"
-                for="{{ input_id }}"
-                aria-label="{{ filter_value.label }}"
-              >
-                <span class="flex justify-start items-center">
-                  {%- if filter_value.image -%}
-                    <span class="max-w-[140px]">
-                      {%- render 'image' img_object: filter_value.image, width: 140, wh_ratio: filter_value.image.aspect_ratio -%}
-                    </span>
-                  {%- else -%}
-                    {{ filter_value.label | escape_once }}
-                  {%- endif -%}
-                  {% render 'icon-stateful-box' %}
-                  {% render 'icon-core-refresh' %}
-                </span>
-              </label>
-            </li>
+<li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+
+  {% assign clean_label = filter_value.label
+    | upcase
+    | remove: 'D '
+    | remove: 'T '
+    | remove: 'DARK '
+    | remove: 'LIGHT '
+    | remove: 'DEEP '
+    | remove: 'BABY '
+    | strip
+  %}
+
+  <input
+    type="checkbox"
+    name="{{ filter_value.param_name }}"
+    value="{{ filter_value.value }}"
+    id="{{ input_id }}"
+    {% if filter_value.active %}checked{% endif %}
+    {% if filter_value.count == 0 and filter_value.active == false %}disabled{% endif %}
+  >
+
+  <label
+    class="stateful-filter-icons"
+    data-swapper-hover="{{ clean_label }}"
+    for="{{ input_id }}"
+    aria-label="{{ clean_label }}"
+  >
+    <span class="flex justify-start items-center">
+      {%- if filter_value.image -%}
+        <span class="max-w-[140px]">
+          {%- render 'image',
+            img_object: filter_value.image,
+            width: 140,
+            wh_ratio: filter_value.image.aspect_ratio
+          -%}
+        </span>
+      {%- else -%}
+        {{ clean_label }}
+      {%- endif -%}
+      {% render 'icon-stateful-box' %}
+      {% render 'icon-core-refresh' %}
+    </span>
+  </label>
+</li>
+
 
           {%- elsif is_swatch_option -%}
             {% comment %} This section is now bypassed {% endcomment %}
@@ -204,11 +229,22 @@
         id="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
         data-accordion-body
         data-range-holder
-        {% if accordion_open_boolean == false %} style="display: none;" {% endif %}>
-        {%- if shop.money_format contains "comma_separator" -%}
-          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' -%}
-        {%- elsif shop.money_format contains "space_separator" -%}
-          {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
+        {% if accordion_open_boolean == false %}
+          style="display: none;"
+        {% endif %}
+      >
+        {%- if shop.money_format contains 'comma_separator' -%}
+          {%- assign filter_max_money = filter.range_max
+            | money_without_currency
+            | replace: '.', ''
+            | replace: ',', '.'
+          -%}
+        {%- elsif shop.money_format contains 'space_separator' -%}
+          {%- assign filter_max_money = filter.range_max
+            | money_without_currency
+            | replace: ' ', ''
+            | replace: ',', '.'
+          -%}
         {%- else -%}
           {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ',', '' -%}
         {%- endif -%}
@@ -218,26 +254,53 @@
         {%- assign filter_max_value = filter_max_money_ceil -%}
 
         {%- if filter.min_value.value -%}
-          {%- if shop.money_format contains "comma_separator" -%}
-            {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
-          {%- elsif shop.money_format contains "space_separator" -%}
-            {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
+          {%- if shop.money_format contains 'comma_separator' -%}
+            {%- assign filter_min_value = filter.min_value.value
+              | money_without_currency
+              | replace: '.', ''
+              | replace: ',', '.'
+              | floor
+            -%}
+          {%- elsif shop.money_format contains 'space_separator' -%}
+            {%- assign filter_max_money = filter.range_max
+              | money_without_currency
+              | replace: ' ', ''
+              | replace: ',', '.'
+            -%}
           {%- else -%}
             {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', '' | floor -%}
           {%- endif -%}
         {%- endif -%}
 
         {%- if filter.max_value.value -%}
-          {%- if shop.money_format contains "comma_separator" -%}
-            {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
-          {%- elsif shop.money_format contains "space_separator" -%}
-            {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
+          {%- if shop.money_format contains 'comma_separator' -%}
+            {%- assign filter_max_value = filter.max_value.value
+              | money_without_currency
+              | replace: '.', ''
+              | replace: ',', '.'
+              | floor
+            -%}
+          {%- elsif shop.money_format contains 'space_separator' -%}
+            {%- assign filter_max_money = filter.range_max
+              | money_without_currency
+              | replace: ' ', ''
+              | replace: ',', '.'
+            -%}
           {%- else -%}
             {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', '' | floor -%}
           {%- endif -%}
         {%- endif -%}
 
-        <div class="filter__price__range collection-range-filter" data-range-slider data-range-filter-update data-se-min="0" data-se-step="1" data-se-min-value="{{ filter_min_value }}" data-se-max-value="{{ filter_max_value }}" data-se-max="{{ filter_max_money_ceil }}">
+        <div
+          class="filter__price__range collection-range-filter"
+          data-range-slider
+          data-range-filter-update
+          data-se-min="0"
+          data-se-step="1"
+          data-se-min-value="{{ filter_min_value }}"
+          data-se-max-value="{{ filter_max_value }}"
+          data-se-max="{{ filter_max_money_ceil }}"
+        >
           <div class="range__dot range__dot--left" data-range-left>
             <span>&nbsp;</span>
           </div>
@@ -258,13 +321,18 @@
               class="filter__price__input"
               name="{{ filter.min_value.param_name }}"
               id="filter-price-from-{{ filter.label }}-{{ forloop.index }}"
-              {% if filter.min_value.value %}value="{{ filter_min_value }}"{% endif %}
+              {% if filter.min_value.value %}
+                value="{{ filter_min_value }}"
+              {% endif %}
               type="number"
               placeholder="{{ filter_min_value }}"
               min="0"
-              max="{{ filter_max_money_ceil }}">
+              max="{{ filter_max_money_ceil }}"
+            >
 
-            <label for="filter-price-from-{{ filter.label }}-{{ forloop.index }}">{{ 'products.general.from' | t }}</label>
+            <label for="filter-price-from-{{ filter.label }}-{{ forloop.index }}">
+              {{- 'products.general.from' | t -}}
+            </label>
           </div>
           <div class="filter__price__spacer">-</div>
           <div class="filter__price__field filter__price__to">
@@ -275,16 +343,19 @@
               class="filter__price__input"
               name="{{ filter.max_value.param_name }}"
               id="filter-price-to-{{ filter.label }}-{{ forloop.index }}"
-              {% if filter.max_value.value %}value="{{ filter_max_value }}"{% endif %}
+              {% if filter.max_value.value %}
+                value="{{ filter_max_value }}"
+              {% endif %}
               type="number"
               placeholder="{{ filter_max_value }}"
               min="0"
-              max="{{ filter_max_money_ceil }}">
+              max="{{ filter_max_money_ceil }}"
+            >
 
             <label for="filter-price-to-{{ filter.label }}-{{ forloop.index }}">To</label>
           </div>
         </div>
       </div>
   {%- endcase -%}
-
 </div>
+
