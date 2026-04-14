@@ -196,28 +196,28 @@
             </li> end comment by mssd {% endcomment %}
              {% comment %} MSSD to hide the strike through filter if strike through enabled it will it hide it... {% endcomment %}
            {% comment %} MSSD to hide the strike through filter if strike through enabled it will it hide it... {% endcomment %}
-{% if filter_value.count > 0 or filter_value.active %}
-  {% comment %} {% if filter.label == 'Size' or filter_value.count > 0 or filter_value.active %} {% endcomment %}
-  <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
-    <input
-      type="checkbox"
-      name="{{ filter_value.param_name }}"
-      value="{{ filter_value.value }}"
-      id="{{ input_id }}"
-      {% if filter_value.active -%}
-        checked
-      {%- endif %}
-    >
-    <label class="stateful-filter-icons" for="{{ input_id }}" aria-label="{{ filter_value.label }}">
-      <span class="filter-label-with-count">
-        {{ filter_value.label | escape }}
-        <span class="filter-count">({{ filter_value.count }})</span>
-      </span>
-      {% render 'icon-stateful-box' -%}
-      {%- render 'icon-core-refresh' %}
-    </label>
-  </li>
-{% endif %}
+            {% if filter_value.count > 0 or filter_value.active %}
+              {% comment %} {% if filter.label == 'Size' or filter_value.count > 0 or filter_value.active %} {% endcomment %}
+              <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+                <input
+                  type="checkbox"
+                  name="{{ filter_value.param_name }}"
+                  value="{{ filter_value.value }}"
+                  id="{{ input_id }}"
+                  {% if filter_value.active -%}
+                    checked
+                  {%- endif %}
+                >
+                <label class="stateful-filter-icons" for="{{ input_id }}" aria-label="{{ filter_value.label }}">
+                  <span class="filter-label-with-count">
+                    {{ filter_value.label | escape }}
+                    <span class="filter-count">({{ filter_value.count }})</span>
+                  </span>
+                  {% render 'icon-stateful-box' -%}
+                  {%- render 'icon-core-refresh' %}
+                </label>
+              </li>
+            {% endif %}
             {% comment %} MSSD end hide  {% endcomment %}
           {%- endif -%}
         {%- endfor -%}
