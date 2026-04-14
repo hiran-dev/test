@@ -26517,7 +26517,7 @@ body:has(.is-open) [id^="zoko-"],
 /* Mobile screens (width 768px and below) - keep normal */
 @media screen and (max-width: 768px) {
     [id^="zoko-"] .reset23947hdfjue8934 {
-        bottom: 50px !important;  /* Original position */
+        bottom: 20px !important;  /* Original position */
         right: 10px !important;
     }
 }
