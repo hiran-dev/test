@@ -163,8 +163,9 @@
             </li>
 
           {%- else -%}
+            {% comment %} Comment out by MSSD to hide the strike through on out of stock make a new list below on line 188 {% endcomment %}
             {% comment %} Checkbox item: This will now be used for Colors too {% endcomment %}
-            <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+            {% comment %} <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
               <input
                 type="checkbox"
                 name="{{ filter_value.param_name }}"
@@ -182,7 +183,28 @@
                 {% render 'icon-stateful-box' -%}
                 {%- render 'icon-core-refresh' %}
               </label>
-            </li>
+            </li> end comment by mssd {% endcomment %}
+             {% comment %} MSSD to hide the strike through filter if strike through enabled it will it hide it... {% endcomment %}
+            {% if filter_value.count > 0 or filter_value.active %}
+              {% comment %} {% if filter.label == 'Size' or filter_value.count > 0 or filter_value.active %} {% endcomment %}
+              <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
+                <input
+                  type="checkbox"
+                  name="{{ filter_value.param_name }}"
+                  value="{{ filter_value.value }}"
+                  id="{{ input_id }}"
+                  {% if filter_value.active -%}
+                    checked
+                  {%- endif %}
+                >
+                <label class="stateful-filter-icons" for="{{ input_id }}" aria-label="{{ filter_value.label }}">
+                  {{ filter_value.label | escape }}
+                  {% render 'icon-stateful-box' -%}
+                  {%- render 'icon-core-refresh' %}
+                </label>
+              </li>
+            {% endif %}
+            {% comment %} MSSD end hide  {% endcomment %}
           {%- endif -%}
         {%- endfor -%}
       </ul>
