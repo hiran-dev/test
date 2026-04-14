@@ -88,27 +88,20 @@
         id="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
         data-accordion-body
         aria-label="{{ 'collections.sidebar.filter' | t }}"
-        {% if accordion_open_boolean == false %}
-          style="display: none;"
-        {% endif %}
+        {% if accordion_open_boolean == false %} style="display: none;" {% endif %}
       >
         {%- for filter_value in filter.values -%}
           {%- capture input_id -%}filter-{{ filter.label | handleize }}-{{ forloop.index }}{%- endcapture -%}
 
           {%- if is_image_option -%}
+            {% comment %} Image display type renders the image with a checkbox using the natural ratio of the image and no cropping {% endcomment %}
             <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
-              <input
-                type="checkbox"
+              <input type="checkbox"
                 name="{{ filter_value.param_name }}"
                 value="{{ filter_value.value }}"
                 id="{{ input_id }}"
-                {% if filter_value.active -%}
-                  checked
-                {%- endif %}
-                {% if filter_value.count == 0 and filter_value.active == false -%}
-                  disabled
-                {%- endif %}
-              >
+                {% if filter_value.active -%}checked{%- endif %}
+                {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}>
               <label
                 class="stateful-filter-icons"
                 data-swapper-hover="{{ filter_value.label | escape_once }}"
@@ -118,11 +111,7 @@
                 <span class="flex justify-start items-center">
                   {%- if filter_value.image -%}
                     <span class="max-w-[140px]">
-                      {%- render 'image',
-                        img_object: filter_value.image,
-                        width: 140,
-                        wh_ratio: filter_value.image.aspect_ratio
-                      -%}
+                      {%- render 'image' img_object: filter_value.image, width: 140, wh_ratio: filter_value.image.aspect_ratio -%}
                     </span>
                   {%- else -%}
                     {{ filter_value.label | escape_once }}
