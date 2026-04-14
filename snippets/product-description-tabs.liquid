@@ -1,94 +1,61 @@
-<div id="cross-stitch-tabs" class="cs-tabs-container">
-  <div class="cs-tabs-nav" id="csTabNav">
-    <button class="cs-tab-btn active" data-target="cs-details">Details</button>
+{%- assign desc = product.description -%}
+
+{%- comment -%} Determine Tab 2 Heading {%- endcomment -%}
+{%- assign tab_2_title = "Attribute" -%}
+{%- if desc contains "STYLE TIP" -%}
+  {%- assign tab_2_title = "Style Tip" -%}
+{%- endif -%}
+
+{%- comment -%} Split into 3 parts: Details, Middle, and Fit {%- endcomment -%}
+{%- assign part1 = desc | split: "ATTRIBUTE" | first | split: "STYLE TIP" | first -%}
+
+{%- if desc contains "ATTRIBUTE" -%}
+    {%- assign part2 = desc | split: "ATTRIBUTE" | last | split: "SIZE AND FIT" | first -%}
+{%- elsif desc contains "STYLE TIP" -%}
+    {%- assign part2 = desc | split: "STYLE TIP" | last | split: "SIZE AND FIT" | first -%}
+{%- else -%}
+    {%- assign part2 = "" -%}
+{%- endif -%}
+
+{%- assign part3 = desc | split: "SIZE AND FIT" | last -%}
+{%- if desc contains "SIZE AND FIT" == false -%}{%- assign part3 = "" -%}{%- endif -%}
+
+<div class="product-tabs">
+  <input type="radio" name="tabs" id="tabone" checked="checked">
+  <label for="tabone">Details</label>
+  <div class="tab">
+    {{ part1 }}
   </div>
-  
-  <div class="cs-tabs-content">
-    <div id="cs-details" class="cs-tab-pane active">
-      {{ product.description }}
-    </div>
+
+  {%- if part2 != blank -%}
+  <input type="radio" name="tabs" id="tabtwo">
+  <label for="tabtwo">{{ tab_2_title }}</label>
+  <div class="tab">
+    {{ part2 }}
   </div>
+  {%- endif -%}
+
+  {%- if part3 != blank -%}
+  <input type="radio" name="tabs" id="tabthree">
+  <label for="tabthree">Size & Fit</label>
+  <div class="tab">
+    {{ part3 }}
+  </div>
+  {%- endif -%}
 </div>
 
 <style>
-  .cs-tabs-container { margin: 30px 0; border-top: 1px solid #ddd; width: 100%; }
-  .cs-tabs-nav { display: flex; gap: 40px; border-bottom: 1px solid #ddd; margin-bottom: 20px; }
-  .cs-tab-btn { 
-    background: none; border: none; padding: 15px 0; cursor: pointer; 
-    font-size: 13px; font-weight: 700; text-transform: uppercase; 
-    letter-spacing: 1.5px; color: #999; position: relative; font-family: inherit;
+  .product-tabs { display: flex; flex-wrap: wrap; margin: 30px 0; border-top: 1px solid #e1e1e1; }
+  .product-tabs label {
+    padding: 15px 0; margin-right: 30px; cursor: pointer;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    color: #999; transition: color 0.3s; order: 1;
   }
-  .cs-tab-btn.active { color: #000; }
-  .cs-tab-btn.active::after { 
-    content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #000; 
+  .product-tabs input[type="radio"] { display: none; }
+  .product-tabs .tab {
+    width: 100%; padding: 20px 0; order: 2; display: none;
+    border-top: 1px solid #e1e1e1; line-height: 1.8; font-size: 14px;
   }
-  .cs-tab-pane { display: none; padding-bottom: 20px; line-height: 1.8; color: #333; }
-  .cs-tab-pane.active { display: block !important; }
-  /* Hide the repetitive bold headings inside the new tabs */
-  .cs-tab-pane > p > strong:first-child { display: none; }
+  .product-tabs input[type="radio"]:checked + label { color: #000; border-bottom: 2px solid #000; margin-bottom: -1px; z-index: 2;}
+  .product-tabs input[type="radio"]:checked + label + .tab { display: block; }
 </style>
-
-<script>
-(function() {
-  const initCS = () => {
-    const root = document.getElementById('cross-stitch-tabs');
-    const details = document.getElementById('cs-details');
-    const nav = document.getElementById('csTabNav');
-    const bodyContainer = root.querySelector('.cs-tabs-content');
-
-    if (!details || details.dataset.done) return;
-
-    // Detect markers (exact match check)
-    const sections = [
-      { id: 'attribute', marker: 'ATTRIBUTE' },
-      { id: 'style', marker: 'STYLE TIP' },
-      { id: 'fit', marker: 'SIZE AND FIT' }
-    ];
-
-    let fullHTML = details.innerHTML;
-
-    sections.forEach(sec => {
-      // Find the marker regardless of tags (h3, strong, p, etc)
-      const regex = new RegExp(`(<[^>]*>\\s*${sec.marker}\\s*<\\/[^>]*>|${sec.marker})`, 'i');
-      
-      if (regex.test(fullHTML)) {
-        const parts = fullHTML.split(regex);
-        if (parts.length > 2) {
-          // 1. Add Nav Button
-          const btn = document.createElement('button');
-          btn.className = 'cs-tab-btn';
-          btn.innerText = sec.marker;
-          btn.setAttribute('data-target', 'cs-' + sec.id);
-          nav.appendChild(btn);
-
-          // 2. Add Content Pane
-          const pane = document.createElement('div');
-          pane.className = 'cs-tab-pane';
-          pane.id = 'cs-' + sec.id;
-          pane.innerHTML = parts[parts.length - 1]; // Content after marker
-          bodyContainer.appendChild(pane);
-
-          fullHTML = parts[0]; // Retain only content BEFORE this marker for "Details"
-        }
-      }
-    });
-
-    details.innerHTML = fullHTML;
-    details.dataset.done = "true";
-
-    // Click Logic
-    nav.addEventListener('click', (e) => {
-      if (!e.target.classList.contains('cs-tab-btn')) return;
-      root.querySelectorAll('.cs-tab-btn').forEach(b => b.classList.remove('active'));
-      root.querySelectorAll('.cs-tab-pane').forEach(p => p.classList.remove('active'));
-      e.target.classList.add('active');
-      document.getElementById(e.target.dataset.target).classList.add('active');
-    });
-  };
-
-  // Run immediately and also watch for AJAX changes (common in Cross Stitch theme)
-  setTimeout(initCS, 500); 
-  window.addEventListener('load', initCS);
-  document.addEventListener('shopify:section:load', initCS); // For theme editor
-})();
-</script>
