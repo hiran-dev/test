@@ -1,4 +1,4 @@
-<div class="product-tabs-container" id="cs-tabs-wrapper">
+{% comment %} <div class="product-tabs-container" id="cs-tabs-wrapper">
   <div class="tabs-header" id="cs-tabs-nav">
     <button class="t-btn active" data-target="details">Details</button>
   </div>
@@ -104,4 +104,143 @@ document.addEventListener('DOMContentLoaded', function() {
   
   /* If the theme puts the description in a markdown-styled div, reset its margin */
   .t-pane .markdown { margin-top: 0 !important; }
+</style> {% endcomment %}
+
+
+<div class="product-tabs-container" id="cs-tabs-wrapper">
+  <div class="tabs-header" id="cs-tabs-nav">
+    <button class="t-btn active" data-target="details">Details</button>
+  </div>
+
+  <div class="tabs-body" id="cs-tabs-body">
+    <div id="tab-details" class="t-pane active">
+      {{ product.description }}
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const container = document.getElementById('tab-details');
+  const nav = document.getElementById('cs-tabs-nav');
+  const body = document.getElementById('cs-tabs-body');
+  
+  if (!container) return;
+
+  const markers = [
+    { id: 'style', label: 'Style Tip', search: 'STYLE TIP' },
+    { id: 'attr', label: 'Attribute', search: 'ATTRIBUTE' },
+    { id: 'fit', label: 'Size & Fit', search: 'SIZE AND FIT' }
+  ];
+
+  let rawHTML = container.innerHTML;
+
+  markers.forEach(item => {
+    const regex = new RegExp(`(<[^>]*>\\s*${item.search}\\s*<\\/[^>]*>|${item.search})`, 'i');
+    
+    if (regex.test(rawHTML)) {
+      const parts = rawHTML.split(regex);
+      if (parts.length >= 2) {
+        const btn = document.createElement('button');
+        btn.className = 't-btn';
+        btn.innerText = item.label;
+        btn.setAttribute('data-target', item.id);
+        nav.appendChild(btn);
+
+        const pane = document.createElement('div');
+        pane.className = 't-pane';
+        pane.id = 'tab-' + item.id;
+        
+        let content = parts[parts.length - 1].trim();
+        pane.innerHTML = content.replace(/^(&nbsp;|<br\/?>|\s)+/i, "");
+        body.appendChild(pane);
+        rawHTML = parts[0];
+      }
+    }
+  });
+
+  container.innerHTML = rawHTML;
+
+  nav.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('t-btn')) return;
+    document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.t-pane').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    const target = e.target.getAttribute('data-target');
+    const targetId = target === 'details' ? 'tab-details' : 'tab-' + target;
+    document.getElementById(targetId).classList.add('active');
+  });
+});
+</script>
+
+<style>
+  .product-tabs-container { 
+    margin: 10px 0 20px 0; 
+    width: 100%; 
+    clear: both; 
+    font-family: inherit;
+  }
+
+  .tabs-header { 
+    display: flex; 
+    align-items: center;
+    gap: 15px; 
+    margin-bottom: 15px; 
+  }
+
+  .t-btn { 
+    background: none; 
+    border: none; 
+    padding: 0;
+    cursor: pointer; 
+    font-size: 16px; 
+    font-weight: 400; 
+    text-transform: uppercase; 
+    color: #333; 
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Vertical separator style */
+  .t-btn:not(:last-child)::after {
+    content: "|";
+    margin-left: 15px;
+    color: #ccc;
+    font-weight: 300;
+  }
+
+  .t-btn.active { 
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+  }
+
+  .t-pane { 
+    display: none; 
+    padding: 10px 0; 
+    line-height: 1.6; 
+    font-size: 14px; 
+    color: #333; 
+  }
+
+  .t-pane.active { display: block !important; }
+
+  /* Styling for headings like SHIRT, TROUSER, DUPATTA */
+  .t-pane strong, .t-pane b {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .t-pane p {
+    margin: 0 0 10px 0;
+  }
+
+  /* Reset first element spacing */
+  .t-pane > *:first-child { 
+    margin-top: 0 !important; 
+  }
 </style>
