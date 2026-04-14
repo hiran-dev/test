@@ -26504,12 +26504,22 @@ body:has(.is-open) [id^="zoko-"],
     pointer-events: none !important;
 }
 
-/* Move Zoko widget down */
-[id^="zoko-"] .reset23947hdfjue8934 {
-    bottom: -30px !important;
-    right: 20px !important;
-    left: unset !important;
-    top: unset !important;
+/* Desktop/Laptop screens (width greater than 768px) */
+@media screen and (min-width: 769px) {
+    [id^="zoko-"] .reset23947hdfjue8934 {
+        bottom: -30px !important;
+        right: 20px !important;
+        left: unset !important;
+        top: unset !important;
+    }
+}
+
+/* Mobile screens (width 768px and below) - keep normal */
+@media screen and (max-width: 768px) {
+    [id^="zoko-"] .reset23947hdfjue8934 {
+        bottom: 50px !important;  /* Original position */
+        right: 10px !important;
+    }
 }
 /* Final fix for Mobile Quick-Add Button Circle */
 @media screen and (max-width: 767px) {
