@@ -28,6 +28,12 @@
     "main": {
       "type": "product",
       "blocks": {
+        "liquid_XpjVRX": {
+          "type": "liquid",
+          "settings": {
+            "custom_liquid": "{% render 'product-description-tabs' %}"
+          }
+        },
         "title": {
           "type": "title",
           "settings": {
@@ -96,6 +102,7 @@
         },
         "description": {
           "type": "description",
+          "disabled": true,
           "settings": {
             "style": "tabs",
             "enable_description": true,
@@ -166,6 +173,7 @@
         }
       },
       "block_order": [
+        "liquid_XpjVRX",
         "title",
         "price",
         "liquid_6gA8t8",
