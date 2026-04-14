@@ -244,53 +244,26 @@
         {%- assign filter_max_value = filter_max_money_ceil -%}
 
         {%- if filter.min_value.value -%}
-          {%- if shop.money_format contains 'comma_separator' -%}
-            {%- assign filter_min_value = filter.min_value.value
-              | money_without_currency
-              | replace: '.', ''
-              | replace: ',', '.'
-              | floor
-            -%}
-          {%- elsif shop.money_format contains 'space_separator' -%}
-            {%- assign filter_max_money = filter.range_max
-              | money_without_currency
-              | replace: ' ', ''
-              | replace: ',', '.'
-            -%}
+          {%- if shop.money_format contains "comma_separator" -%}
+            {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
+          {%- elsif shop.money_format contains "space_separator" -%}
+            {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
           {%- else -%}
             {%- assign filter_min_value = filter.min_value.value | money_without_currency | replace: ',', '' | floor -%}
           {%- endif -%}
         {%- endif -%}
 
         {%- if filter.max_value.value -%}
-          {%- if shop.money_format contains 'comma_separator' -%}
-            {%- assign filter_max_value = filter.max_value.value
-              | money_without_currency
-              | replace: '.', ''
-              | replace: ',', '.'
-              | floor
-            -%}
-          {%- elsif shop.money_format contains 'space_separator' -%}
-            {%- assign filter_max_money = filter.range_max
-              | money_without_currency
-              | replace: ' ', ''
-              | replace: ',', '.'
-            -%}
+          {%- if shop.money_format contains "comma_separator" -%}
+            {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: '.', '' | replace: ',', '.' | floor -%}
+          {%- elsif shop.money_format contains "space_separator" -%}
+            {%- assign filter_max_money = filter.range_max | money_without_currency | replace: ' ', '' | replace: ',', '.' -%}
           {%- else -%}
             {%- assign filter_max_value = filter.max_value.value | money_without_currency | replace: ',', '' | floor -%}
           {%- endif -%}
         {%- endif -%}
 
-        <div
-          class="filter__price__range collection-range-filter"
-          data-range-slider
-          data-range-filter-update
-          data-se-min="0"
-          data-se-step="1"
-          data-se-min-value="{{ filter_min_value }}"
-          data-se-max-value="{{ filter_max_value }}"
-          data-se-max="{{ filter_max_money_ceil }}"
-        >
+        <div class="filter__price__range collection-range-filter" data-range-slider data-range-filter-update data-se-min="0" data-se-step="1" data-se-min-value="{{ filter_min_value }}" data-se-max-value="{{ filter_max_value }}" data-se-max="{{ filter_max_money_ceil }}">
           <div class="range__dot range__dot--left" data-range-left>
             <span>&nbsp;</span>
           </div>
@@ -311,18 +284,13 @@
               class="filter__price__input"
               name="{{ filter.min_value.param_name }}"
               id="filter-price-from-{{ filter.label }}-{{ forloop.index }}"
-              {% if filter.min_value.value %}
-                value="{{ filter_min_value }}"
-              {% endif %}
+              {% if filter.min_value.value %}value="{{ filter_min_value }}"{% endif %}
               type="number"
               placeholder="{{ filter_min_value }}"
               min="0"
-              max="{{ filter_max_money_ceil }}"
-            >
+              max="{{ filter_max_money_ceil }}">
 
-            <label for="filter-price-from-{{ filter.label }}-{{ forloop.index }}">
-              {{- 'products.general.from' | t -}}
-            </label>
+            <label for="filter-price-from-{{ filter.label }}-{{ forloop.index }}">{{ 'products.general.from' | t }}</label>
           </div>
           <div class="filter__price__spacer">-</div>
           <div class="filter__price__field filter__price__to">
@@ -333,14 +301,11 @@
               class="filter__price__input"
               name="{{ filter.max_value.param_name }}"
               id="filter-price-to-{{ filter.label }}-{{ forloop.index }}"
-              {% if filter.max_value.value %}
-                value="{{ filter_max_value }}"
-              {% endif %}
+              {% if filter.max_value.value %}value="{{ filter_max_value }}"{% endif %}
               type="number"
               placeholder="{{ filter_max_value }}"
               min="0"
-              max="{{ filter_max_money_ceil }}"
-            >
+              max="{{ filter_max_money_ceil }}">
 
             <label for="filter-price-to-{{ filter.label }}-{{ forloop.index }}">To</label>
           </div>
