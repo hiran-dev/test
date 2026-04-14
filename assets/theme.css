@@ -26506,6 +26506,7 @@ body:has(.is-open) [id^="zoko-"],
 
 /* Move Zoko widget to bottom-right corner */
 [id^="zoko-"] .reset23947hdfjue8934 {
+    bottom: 0 !important;
     right: 20px !important;
     left: unset !important;
     top: unset !important;
