@@ -31,13 +31,11 @@
     {{- block.shopify_attributes -}}
   {% endif %}
 >
-  <button
-    class="sidebar__heading js {{ accordion_initial_state }}"
+  <button class="sidebar__heading js {{ accordion_initial_state }}"
     data-accordion-trigger="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
     aria-controls="accordion-{{ filter.label | handle }}-{{ forloop.index }}"
     aria-haspopup="true"
-    aria-expanded="{{ accordion_open_boolean }}"
-  >
+    aria-expanded="{{ accordion_open_boolean }}">
     <span>{{ filter.label }}</span>
 
     {%- if is_swatch_option or is_image_option -%}
@@ -59,9 +57,7 @@
     type="checkbox"
     name="accordion-{{ filter.label | handle }}"
     id="accordion-{{ filter.label | handle }}-checkbox"
-    class="no-js no-js-checkbox"
-    checked
-  >
+    class="no-js no-js-checkbox" checked>
 
   <label for="accordion-{{ filter.label | handle }}-checkbox" class="sidebar__heading no-js">
     <span>{{ filter.label }}</span>
