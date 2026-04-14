@@ -196,7 +196,6 @@
             </li> end comment by mssd {% endcomment %}
              {% comment %} MSSD to hide the strike through filter if strike through enabled it will it hide it... {% endcomment %}
             {% if filter_value.count > 0 or filter_value.active %}
-              {% comment %} {% if filter.label == 'Size' or filter_value.count > 0 or filter_value.active %} {% endcomment %}
               <li class="filter__button {% if forloop.index > limit %} is-hidden{% endif %}" data-option-holder>
                 <input
                   type="checkbox"
