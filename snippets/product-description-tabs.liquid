@@ -1,51 +1,46 @@
 <div class="product-tabs-container">
   {%- assign desc = product.description -%}
   
-  {%- comment -%} 
-    Pre-process the markers to be consistent 
-  {%- endcomment -%}
-  {%- assign has_style = false -%}{%- if desc contains "STYLE TIP" -%}{%- assign has_style = true -%}{%- endif -%}
-  {%- assign has_attr = false -%}{%- if desc contains "ATTRIBUTE" -%}{%- assign has_attr = true -%}{%- endif -%}
-  {%- assign has_fit = false -%}{%- if desc contains "SIZE AND FIT" -%}{%- assign has_fit = true -%}{%- endif -%}
-
-  {%- assign mid_marker = "" -%}
-  {%- if has_style -%}{%- assign mid_marker = "STYLE TIP" -%}
-  {%- elsif has_attr -%}{%- assign mid_marker = "ATTRIBUTE" -%}
+  {%- comment -%} Identify if we use STYLE TIP or ATTRIBUTE {%- endcomment -%}
+  {%- assign marker = "" -%}
+  {%- if desc contains "STYLE TIP" -%}
+    {%- assign marker = "STYLE TIP" -%}
+  {%- elsif desc contains "ATTRIBUTE" -%}
+    {%- assign marker = "ATTRIBUTE" -%}
   {%- endif -%}
 
   <div class="tabs-header">
     <button class="t-btn active" onclick="openCsTab(event, 'details')">Details</button>
-    {% if mid_marker != "" %}
-      <button class="t-btn" onclick="openCsTab(event, 'extra')">{% if has_style %}Style Tip{% else %}Attribute{% endif %}</button>
+    {% if marker != "" %}
+      <button class="t-btn" onclick="openCsTab(event, 'extra')">{% if marker == "STYLE TIP" %}Style Tip{% else %}Attribute{% endif %}</button>
     {% endif %}
-    {% if has_fit %}
+    {% if desc contains "SIZE AND FIT" %}
       <button class="t-btn" onclick="openCsTab(event, 'fit')">Size & Fit</button>
     {% endif %}
   </div>
 
-  {%- comment -%} Extract Contents {%- endcomment -%}
   <div id="details" class="t-pane active">
-    {%- if mid_marker != "" -%}
-      {{ desc | split: mid_marker | first }}
-    {%- elsif has_fit -%}
+    {%- if marker != "" -%}
+      {{ desc | split: marker | first }}
+    {%- elsif desc contains "SIZE AND FIT" -%}
       {{ desc | split: "SIZE AND FIT" | first }}
     {%- else -%}
       {{ desc }}
     {%- endif -%}
   </div>
 
-  {% if mid_marker != "" %}
+  {% if marker != "" %}
     <div id="extra" class="t-pane">
-      {%- assign split_mid = desc | split: mid_marker | last -%}
-      {%- if has_fit -%}
-        {{ split_mid | split: "SIZE AND FIT" | first }}
+      {%- assign extra_content = desc | split: marker | last -%}
+      {%- if extra_content contains "SIZE AND FIT" -%}
+        {{ extra_content | split: "SIZE AND FIT" | first }}
       {%- else -%}
-        {{ split_mid }}
+        {{ extra_content }}
       {%- endif -%}
     </div>
   {% endif %}
 
-  {% if has_fit %}
+  {% if desc contains "SIZE AND FIT" %}
     <div id="fit" class="t-pane">
       {{ desc | split: "SIZE AND FIT" | last }}
     </div>
@@ -54,28 +49,22 @@
 
 <script>
 function openCsTab(evt, tabId) {
-  const container = evt.currentTarget.closest('.product-tabs-container');
-  container.querySelectorAll(".t-pane").forEach(pane => pane.classList.remove("active"));
-  container.querySelectorAll(".t-btn").forEach(btn => btn.classList.remove("active"));
+  var i, panes, btns;
+  panes = document.getElementsByClassName("t-pane");
+  for (i = 0; i < panes.length; i++) { panes[i].classList.remove("active"); }
+  btns = document.getElementsByClassName("t-btn");
+  for (i = 0; i < btns.length; i++) { btns[i].classList.remove("active"); }
   document.getElementById(tabId).classList.add("active");
   evt.currentTarget.classList.add("active");
 }
 </script>
 
 <style>
-  .product-tabs-container { margin: 25px 0; border-top: 1px solid #eee; width: 100%; }
-  .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid #eee; margin-bottom: 10px; }
-  .t-btn { 
-    background: none; border: none; padding: 15px 0; cursor: pointer; 
-    font-size: 13px; font-weight: 700; text-transform: uppercase; 
-    color: #999; position: relative; letter-spacing: 1px;
-  }
+  .product-tabs-container { margin: 20px 0; border-top: 1px solid #e1e1e1; width: 100%; clear: both; }
+  .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid #e1e1e1; margin-bottom: 10px; }
+  .t-btn { background: none; border: none; padding: 15px 0; cursor: pointer; font-size: 13px; font-weight: 700; text-transform: uppercase; color: #999; position: relative; }
   .t-btn.active { color: #000; }
-  .t-btn.active::after { 
-    content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #000; 
-  }
-  .t-pane { display: none; padding: 20px 0; line-height: 1.8; font-size: 14px; color: #444; }
+  .t-btn.active::after { content: ""; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #000; }
+  .t-pane { display: none; padding: 15px 0; line-height: 1.8; font-size: 14px; color: #333; }
   .t-pane.active { display: block; }
-  /* Clean up stray bold headers inside the tab content */
-  .t-pane strong:first-of-type { display: none; }
 </style>
