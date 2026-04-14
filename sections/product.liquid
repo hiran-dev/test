@@ -281,7 +281,8 @@
                         </div>
                       </div>
                     {% else %}
-                      {{ product.description }}
+                      {% comment %} {{ product.description }} {% endcomment %}
+					   {% render 'product-description-tabs' %}
                     {% endif %}
                   {% else %}
                     <div class="tabs-wrapper">
