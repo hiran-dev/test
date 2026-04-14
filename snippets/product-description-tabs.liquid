@@ -1,9 +1,8 @@
-<div class="product-tabs-container" id="ProductTabs">
-  <div class="tabs-header" id="TabList">
-    <button class="tab-btn active" data-target="details-pane">Details</button>
+<div class="product-tabs-container">
+  <div class="tabs-header" id="custom-tab-header">
+    <button class="tab-btn active" data-tab="details">Details</button>
   </div>
-
-  <div class="tabs-body" id="TabPanes">
+  <div class="tabs-body" id="custom-tab-body">
     <div id="details-pane" class="tab-pane active">
       {{ product.description }}
     </div>
@@ -11,10 +10,10 @@
 </div>
 
 <style>
-  .product-tabs-container { margin: 30px 0; border-top: 1px solid #e1e1e1; }
-  .tabs-header { display: flex; gap: 30px; border-bottom: 1px solid #e1e1e1; overflow-x: auto; }
+  .product-tabs-container { margin: 20px 0; border-top: 1px solid #e1e1e1; font-family: inherit; }
+  .tabs-header { display: flex; gap: 25px; border-bottom: 1px solid #e1e1e1; overflow-x: auto; }
   .tab-btn { 
-    background: none; border: none; padding: 15px 0; cursor: pointer; 
+    background: none; border: none; padding: 12px 0; cursor: pointer; 
     font-size: 13px; font-weight: 600; text-transform: uppercase; 
     letter-spacing: 1px; color: #999; position: relative; white-space: nowrap;
   }
@@ -24,61 +23,65 @@
   }
   .tab-pane { display: none; padding: 20px 0; font-size: 14px; color: #333; line-height: 1.6; }
   .tab-pane.active { display: block; }
-  .tab-pane strong:first-child { display: none; } /* Hides the repeated heading inside the tab */
+  /* Hide the headers inside the tabs to keep it clean */
+  .tab-pane strong, .tab-pane b { display: block; margin-bottom: 5px; }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const descriptionContainer = document.getElementById('details-pane');
-  const tabList = document.getElementById('TabList');
-  const tabPanes = document.getElementById('TabPanes');
-  
-  // The keywords we are looking for
+  const container = document.getElementById('details-pane');
+  if (!container) return;
+
+  const tabHeader = document.getElementById('custom-tab-header');
+  const tabBody = document.getElementById('custom-tab-body');
   const markers = ["ATTRIBUTE", "STYLE TIP", "SIZE AND FIT"];
   
-  const content = descriptionContainer.innerHTML;
-  let sections = [];
+  let htmlContent = container.innerHTML;
   
-  // Logic to find markers and split content
-  let lastIndex = 0;
   markers.forEach(marker => {
-    // Check for marker in plain text or bold tags
-    if (descriptionContainer.innerText.includes(marker)) {
-      const regex = new RegExp(`(<[^>]*>)?${marker}(<[^>]*>)?`, 'i');
-      const parts = descriptionContainer.innerHTML.split(regex);
+    // This regex looks for the word even if it's inside <strong> or <b> tags
+    const regex = new RegExp(`(<br\\s*/?>\\s*)?(<(strong|b)>\\s*${marker}\\s*</(strong|b)>|${marker})`, 'i');
+    
+    if (regex.test(htmlContent)) {
+      const parts = htmlContent.split(regex);
       
       if (parts.length > 1) {
-        // Create the Tab Button
+        // 1. Create the Button
         const btn = document.createElement('button');
         btn.className = 'tab-btn';
-        btn.innerText = marker.toLowerCase();
-        btn.style.textTransform = 'capitalize';
-        btn.setAttribute('data-target', marker.replace(/\s+/g, '-').toLowerCase());
-        tabList.appendChild(btn);
+        btn.innerText = marker === "ATTRIBUTE" ? "Attribute" : (marker === "STYLE TIP" ? "Style Tip" : "Size & Fit");
+        btn.setAttribute('data-tab', marker.toLowerCase().replace(/\s/g, '-'));
+        tabHeader.appendChild(btn);
         
-        // Create the Tab Pane
+        // 2. Create the Pane
         const pane = document.createElement('div');
         pane.className = 'tab-pane';
-        pane.id = marker.replace(/\s+/g, '-').toLowerCase();
-        pane.innerHTML = parts[parts.length - 1];
-        tabPanes.appendChild(pane);
+        pane.id = marker.toLowerCase().replace(/\s/g, '-');
         
-        // Clean up the original details pane
-        descriptionContainer.innerHTML = parts[0];
+        // The last part of the split is the content for this tab
+        pane.innerHTML = parts[parts.length - 1];
+        tabBody.appendChild(pane);
+        
+        // 3. Update the main content to remove what we just moved
+        htmlContent = parts[0];
       }
     }
   });
+  
+  container.innerHTML = htmlContent;
 
-  // Tab Switching Logic
+  // Click functionality
   const allBtns = document.querySelectorAll('.tab-btn');
   const allPanes = document.querySelectorAll('.tab-pane');
-
+  
   allBtns.forEach(btn => {
     btn.addEventListener('click', function() {
       allBtns.forEach(b => b.classList.remove('active'));
       allPanes.forEach(p => p.classList.remove('active'));
+      
       this.classList.add('active');
-      document.getElementById(this.getAttribute('data-target')).classList.add('active');
+      const target = this.getAttribute('data-tab');
+      document.getElementById(target === 'details' ? 'details-pane' : target).classList.add('active');
     });
   });
 });
