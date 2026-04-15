@@ -1,7 +1,7 @@
 <div id="fullpage">
   {% for block in section.blocks %}
     <div class="section imgsize">
-    {% comment %} <div class="section fp-auto-height imgsize"> {% endcomment %}
+    {% comment %} <div class="section fp-auto-height imgsize"> mssd remove auto-height due to the image use auto height and move back in the header {% endcomment %}
 
       {% if block.settings.video != blank %}
         {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false }}
