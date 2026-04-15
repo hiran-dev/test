@@ -5991,6 +5991,41 @@
 
 }));
 
+// mssd for image not to move in the backside of header
+function initFullpage() {
+  if (window.innerWidth <= 767) {
+    
+    if (!window.myFullpage) {
+      window.myFullpage = new fullpage('#fullpage', {
+        autoScrolling: true,
+        fitToSection: true,
+        scrollOverflow: false,
+        css3: true,
+        scrollingSpeed: 700,
+        paddingTop: '56px',
+        paddingBottom: '0px',
+      });
+    }
+
+  } else {
+    // Desktop pe destroy kar do agar already init hai
+    if (window.myFullpage) {
+      window.myFullpage.destroy('all');
+      window.myFullpage = null;
+    }
+  }
+}
+
+// Run on load
+initFullpage();
+
+// Run on resize (important)
+window.addEventListener('resize', function () {
+  initFullpage();
+});
+// mssd end for image not to move in the backside of header
+
+
 // mssd function to scroll the drawer inner not the whole bg
 const navDrawer = document.querySelector('nav#header-menu');
 
