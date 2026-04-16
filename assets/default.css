@@ -346,7 +346,7 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   z-index: 9;
 }
 
-/* mssd iOS Safari ONLY */
+/*iOS Safari ONLY */
 @supports (-webkit-touch-callout: none) {
   a.BIS_trigger.bis-collection-button.product-card__name {
     position: relative !important;
