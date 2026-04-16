@@ -6007,12 +6007,6 @@ function initFullpage() {
       });
     }
 
-  } else {
-    // Desktop pe destroy kar do agar already init hai
-    if (window.myFullpage) {
-      window.myFullpage.destroy('all');
-      window.myFullpage = null;
-    }
   }
 }
 
@@ -6024,7 +6018,6 @@ window.addEventListener('resize', function () {
   initFullpage();
 });
 // mssd end for image not to move in the backside of header
-
 
 // mssd function to scroll the drawer inner not the whole bg
 const navDrawer = document.querySelector('nav#header-menu');
