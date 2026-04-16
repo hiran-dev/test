@@ -345,6 +345,19 @@ a.BIS_trigger.bis-collection-button.product-card__name {
   line-height: 44px;
   z-index: 9;
 }
+
+/* iOS Safari ONLY */
+@supports (-webkit-touch-callout: none) {
+  a.BIS_trigger.bis-collection-button.product-card__name {
+    position: relative !important;
+    margin-top: -30px !important;
+    left: 4% !important;
+    right: 4% !important;
+    width: 92% !important;
+    bottom: 10px !important;
+  }
+}
+
 .sold-out .quickview.md\:w-full, .sold-out .md\:w-full {
   display: none !important;
 }
